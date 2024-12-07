@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: shopapp
+  datasource:
+    url: jdbc:mysql://localhost:3307/shopapp
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none  # Có thể là create, create-drop, update, hoặc validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true   # Hiển thị các câu lệnh SQL trên console
+        format_sql: true # Format SQL cho dễ đọc
+  servlet:
+    multipart:
+      max-file-size: 10MB   # Kích thước tối đa của file upload
+      max-request-size: 20MB # Kích thước tối đa của toàn bộ request
+api:
+  prefix: /api/v1
+jwt:
+  expiration: 259200
+  secretKey: I have a dream

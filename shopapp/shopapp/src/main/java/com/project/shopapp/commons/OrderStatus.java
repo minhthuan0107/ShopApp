@@ -1,0 +1,9 @@
+package com.project.shopapp.commons;
+
+public class OrderStatus {
+    public static final String PENDING = "pending";
+    public static final String PROCESSING = "processing";
+    public static final String COMPLETED = "completed";
+    public static final String DELIVERED = "delivered";
+    public static final String CANCELLED = "cancelled";
+}
