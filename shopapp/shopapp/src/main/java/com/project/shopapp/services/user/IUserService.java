@@ -1,4 +1,4 @@
-package com.project.shopapp.services;
+package com.project.shopapp.services.user;
 
 import com.project.shopapp.dtos.UserDto;
 import com.project.shopapp.exception.DataNotFoundException;
@@ -8,5 +8,6 @@ import org.springframework.stereotype.Service;
 
 public interface IUserService {
     User createUser (UserDto userDto) throws DataNotFoundException;
-    User signin (String phoneNumber, String password) throws Exception;
+    String signin (String phoneNumber, String password) throws Exception;
+    User  getUserByPhoneNumber (String phoneNumber) throws Exception;
 }

@@ -1,16 +1,20 @@
-package com.project.shopapp.services;
+package com.project.shopapp.services.order;
 
 import com.project.shopapp.commons.OrderStatus;
+import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.OrderDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Order;
 import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.UserRepository;
-import com.project.shopapp.response.OrderResponse;
+import com.project.shopapp.response.order.OrderResponse;
+import com.project.shopapp.services.order.IOrderService;
+import com.project.shopapp.ultis.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -22,11 +26,14 @@ public class OrderService implements IOrderService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
+    private final LocalizationUtils localizationUtils;
 
     @Override
     public OrderResponse createOrder(OrderDto orderDto) throws Exception {
         User user = userRepository.findById(orderDto.getUserId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: " + orderDto.getUserId()));
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, orderDto.getUserId()))
+                );
         //convert orderDto => Order
         //Dùng thư viện Model Mapper
         modelMapper.typeMap(OrderDto.class, Order.class)
@@ -38,7 +45,8 @@ public class OrderService implements IOrderService {
         order.setOrderStatus(OrderStatus.PENDING);
         LocalDate shippingDate = orderDto.getShippingDate() == null ? LocalDate.now() : orderDto.getShippingDate();
         if (shippingDate.isBefore(LocalDate.now())) {
-            throw new DataNotFoundException("Date must be at least to day!");
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.ORDER_INVALID_SHIPPING_DATE));
         }
         order.setShippingDate(shippingDate);
         order.setActive(true);
@@ -50,9 +58,10 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderResponse getOrderById(long orderId) throws Exception {
+    public OrderResponse getOrderById(long orderId) {
         Order existingorder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new DataNotFoundException("Order not found with ID: " + orderId));
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
         OrderResponse orderResponse = modelMapper.map(existingorder, OrderResponse.class);
         return orderResponse;
     }
@@ -67,15 +76,18 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderResponse updateOrder(long orderId, OrderDto orderDto) throws Exception {
+    public OrderResponse updateOrder(long orderId, OrderDto orderDto) {
         Order existingOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find order with id:" + orderId));
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
         User existingUser = userRepository.findById(orderDto.getUserId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find user with id:" + orderDto.getUserId()));
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, orderDto.getUserId())));
         modelMapper.typeMap(OrderDto.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));
         modelMapper.map(orderDto, existingOrder);
         existingOrder.setUser(existingUser);
+        existingOrder.setActive(true);
         orderRepository.save(existingOrder);
         OrderResponse orderResponse = modelMapper.map(existingOrder, OrderResponse.class);
         return orderResponse;
@@ -84,17 +96,17 @@ public class OrderService implements IOrderService {
     @Override
     public void deleteOrderById(long id) {
         Order order = orderRepository.findById(id)
-                .orElse(null);
-        if(order != null){
+                .orElseThrow(()-> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, id)));
             order.setActive(false);
             orderRepository.save(order);
-        }
     }
 
     @Override
-    public List<OrderResponse> getOrdersByUserId(long userId) throws Exception {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new DataNotFoundException("User not found with ID: " + userId));
+    public List<OrderResponse> getOrdersByUserId(long userId)  {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND,userId)));
         List<Order> orders = orderRepository.findByUserId(userId);
         List<OrderResponse> orderResponses = orders.stream()
                 .map(order -> modelMapper.map(order, OrderResponse.class))

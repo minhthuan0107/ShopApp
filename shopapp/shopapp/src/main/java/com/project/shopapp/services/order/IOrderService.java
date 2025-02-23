@@ -1,9 +1,6 @@
-package com.project.shopapp.services;
+package com.project.shopapp.services.order;
 import com.project.shopapp.dtos.OrderDto;
-import com.project.shopapp.exception.DataNotFoundException;
-import com.project.shopapp.models.Category;
-import com.project.shopapp.models.Order;
-import com.project.shopapp.response.OrderResponse;
+import com.project.shopapp.response.order.OrderResponse;
 
 import java.util.List;
 

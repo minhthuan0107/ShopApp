@@ -1,4 +1,4 @@
-package com.project.shopapp.response;
+package com.project.shopapp.response.orderdetail;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class OrderDetailResponse {
+    private Long id;
     @JsonProperty("order_id")
     private Long orderId;
     @JsonProperty("product_id")

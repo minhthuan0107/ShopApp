@@ -24,6 +24,8 @@ public class Product extends BaseEntity {
     private String urlImage;
     @Column(name = "description")
     private String description;
+    private int quantity;
+    private int sold;
     @ManyToOne
     @JoinColumn(name ="category_id")
     private Category category;

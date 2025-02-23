@@ -1,4 +1,5 @@
-package com.project.shopapp.services;
+package com.project.shopapp.services.orderdetail;
+import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.OrderDetailDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Order;
@@ -7,7 +8,8 @@ import com.project.shopapp.models.Product;
 import com.project.shopapp.repositories.OrderDetailRepository;
 import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.ProductRepository;
-import com.project.shopapp.response.OrderDetailResponse;
+import com.project.shopapp.response.orderdetail.OrderDetailResponse;
+import com.project.shopapp.ultis.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,14 +24,15 @@ public class OrderDetailService implements IOrderDetailService {
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ModelMapper modelMapper;
+    private final LocalizationUtils localizationUtils;
     @Override
     public OrderDetailResponse createOrderDetail(OrderDetailDto orderDetailDto) throws Exception {
         Order order = orderRepository.findById(orderDetailDto.getOderId())
-                .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find order with id :"+orderDetailDto.getOderId()));
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderDetailDto.getOderId())));
         Product product = productRepository.findById(orderDetailDto.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find product with id :"+orderDetailDto.getProductId()));
+                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND,orderDetailDto.getProductId())));
         OrderDetail orderDetail = OrderDetail.builder()
                 .order(order)
                 .product(product)
@@ -46,7 +49,8 @@ public class OrderDetailService implements IOrderDetailService {
     @Override
     public OrderDetailResponse getOrderDetailById(long orderDetailId) throws Exception {
         OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
-                .orElseThrow(()-> new DataNotFoundException("Cannot find orderdetail with id :" +orderDetailId));
+                .orElseThrow(()-> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDERDETAIL_NOT_FOUND, orderDetailId)));
         OrderDetailResponse orderDetailResponse = modelMapper.map(orderDetail,OrderDetailResponse.class);
         return orderDetailResponse;
     }
@@ -54,7 +58,8 @@ public class OrderDetailService implements IOrderDetailService {
     @Override
     public List<OrderDetailResponse> getOrderDetailsByOrderId(long orderId) throws Exception {
         Order existingOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find order with id :"+orderId));
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND,  orderId)));
         List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(existingOrder);
         List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
                 .map(orderDetail -> modelMapper.map(orderDetail, OrderDetailResponse.class))
@@ -75,13 +80,13 @@ public class OrderDetailService implements IOrderDetailService {
     public OrderDetailResponse updateOrderDetail(long orderDetailId, OrderDetailDto orderDetailDto) throws Exception {
         OrderDetail existingOrderDetail = orderDetailRepository.findById(orderDetailId)
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find orderdetail with id :" + orderDetailId));
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDERDETAIL_NOT_FOUND, orderDetailId)));
         Order existingOrder = orderRepository.findById(orderDetailDto.getOderId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find order with id :" + orderDetailDto.getOderId()));
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderDetailDto.getOderId())));
         Product existingProduct = productRepository.findById(orderDetailDto.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find product with id :" + orderDetailDto.getProductId()));
+                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND,orderDetailDto.getProductId())));
         existingOrderDetail.setPrice(orderDetailDto.getPrice());
         existingOrderDetail.setNumberOfProduct(orderDetailDto.getNumberOfProducts());
         existingOrderDetail.setTotalMoney(orderDetailDto.getTotalMoney());

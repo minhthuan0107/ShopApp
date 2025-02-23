@@ -1,4 +1,4 @@
-package com.project.shopapp.response;
+package com.project.shopapp.response.product;
 
 import lombok.*;
 
@@ -11,5 +11,6 @@ import java.util.List;
 @Builder
 public class ProductListResponse {
     private List<ProductResponse> productResponses;
-    private int totalPage;
+    private int totalPages;
+    private long totalItems;
 }

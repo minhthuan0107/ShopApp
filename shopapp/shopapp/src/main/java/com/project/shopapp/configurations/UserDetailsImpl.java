@@ -31,7 +31,6 @@ public class UserDetailsImpl implements UserDetails {
     private int facebookAccountId;
     private int googleAccountId;
     private Collection<? extends GrantedAuthority> authorities;
-
     public UserDetailsImpl(Long id, String fullname, String phoneNumber, String address, String password,
                            boolean isActive, Date dateOfBirth, int facebookAccountId, int googleAccountId,
                            Collection<? extends GrantedAuthority> authorities) {
@@ -50,9 +49,9 @@ public class UserDetailsImpl implements UserDetails {
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
-
-        return new UserDetailsImpl(user.getId(), user.getFullname(), user.getPhoneNumber(), user.getAddress(), user.getPassword()
+        UserDetailsImpl userDetails = new UserDetailsImpl(user.getId(), user.getFullname(), user.getPhoneNumber(), user.getAddress(), user.getPassword()
                 , user.isActive(), user.getDateOfBirth(), user.getFacebookAccountId(), user.getGoogleAccountId(), authorities);
+        return userDetails;
     }
     @Override
     public boolean isAccountNonExpired() {

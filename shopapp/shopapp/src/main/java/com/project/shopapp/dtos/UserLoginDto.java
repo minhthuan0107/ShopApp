@@ -15,7 +15,6 @@ public class UserLoginDto {
     @JsonProperty("phone_number")
     @NotBlank(message = "Phone number is requied")
     private String phoneNumber;
-    private String address;
     @NotBlank(message = "Password cannot be blank")
     private String password;
 

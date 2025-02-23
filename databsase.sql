@@ -99,3 +99,25 @@ CREATE TABLE product_images(
     image_url VARCHAR(300)
 
 );
+CREATE TABLE cart_details (
+                              id INT AUTO_INCREMENT PRIMARY KEY,
+                              cart_id INT NOT NULL,  -- Khóa ngoại liên kết với giỏ hàng
+                              product_id INT NOT NULL,  -- Khóa ngoại liên kết với bảng sản phẩm
+                              quantity INT NOT NULL DEFAULT 1,  -- Số lượng sản phẩm trong giỏ
+                              unit_price DECIMAL(15,2) NOT NULL,  -- Giá của sản phẩm tại thời điểm thêm vào giỏ
+                              total_price DECIMAL(15,2) GENERATED ALWAYS AS (quantity * unit_price) STORED,  -- Tổng giá tiền của sản phẩm trong giỏ
+                              create_at DATETIME DEFAULT NOW(),
+                              update_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
+                              CONSTRAINT fk_cart_details_cart FOREIGN KEY (cart_id) REFERENCES cart(id) ON DELETE CASCADE,
+                              CONSTRAINT fk_cart_details_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+CREATE TABLE carts (
+                       id INT AUTO_INCREMENT PRIMARY KEY,
+                       total_price DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+                       total_quantity INT NOT NULL DEFAULT 0,
+                       status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+                       user_id INT UNSIGNED NOT NULL,  -- Thêm UNSIGNED để phù hợp với users.id
+                       create_at DATETIME DEFAULT NOW(),
+                       update_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
+                       CONSTRAINT fk_carts_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

@@ -2,9 +2,9 @@ spring:
   application:
     name: shopapp
   datasource:
-    url: jdbc:mysql://localhost:3307/shopapp
+    url: jdbc:mysql://localhost:3306/shopapp
     username: root
-    password: ""
+    password: "minhthuan0107"
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -18,8 +18,12 @@ spring:
     multipart:
       max-file-size: 10MB   # Kích thước tối đa của file upload
       max-request-size: 20MB # Kích thước tối đa của toàn bộ request
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    default-locale: en
 api:
   prefix: /api/v1
-jwt:
-  expiration: 259200
-  secretKey: I have a dream
+bezkoder:
+  jwtSecret: "bXlzdXBlcnNlY3JldGtleWZvcmphdG9yZmVjb25kdGVzdGluZ2RhdGV0byh0aXQpZ29lc2NhcGVzY2F0Y2l0cm9yZ2VuZXQ="
+  jwtExpirationMs: 86400000
