@@ -1,8 +1,7 @@
 package com.project.shopapp.models;
-
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -35,18 +34,15 @@ public class Order {
     private Date orderDate;
     @Column(name="status")
     private String orderStatus;
-    @Column(name = "total_money")
-    private Float totalMoney;
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
     @Column(name = "shipping_method",length = 100)
     private String shippingMethod;
-    @Column(name = "shipping_address",length = 100)
-    private String shippingAddress;
     @Column(name = "shipping_date")
     private LocalDate shippingDate;
     @Column(name = "tracking_number",length = 100)
     private String trackingNumber;
-    @Column(name = "payment_method",length = 100)
-    private String paymentMethod;
     @Column(name = "active")
     private boolean active;
+
 }

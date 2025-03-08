@@ -10,6 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDto {
-    @NotBlank(message = "Name must not be empty")
+    @NotBlank(message = "Tên danh mục không được để trống")
     private String name;
 }

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Setter
@@ -22,7 +23,7 @@ public class ProductDto {
     private String name;
     @Min(value = 0,message = "Price must be greater than or equal to 0")
     @Max(value = 100000000, message = "Price must be less than or equal to 10,000,000")
-    private Float price;
+    private BigDecimal price;
     @Min(value = 0,message = "Quantity must be greater than or equal to 0")
     private int quantity;
     @JsonProperty("url_image")

@@ -1,9 +1,11 @@
 package com.project.shopapp.services.cart;
 
-import com.project.shopapp.dtos.CartDto;
-import com.project.shopapp.models.Cart;
+import com.project.shopapp.dtos.CartDetailDto;
 import com.project.shopapp.response.cart.CartResponse;
 
 public interface ICartService {
-    CartResponse createCart (Long userId) throws Exception;
+    CartResponse addProductToCart(Long userId , CartDetailDto cartDetailDto) throws Exception;
+    Long getCartItemCount (Long userId) throws Exception;
+
+    void clearCart (Long userId) throws Exception;
 }

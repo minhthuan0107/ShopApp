@@ -1,7 +1,14 @@
 package com.project.shopapp.response.orderdetail;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.shopapp.models.Cart;
+import com.project.shopapp.models.OrderDetail;
+import com.project.shopapp.response.cart.CartResponse;
+import com.project.shopapp.response.cartdetail.CartDetailResponse;
 import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Setter
 @Getter
@@ -9,16 +16,25 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class OrderDetailResponse {
-    private Long id;
-    @JsonProperty("order_id")
-    private Long orderId;
+    @JsonProperty("order_detail_id")
+    private Long orderDetailId;
     @JsonProperty("product_id")
     private Long productId;
-    private Float price;
-    @JsonProperty("number_of_products")
-    private int numberOfProduct;
-    @JsonProperty("total_money")
-    private Float totalMoney;
-    private String color;
+    @JsonProperty("unit_price")
+    private BigDecimal unitPrice;
+    @JsonProperty("quantity")
+    private int quantity;
+    @JsonProperty("total_price")
+    private BigDecimal totalPrice;
+    public static OrderDetailResponse fromOrderDetail (OrderDetail orderDetail){
+        OrderDetailResponse orderDetailResponse = OrderDetailResponse.builder()
+                .orderDetailId(orderDetail.getId())
+                .productId(orderDetail.getProduct().getId())
+                .unitPrice(orderDetail.getUnitPrice())
+                .quantity(orderDetail.getQuantity())
+                .totalPrice(orderDetail.getTotalPrice())
+                .build();
+        return orderDetailResponse;
+    }
 
 }

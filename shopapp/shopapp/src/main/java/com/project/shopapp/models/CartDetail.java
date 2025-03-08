@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @Builder
-public class CartDetail {
+public class CartDetail extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +24,7 @@ public class CartDetail {
     @JoinColumn(name = "product_id", nullable = false) // Khóa ngoại đến Product
     private Product product;
     @Column(nullable = false)
-    private Integer quantity = 1;
+    private Integer quantity;
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal unitPrice;
     // totalPrice được tính tự động, không cần set giá trị

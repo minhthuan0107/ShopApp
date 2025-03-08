@@ -26,28 +26,7 @@ public class OrderDetailService implements IOrderDetailService {
     private final ModelMapper modelMapper;
     private final LocalizationUtils localizationUtils;
     @Override
-    public OrderDetailResponse createOrderDetail(OrderDetailDto orderDetailDto) throws Exception {
-        Order order = orderRepository.findById(orderDetailDto.getOderId())
-                .orElseThrow(() -> new RuntimeException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderDetailDto.getOderId())));
-        Product product = productRepository.findById(orderDetailDto.getProductId())
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND,orderDetailDto.getProductId())));
-        OrderDetail orderDetail = OrderDetail.builder()
-                .order(order)
-                .product(product)
-                .price(orderDetailDto.getPrice())
-                .numberOfProduct(orderDetailDto.getNumberOfProducts())
-                .totalMoney(orderDetailDto.getTotalMoney())
-                .color(orderDetailDto.getColor())
-                .build();
-        orderDetailRepository.save(orderDetail);
-        OrderDetailResponse orderDetailResponse = modelMapper.map(orderDetail,OrderDetailResponse.class);
-        return orderDetailResponse;
-    }
-
-    @Override
-    public OrderDetailResponse getOrderDetailById(long orderDetailId) throws Exception {
+    public OrderDetailResponse getOrderDetailById(Long orderDetailId) throws Exception {
         OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
                 .orElseThrow(()-> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDERDETAIL_NOT_FOUND, orderDetailId)));
@@ -56,7 +35,7 @@ public class OrderDetailService implements IOrderDetailService {
     }
 
     @Override
-    public List<OrderDetailResponse> getOrderDetailsByOrderId(long orderId) throws Exception {
+    public List<OrderDetailResponse> getOrderDetailsByOrderId(Long orderId) throws Exception {
         Order existingOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND,  orderId)));
@@ -77,20 +56,19 @@ public class OrderDetailService implements IOrderDetailService {
     }
 
     @Override
-    public OrderDetailResponse updateOrderDetail(long orderDetailId, OrderDetailDto orderDetailDto) throws Exception {
+    public OrderDetailResponse updateOrderDetail(Long orderId,Long orderDetailId, OrderDetailDto orderDetailDto) throws Exception {
         OrderDetail existingOrderDetail = orderDetailRepository.findById(orderDetailId)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDERDETAIL_NOT_FOUND, orderDetailId)));
-        Order existingOrder = orderRepository.findById(orderDetailDto.getOderId())
+        Order existingOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderDetailDto.getOderId())));
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
         Product existingProduct = productRepository.findById(orderDetailDto.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND,orderDetailDto.getProductId())));
-        existingOrderDetail.setPrice(orderDetailDto.getPrice());
-        existingOrderDetail.setNumberOfProduct(orderDetailDto.getNumberOfProducts());
-        existingOrderDetail.setTotalMoney(orderDetailDto.getTotalMoney());
-        existingOrderDetail.setColor(orderDetailDto.getColor());
+        existingOrderDetail.setUnitPrice(orderDetailDto.getUnitPrice());
+        existingOrderDetail.setQuantity(orderDetailDto.getQuantity());
+        existingOrderDetail.setTotalPrice(orderDetailDto.getTotalPrice());
         existingOrderDetail.setOrder(existingOrder);
         existingOrderDetail.setProduct(existingProduct);
         orderDetailRepository.save(existingOrderDetail);
@@ -99,7 +77,7 @@ public class OrderDetailService implements IOrderDetailService {
     }
 
     @Override
-    public void deleteOrderDetailById(long orderDetailId) {
+    public void deleteOrderDetailById(Long orderDetailId) {
         Optional<OrderDetail> existingorderDetail = orderDetailRepository
                 .findById(orderDetailId);
         existingorderDetail.ifPresent(orderDetail -> orderDetailRepository.delete(orderDetail));

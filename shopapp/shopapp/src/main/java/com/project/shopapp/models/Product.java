@@ -3,6 +3,7 @@ package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ public class Product extends BaseEntity {
     private Long id;
     @Column(name = "name", nullable = false,length = 350)
     private String name;
-    private Float price;
+    private BigDecimal price;
     @Column(name = "url_image",length = 350)
     private String urlImage;
     @Column(name = "description")

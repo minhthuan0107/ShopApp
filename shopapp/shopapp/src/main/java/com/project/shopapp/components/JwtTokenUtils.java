@@ -34,7 +34,8 @@ public class JwtTokenUtils {
 
             String token = Jwts.builder()
                     .setSubject(userPrincipal.getPhoneNumber())
-                    .claim("roles", roles)
+                    .claim("userId", userPrincipal.getId())
+                    .claim("authorities", roles)
                     .setIssuedAt(dateJwtDate)
                     .setExpiration(new Date(dateJwtDate.getTime() + jwtExpirationMs))
                     .signWith(SignatureAlgorithm.HS256, jwtSecret)

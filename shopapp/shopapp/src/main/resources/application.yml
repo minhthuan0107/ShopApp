@@ -27,3 +27,9 @@ api:
 bezkoder:
   jwtSecret: "bXlzdXBlcnNlY3JldGtleWZvcmphdG9yZmVjb25kdGVzdGluZ2RhdGV0byh0aXQpZ29lc2NhcGVzY2F0Y2l0cm9yZ2VuZXQ="
   jwtExpirationMs: 86400000
+vnpay:
+  tmn-code: "XCB5GDBK"
+  secret-key: "DZYDEFH0PJOUI3S0VBLHGBW0WUG6KH0V"
+  pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+  return-url: "${VNPAY_RETURN_URI:http://localhost:4200/payments/payment-callback}"
+  api-url: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"

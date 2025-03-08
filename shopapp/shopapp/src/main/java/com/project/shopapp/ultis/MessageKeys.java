@@ -46,7 +46,37 @@ public class MessageKeys {
     public static  final String PRODUCT_INVALID_IMAGE_FORMAT= "product.invalid_image_format";
     public static  final String PRODUCTIMAGES_GET_BY_PRODUCT_ID_SUCCESSFULLY = "productimage.get_by_product_id_successfully";
 
-    public static final String CART_CREATED_SUCCESSFULLY = "cart.created_successfully";
+    public static final String CART_ADD_PRODUCT_SUCCESSFULLY = "cart.add_product_successfully";
+    public static final String CART_NOT_FOUND = "cart.not_found";
+    public static final String CART_GET_CART_ITEMS_SUCCESSFULLY = "cart.get_cart_items_successfully";
+    public static final String CART_DELETE_SUCCESSFULLY = "cart.delete_successfully";
+    public static final String CARTDETAIL_GET_CARTDETAILS_BY_USER_ID_SUCCESSFULLY = "cartdetail.get_cartdetails_by_user_id_successfully";
+
+    public static final String CARTDETAIL_NOT_FOUND = "cartdetail.not_found";
+
+    public static final String CARTDETAIL_DELETE_SUCCESSFULLY = "cartdetail.delete_successfully";
+    public static final String CARTDETAIL_UPDATE_SUCCESSFULLY = "cartdetail.update_successfully";
+
+    public static final String CARTDETAIL_NOT_BELONG_TO_USER = "cartdetail.not_belong_to_user";
+
+    public static final String PAYMENT_URL_GENERATED_SUCCESSFULLY ="payment.url_generated_successfully";
+
+    public static final String ERROR_GENERATED_PAYMENT_URL = "payment.error_generating_payment_url";
+
+    public static final String PAYMENT_QUERY_SUCCESSFULLY = "payment.query_successfully";
+
+    public static final String PAYMENT_ERROR_QUERY_TRANSACTION ="payment.error_query_transaction";
+    public static final String PAYMENT_REFUND_QUERY_TRANSACTION ="payment.refund_successfully";
+    public static final String PAYMENT_REFUND_FAILED ="payment.refund_failed";
+    public static final String PAYMENT_TRANSACTION_NOT_FOUND ="payment.transaction_not_found";
+    public static final String PAYMENT_UPDATE_SUCCESSFULLY ="payment.update_successfully";
+
+    public static final String COMMENT_CREATED_SUCCESSFULLY ="comment.created_successfully";
+    public static final String COMMENT_NOT_FOUND = "comment.not_found";
+
+
+
+
 
 
 }

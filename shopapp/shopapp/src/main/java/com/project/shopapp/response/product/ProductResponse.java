@@ -6,6 +6,8 @@ import com.project.shopapp.models.Product;
 import com.project.shopapp.response.BaseResponseEntity;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -14,7 +16,7 @@ import lombok.*;
 public class ProductResponse extends BaseResponseEntity {
     private Long id;
     private String name;
-    private Float price;
+    private BigDecimal price;
     @JsonProperty("url_image")
     private String urlImage;
     private String description;

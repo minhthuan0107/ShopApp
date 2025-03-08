@@ -3,6 +3,8 @@ package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_details")
 @AllArgsConstructor
@@ -21,14 +23,13 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name ="product_id  ")
     private Product product;
-    @Column(name = "price",nullable = false)
-    private Float price;
-    @Column(name = "number_of_products",nullable = false)
-    private int numberOfProduct;
-    @Column(name = "total_money",nullable = false)
-    private Float totalMoney;
-    @Column(name = "color",length = 20)
-    private String color;
+    @Column(name = "unit_price",nullable = false)
+    private BigDecimal unitPrice;
+    @Column(name = "quantity",nullable = false)
+    private int quantity;
+    @Column(name = "total_price",nullable = false)
+    private BigDecimal totalPrice;
+
 
 
 

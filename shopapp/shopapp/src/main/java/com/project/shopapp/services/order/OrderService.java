@@ -2,20 +2,22 @@ package com.project.shopapp.services.order;
 
 import com.project.shopapp.commons.OrderStatus;
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.dtos.OrderDetailDto;
 import com.project.shopapp.dtos.OrderDto;
 import com.project.shopapp.exception.DataNotFoundException;
-import com.project.shopapp.models.Order;
-import com.project.shopapp.models.User;
-import com.project.shopapp.repositories.OrderRepository;
-import com.project.shopapp.repositories.UserRepository;
+import com.project.shopapp.models.*;
+import com.project.shopapp.repositories.*;
 import com.project.shopapp.response.order.OrderResponse;
+import com.project.shopapp.response.orderdetail.OrderDetailResponse;
+import com.project.shopapp.response.payment.PaymentResponse;
+import com.project.shopapp.services.cart.CartService;
 import com.project.shopapp.services.order.IOrderService;
 import com.project.shopapp.ultis.MessageKeys;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,38 +29,76 @@ public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
     private final LocalizationUtils localizationUtils;
+    private final ProductRepository productRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final CartService cartService;
+    private final PaymentRepository paymentRepository;
 
     @Override
-    public OrderResponse createOrder(OrderDto orderDto) throws Exception {
-        User user = userRepository.findById(orderDto.getUserId())
+    @Transactional
+    public OrderResponse placeOrder(Long userId, OrderDto orderDto) throws Exception {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, orderDto.getUserId()))
+                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, userId))
                 );
-        //convert orderDto => Order
-        //Dùng thư viện Model Mapper
+        Order order = convertToOrder(orderDto, user);
+        orderRepository.save(order);
+        // Chuyển đổi danh sách OrderDetailDto -> OrderDetail
+        List<OrderDetail> orderDetails = orderDto.getOrderDetails().stream()
+                .map(orderDetailDto -> convertToOrderDetail(orderDetailDto, order))
+                .collect(Collectors.toList());
+        orderDetailRepository.saveAll(orderDetails);
+        // Tạo Payment nếu có thông tin thanh toán
+        Payment payment = Payment.builder()
+                .order(order)
+                .amount(orderDto.getPayment().getAmount())
+                .paymentMethod(orderDto.getPayment().getPaymentMethod())
+                .transactionId(orderDto.getPayment().getTransactionId())
+                .status("PENDING")
+                .build();
+        paymentRepository.save(payment);
+
+        // Chuyển đổi danh sách OrderDetail => OrderDetailResponse
+        List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
+                .map(OrderDetailResponse::fromOrderDetail)
+                .collect(Collectors.toList());
+        // Chỉ xóa giỏ hàng nếu thanh toán trực tiếp
+        if ("Cod".equals(orderDto.getPayment().getPaymentMethod())) {
+            cartService.clearCart(userId);
+        }
+        // Chuyển đổi Order sang OrderResponse để trả về
+        OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+        orderResponse.setOrderDetailResponses(orderDetailResponses);
+        orderResponse.setPaymentResponse(PaymentResponse.fromPayment(payment));
+        return orderResponse;
+    }
+    private Order convertToOrder(OrderDto orderDto, User user) {
+        ModelMapper modelMapper = new ModelMapper();
         modelMapper.typeMap(OrderDto.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));
-        Order order = new Order();
-        modelMapper.map(orderDto, order);
+        Order order = modelMapper.map(orderDto, Order.class);
         order.setUser(user);
         order.setOrderDate(new Date());
         order.setOrderStatus(OrderStatus.PENDING);
-        LocalDate shippingDate = orderDto.getShippingDate() == null ? LocalDate.now() : orderDto.getShippingDate();
-        if (shippingDate.isBefore(LocalDate.now())) {
-            throw new DataNotFoundException(
-                    localizationUtils.getLocalizedMessage(MessageKeys.ORDER_INVALID_SHIPPING_DATE));
-        }
-        order.setShippingDate(shippingDate);
         order.setActive(true);
-        orderRepository.save(order);
-        modelMapper.typeMap(Order.class, OrderResponse.class);
-        OrderResponse orderResponse = new OrderResponse();
-        modelMapper.map(order, orderResponse);
-        return orderResponse;
-    }
 
+        return order;
+    }
+    private OrderDetail convertToOrderDetail(OrderDetailDto orderDetailDto, Order order) {
+        Product product = productRepository.findById(orderDetailDto.getProductId())
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, orderDetailDto.getProductId()))
+                );
+        return OrderDetail.builder()
+                .order(order)
+                .product(product)
+                .quantity(orderDetailDto.getQuantity())
+                .unitPrice(orderDetailDto.getUnitPrice())
+                .totalPrice(orderDetailDto.getTotalPrice())
+                .build();
+    }
     @Override
-    public OrderResponse getOrderById(long orderId) {
+    public OrderResponse getOrderById(Long orderId) {
         Order existingorder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
@@ -76,13 +116,14 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderResponse updateOrder(long orderId, OrderDto orderDto) {
+    @Transactional
+    public OrderResponse updateOrder(Long userId, Long orderId, OrderDto orderDto) throws Exception {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, userId)));
         Order existingOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
-        User existingUser = userRepository.findById(orderDto.getUserId())
-                .orElseThrow(() -> new RuntimeException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, orderDto.getUserId())));
         modelMapper.typeMap(OrderDto.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));
         modelMapper.map(orderDto, existingOrder);
@@ -94,23 +135,30 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void deleteOrderById(long id) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, id)));
-            order.setActive(false);
-            orderRepository.save(order);
+    public void deleteOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
+        order.setActive(false);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
     }
 
     @Override
-    public List<OrderResponse> getOrdersByUserId(long userId)  {
+    public List<OrderResponse> getOrdersByUserId(Long userId) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND,userId)));
+                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, userId)));
         List<Order> orders = orderRepository.findByUserId(userId);
         List<OrderResponse> orderResponses = orders.stream()
                 .map(order -> modelMapper.map(order, OrderResponse.class))
                 .collect(Collectors.toList());
         return orderResponses;
+    }
+
+    @Override
+    @Transactional
+    public int deletePendingOnlineOrders() {
+        return orderRepository.deletePendingOnlineOrders(List.of("Vnpay", "Paypal", "Momo"));
     }
 }

@@ -24,39 +24,8 @@ public class OrderDetailController {
     @Autowired
     private LocalizationUtils localizationUtils;
 
-    @PostMapping("")
-    public ResponseEntity<?> createOrderDetail(@Valid @RequestBody OrderDetailDto orderDetailDto,
-                                               BindingResult result) {
-        if (result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList();
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .message(errorMessages.toString())
-                    .build());
-        }
-        try {
-            OrderDetailResponse orderDetailResponse = orderDetailService.createOrderDetail(orderDetailDto);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .status(HttpStatus.CREATED)
-                    .data(orderDetailResponse)
-                    .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.ORDERDETAIL_CREATED_SUCCESSFULLY, orderDetailResponse.getId()))
-                    .build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .message(e.getMessage())
-                    .build());
-        }
-    }
-
     @GetMapping("")
-    public ResponseEntity<?> getAllOrderDetails() {
+    public ResponseEntity<ResponseObject> getAllOrderDetails() {
         List<OrderDetailResponse> orderDetailResponses = orderDetailService.getAllOrderDetails();
         return ResponseEntity.ok(ResponseObject.builder()
                 .status(HttpStatus.OK)
@@ -66,15 +35,15 @@ public class OrderDetailController {
                 .build());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOrderDetailById(@Valid @PathVariable("id") long orderDetailId) {
+    @GetMapping("/{orderDetailId}")
+    public ResponseEntity<ResponseObject> getOrderDetailById(@Valid @PathVariable Long orderDetailId) {
         try {
             OrderDetailResponse orderDetailResponse = orderDetailService.getOrderDetailById(orderDetailId);
             return ResponseEntity.ok(ResponseObject.builder()
                     .status(HttpStatus.OK)
                     .data(orderDetailResponse)
                     .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.ORDERDETAIL_GET_BY_ID_SUCCESSFULLY, orderDetailResponse.getId()))
+                            MessageKeys.ORDERDETAIL_GET_BY_ID_SUCCESSFULLY, orderDetailResponse.getOrderDetailId()))
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
@@ -85,8 +54,8 @@ public class OrderDetailController {
         }
     }
 
-    @GetMapping("/order/{order_id}")
-    public ResponseEntity<?> getOrderDetailsByOrderId(@Valid @PathVariable("order_id") long orderId) {
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<ResponseObject> getOrderDetailsByOrderId(@Valid @PathVariable Long orderId) {
         try {
             List<OrderDetailResponse> orderDetailResponses = orderDetailService.getOrderDetailsByOrderId(orderId);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -104,10 +73,11 @@ public class OrderDetailController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrderDetail(@Valid @PathVariable("id") long orderDetailId,
-                                               @RequestBody OrderDetailDto orderDetailDto,
-                                               BindingResult result) {
+    @PutMapping("/{orderId}/{orderDetailId}")
+    public ResponseEntity<ResponseObject> updateOrderDetail(@Valid @PathVariable Long orderId,
+                                                            @PathVariable Long orderDetailId,
+                                                            @RequestBody OrderDetailDto orderDetailDto,
+                                                            BindingResult result) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
@@ -120,7 +90,8 @@ public class OrderDetailController {
                     .build());
         }
         try {
-            OrderDetailResponse orderDetailResponse = orderDetailService.updateOrderDetail(orderDetailId, orderDetailDto);
+            OrderDetailResponse orderDetailResponse = orderDetailService.updateOrderDetail(
+                    orderId, orderDetailId, orderDetailDto);
             return ResponseEntity.ok(ResponseObject.builder()
                     .status(HttpStatus.OK)
                     .data(orderDetailResponse)
@@ -136,8 +107,8 @@ public class OrderDetailController {
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteOrderDetail(@Valid @PathVariable("id") long orderDetailId) {
+    @DeleteMapping("/{orderDetailId}")
+    public ResponseEntity<ResponseObject> deleteOrderDetail(@Valid @PathVariable Long orderDetailId) {
         orderDetailService.deleteOrderDetailById(orderDetailId);
         return ResponseEntity.ok(ResponseObject.builder()
                 .status(HttpStatus.OK)

@@ -5,10 +5,13 @@ import com.project.shopapp.commons.CartStatus;
 import com.project.shopapp.models.BaseEntity;
 import com.project.shopapp.models.Cart;
 import com.project.shopapp.models.Product;
+import com.project.shopapp.response.cartdetail.CartDetailResponse;
 import com.project.shopapp.response.product.ProductResponse;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Getter
@@ -26,8 +29,9 @@ public class CartResponse extends BaseEntity {
     @JsonProperty("total_quantity")
     private Integer totalQuantity;
     private CartStatus status;
+    private List<CartDetailResponse> cartDetails;
 
-    public static CartResponse fromCart (Cart cart){
+    public static CartResponse fromCart (Cart cart,List<CartDetailResponse> productList){
         CartResponse cartResponse = CartResponse.builder()
                 .cartId(cart.getId())
                 .userId(cart.getUser().getId())
@@ -35,6 +39,7 @@ public class CartResponse extends BaseEntity {
                 .totalPrice(cart.getTotalPrice())
                 .totalQuantity(cart.getTotalQuantity())
                 .status(cart.getStatus())
+                .cartDetails(productList)
                 .build();
         cartResponse.setCreateAt(cart.getCreateAt());
         cartResponse.setUpdateAt(cart.getUpdateAt());

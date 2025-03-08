@@ -28,4 +28,5 @@ public class Cart extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // Tạo khóa ngoại
     private User user; // Quan hệ với bảng User
+    private boolean active;
 }

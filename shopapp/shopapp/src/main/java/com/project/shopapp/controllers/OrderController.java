@@ -24,8 +24,9 @@ public class OrderController {
     @Autowired
     private LocalizationUtils localizationUtils;
 
-    @PostMapping("")
-    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDto orderDto,
+    @PostMapping("/{userId}")
+    public ResponseEntity<?> placeOrder(@Valid @PathVariable Long userId,
+                                         @RequestBody OrderDto orderDto,
                                          BindingResult result) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
@@ -39,12 +40,12 @@ public class OrderController {
                     .build());
         }
         try {
-            OrderResponse orderResponse = orderService.createOrder(orderDto);
+            OrderResponse orderResponse = orderService.placeOrder(userId,orderDto);
             return ResponseEntity.ok(ResponseObject.builder()
                     .status(HttpStatus.CREATED)
                     .data(orderResponse)
                     .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.ORDER_CREATED_SUCCESSFULLY, orderResponse.getId()))
+                            MessageKeys.ORDER_CREATED_SUCCESSFULLY,orderResponse.getOrderId()))
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
@@ -55,8 +56,8 @@ public class OrderController {
         }
     }
 
-    @GetMapping("user/{user_id}")
-    public ResponseEntity<?> getOrdersByUserId(@Valid @PathVariable("user_id") long userId) {
+    @GetMapping("user/{userId}")
+    public ResponseEntity<?> getOrdersByUserId(@Valid @PathVariable Long userId) {
         try {
             List<OrderResponse> orderResponses = orderService.getOrdersByUserId(userId);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -100,16 +101,17 @@ public class OrderController {
                 .build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrder(@Valid @PathVariable("id") long id,
+    @PutMapping("/{userId}/{orderId}")
+    public ResponseEntity<?> updateOrder(@Valid @PathVariable("userId") Long userId,
+                                         @PathVariable("orderId") Long orderId,
                                          @RequestBody OrderDto orderDto) {
         try {
-            OrderResponse orderResponse = orderService.updateOrder(id, orderDto);
+            OrderResponse orderResponse = orderService.updateOrder(userId,orderId,orderDto);
             return ResponseEntity.ok(ResponseObject.builder()
                     .status(HttpStatus.OK)
                     .data(orderResponse)
                     .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.ORDER_UPDATED_SUCCESSFULLY,id))
+                            MessageKeys.ORDER_UPDATED_SUCCESSFULLY,orderId))
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
@@ -120,8 +122,8 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteOrder(@Valid @PathVariable("id") long orderId) {
+    @DeleteMapping("{orderId}")
+    public ResponseEntity<?> deleteOrder(@Valid @PathVariable("orderId") Long orderId) {
         try {
             //Xóa mềm cập nhật active = false
             orderService.deleteOrderById(orderId);
