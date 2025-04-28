@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                <div *ngFor="let item of slides | paginate: { itemsPerPage: 3, currentPage: 0 }" ngxSlickItem>
+                    <img [src]="item.url" alt="Slide {{ item.id }}" class="img-fluid" />
+                </div>
+            </ngx-slick-carousel>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-3 col-md-3 col-3 mb-4">
+            <img src="assets/banner/banner-nho1.png" class="img-fluid rounded product-img" alt="Sản phẩm 1">
+        </div>
+        <div class="col-lg-3 col-md-3 col-3 mb-4">
+            <img src="assets/banner/banner-nho2.png" class="img-fluid rounded product-img" alt="Sản phẩm 2">
+        </div>
+        <div class="col-lg-3 col-md-3 col-3 mb-4">
+            <img src="assets/banner/banner-nho1.png" class="img-fluid rounded product-img" alt="Sản phẩm 3">
+        </div>
+        <div class="col-lg-3 col-md-3 col-3 mb-4">
+            <img src="assets/banner/banner-nho2.png" class="img-fluid rounded product-img" alt="Sản phẩm 4">
+        </div>
+    </div>
+    <div class="intro-section">
+        <h1>DANH SÁCH SẢN PHẨM</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-6 mb-4" *ngFor="let product of products">
+            <div class="product-item" (click)="goToProductDetail(product.id)" style="cursor: pointer;">
+                <img [src]="product.url_image" alt="Product Image" class="product-image img-fluid">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-description">{{ product.description }}</p>
+                <p class="product-warranty">Bảo hành: 12 tháng</p>
+                <p class="product-price">Giá: {{ product.price | number: '1.0-0' }}đ</p>
+                <div class="product-rating">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-alt"></i>
+                </div>
+                <div class="product-actions">
+                    <button class="btn btn-primary me-4" (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
+                    <button class="btn btn-success me-4" title="Mua ngay">
+                        <i class="fas fa-shopping-basket"></i>
+                    </button>
+                    <button class="btn btn-danger" title="Yêu thích">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagination-controls">
+        <button (click)="onPageChange(1)" [disabled]="isFirstPage()" class="btn-pagination btn-first">⏮</button>
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="isFirstPage()"
+            class="btn-pagination btn-prev">⬅</button>
+        <div class="page-info">
+            <span class="page-number">📃 {{ currentPage }} / {{ totalPages }}</span>
+        </div>
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="isLastPage()"
+            class="btn-pagination btn-next">➡</button>
+        <button (click)="onPageChange(totalPages)" [disabled]="isLastPage()" class="btn-pagination btn-last">⏭</button>
+    </div>
+</div>

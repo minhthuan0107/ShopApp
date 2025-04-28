@@ -1,0 +1,138 @@
+.container {
+    color: #333; /* Màu chữ tối để dễ đọc */
+    margin-bottom: 25px;
+}
+
+.login-form {
+    background-color: #ffffff; /* Nền trắng */
+    border-radius: 12px; /* Bo góc mềm mại */
+    padding: 40px 30px;
+    max-width: 420px;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Viền mỏng */
+    margin: 30px auto 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Đổ bóng nổi bật */
+    height: auto;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hiệu ứng hover cho form */
+.login-form:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.login-header {
+    text-align: center;
+    color: #007bff; /* Xanh dương tạo điểm nhấn */
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #444;
+}
+
+.form-control {
+    background-color: #f8f9fa; /* Nền sáng nhẹ */
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hiệu ứng focus */
+.form-control:focus {
+    color: #333;
+    background-color: #fff;
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Gạch ngang */
+.divider-nospace {
+    border-top: 1px solid #ddd;
+    margin-top: 5px;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 70%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #007bff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Placeholder */
+.form-control::placeholder {
+    color: #777;
+    opacity: 0.7;
+}
+
+.checkbox-text input[type="checkbox"]:checked {
+    border-color: #007bff;
+    background-color: #007bff;
+}
+
+.form-check-input {
+    margin-right: 5px;
+}
+
+.register-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Hover cho link */
+.register-link:hover {
+    text-decoration: underline;
+}
+
+.checkbox-text {
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Nút đăng nhập */
+.login-button {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    color: white;
+    border-radius: 30px;
+    width: 60%;
+    max-width: 220px;
+    padding: 12px 0;
+    margin: 20px auto 0;
+    border: none;
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hiệu ứng hover nút */
+.login-button:hover {
+    background: linear-gradient(to right, #0056b3, #004094);
+    transform: scale(1.05);
+}
+
+/* Gạch ngang */
+.divider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px;
+}

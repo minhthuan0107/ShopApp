@@ -1,0 +1,247 @@
+.intro-section {
+    text-align: center;
+    /* Căn giữa nội dung */
+    color: black;
+    /* Đổi màu chữ thành đen */
+    padding: 20px;
+    /* Thêm khoảng cách bên trong */
+}
+
+
+.product-category {
+    width: 200px;
+}
+
+.form-control {
+    background-color: white;
+    /* Đổi màu nền thành trắng */
+    color: black;
+    /* Đổi màu chữ thành đen */
+}
+
+.form-control::placeholder {
+    /* Chrome, Firefox */
+    color: rgba(0, 0, 0, 0.5);
+    /* Đổi màu placeholder thành màu xám */
+    opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+    /* Internet Explorer */
+    color: rgba(0, 0, 0, 0.5);
+    /* Đổi màu placeholder thành màu xám */
+}
+
+.form-control::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: rgba(0, 0, 0, 0.5);
+    /* Đổi màu placeholder thành màu xám */
+}
+
+.product-item {
+   
+    background-color: white;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 0 10px 15px;
+    /* Điều chỉnh margin bên trái và bên phải để tạo khoảng cách giữa các sản phẩm */
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Luôn hiển thị con trỏ bàn tay */
+}
+
+//Để đổ khung nhẹ khi click vào
+.product-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+
+.product-item:hover .product-actions { /* Đảm bảo sử dụng .product-item để hover */
+    display: flex; /* Hiện các nút hành động khi rê chuột vào vùng chứa */
+}
+
+.product-actions button {
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.product-actions button:hover {
+    transform: scale(1.05); /* Tăng kích thước nhẹ */
+}
+.product-actions {
+    opacity: 0; /* Bắt đầu với độ trong suốt 0 (ẩn) */
+    visibility: hidden; /* Ẩn đi */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Thêm chuyển tiếp cho độ trong suốt và tính khả dụng */
+}
+
+.product-item:hover .product-actions {
+    opacity: 1; /* Khi hover, độ trong suốt là 1 (hiển thị) */
+    visibility: visible; /* Đặt khả dụng thành có thể nhìn thấy */
+}
+
+@media (max-width: 576px) {
+    .product-item {
+        margin: 0 auto;
+        /* Căn giữa sản phẩm */
+        width: 90%;
+        /* Hoặc điều chỉnh kích thước sản phẩm */
+    }
+}
+
+.product-image {
+    display: block;
+    /* Để margin auto hoạt động */
+    margin: 0 auto;
+    /* Căn giữa hình ảnh */
+    width: auto;
+    /* Đặt chiều rộng tự động */
+    height: 150px;
+    /* Thay đổi chiều cao theo ý muốn */
+    margin-bottom: 10px;
+    object-fit: cover;
+    /* Đảm bảo hình ảnh không bị bóp méo */
+}
+
+.product-name {
+    color: black;
+    /* Đổi màu chữ thành đen */
+    max-width: 100%;
+    /* Giới hạn chiều rộng tối đa */
+    white-space: nowrap;
+    /* Không cho phép xuống dòng */
+    overflow: hidden;
+    /* Ẩn nội dung thừa */
+    text-overflow: ellipsis;
+    /* Hiển thị dấu ba chấm */
+    font-size: 1.5rem;
+    /* Điều chỉnh kích thước chữ nếu cần */
+}
+
+.product-description {
+    color: rgb(100, 100, 100);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    max-height: 3em;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    /* Khoảng cách dòng */
+    text-align: justify;
+    /* Căn đều chữ */
+    text-justify: inter-word;
+    /* Căn đều giữa các từ */
+}
+
+.product-warranty {
+    color: rgb(242, 126, 212);
+    /* Giữ nguyên màu chữ bảo hành */
+}
+
+.product-price {
+    color: black;
+    /* Đổi màu chữ thành đen */
+}
+
+.product-rating {
+    color: #FFD700;
+    /* Giữ nguyên màu đánh giá */
+    margin-top: 10px;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.product-actions button {
+    padding: 10px 15px;
+    /* Giảm padding */
+    font-size: 14px;
+    /* Giảm kích thước chữ */
+}
+
+.space-x {
+    margin: 0 10px;
+    /* margin-top, margin-right, margin-bottom, margin-left */
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+
+    .btn-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        width: 40px;
+        height: 40px;
+        border: 2px solid #007bff;
+        background-color: white;
+        color: #007bff;
+        border-radius: 50%;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.3);
+        position: relative; /* Thêm vị trí tương đối để sử dụng hiệu ứng */
+        
+        /* Hiệu ứng nhấn nút */
+        &:active {
+            transform: scale(0.95); /* Giảm kích thước một chút khi nhấn */
+            box-shadow: 0px 2px 4px rgba(0, 123, 255, 0.5);
+        }
+
+        &:hover {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0px 6px 10px rgba(0, 123, 255, 0.5);
+            transform: translateY(-2px); /* Đẩy nút lên một chút khi hover */
+        }
+
+        &:disabled {
+            border-color: #ccc;
+            color: #ccc;
+            cursor: default; /* Không hiển thị bàn tay khi hover */
+            background-color: #f8f9fa;
+            box-shadow: none;
+            opacity: 0.6; /* Làm mờ nút để báo hiệu không dùng được */
+            transform: none; /* Không có hiệu ứng khi nút bị vô hiệu hóa */
+        }
+    }
+
+    .page-info {
+        background: #f0f0f0;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+.carousel{
+    margin-top: 15px;
+}
+.carousel .slick-slide {
+    margin-right: 10px; /* Điều chỉnh khoảng cách hợp lý */
+    flex: 0 0 auto; /* Ngăn việc hình bị ép co nhỏ */
+    max-width: calc(100% / 3 - 10px); /* Giữ ảnh không bị quá lớn */
+}

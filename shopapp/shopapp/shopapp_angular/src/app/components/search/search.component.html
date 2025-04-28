@@ -1,0 +1,96 @@
+<div class="container">
+  <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner">
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Đang tải sản phẩm, xin chờ trong giây lát...</p>
+      </div>
+  </div>
+  <div *ngIf="!loading">
+      <div class="intro-section">
+        <h2>KẾT QUẢ TÌM KIẾM: "{{ keyword }}"</h2>
+          <!-- Thêm phần sắp xếp và lọc giá -->
+      </div>
+      <div class="row">
+          <!-- Cột lọc sản phẩm (1 cột) -->
+          <div class="col-lg-3 col-md-4 col-12">
+              <div class="filter-container">
+                  <h3 class="filter-title">
+                      <i class="fas fa-filter"></i> Bộ lọc sản phẩm
+                  </h3>
+                  <div class="filter-item">
+                      <label for="sortPrice">Sắp xếp theo giá:</label>
+                      <select id="sortPrice" (change)="onSortChange($event)" [(ngModel)]="sortBy">
+                          <option value="" disabled>-- Chọn sắp xếp --</option>
+                          <option value="price,asc">Thấp đến Cao</option>
+                          <option value="price,desc">Cao đến Thấp</option>
+                      </select>
+                  </div>
+
+                  <div class="filter-item price-range">
+                      <label for="priceRange">Hoặc nhập khoảng giá phù hợp với bạn:</label>
+                      <div class="price-inputs">
+                          <input type="text" id="minPrice" [value]="minPriceDisplay" (input)="onMinPriceInput($event)"
+                              (blur)="onMinPriceBlur($event)" placeholder="Nhập giá tối thiểu">
+                          <span class="separator">~</span>
+                          <input type="text" id="maxPrice" [value]="maxPriceDisplay" (input)="onMaxPriceInput($event)"
+                              (blur)="onMaxPriceBlur($event)" placeholder="Nhập giá tối đa">
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Cột danh sách sản phẩm (3 cột) -->
+          <div class="col-lg-9 col-md-8 col-12">
+              <!-- Nếu có sản phẩm -->
+              <div class="row" *ngIf="products.length > 0; else noProductsTemplate">
+                  <div class="col-lg-4 col-md-6 col-12 mb-4" *ngFor="let product of products">
+                      <div class="product-item">
+                          <img [src]="product.url_image" alt="Product Image" class="product-image img-fluid">
+                          <h3 class="product-name">{{ product.name }}</h3>
+                          <p class="product-description">{{ product.description }}</p>
+                          <p class="product-warranty">Bảo hành: 12 tháng</p>
+                          <p class="product-price">Giá: {{ product.price | number: '1.0-0' }}đ</p>
+                          <div class="product-rating">
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star"></i>
+                              <i class="fa-solid fa-star-half-alt"></i>
+                          </div>
+                          <div class="product-actions">
+                              <button class="btn btn-primary me-4" title="Thêm vào giỏ hàng">
+                                  <i class="fas fa-cart-plus"></i>
+                              </button>
+                              <button class="btn btn-success me-4" title="Mua ngay">
+                                  <i class="fas fa-shopping-basket"></i>
+                              </button>
+                              <button class="btn btn-danger" title="Yêu thích">
+                                  <i class="fas fa-heart"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- Nếu không có sản phẩm -->
+              <ng-template #noProductsTemplate>
+                  <div class="mt-4 mb-4">
+                      <p class="text-danger fs-5 ml-100px">Không tìm thấy sản phẩm phù với từ khóa {{keyword}}.</p>
+                  </div>
+              </ng-template>
+          </div>
+
+      </div>
+      <div class="pagination-controls" *ngIf="products.length > 0">
+          <button (click)="onPageChange(1)" [disabled]="isFirstPage()" class="btn-pagination btn-first">⏮</button>
+          <button (click)="onPageChange(currentPage - 1)" [disabled]="isFirstPage()"
+              class="btn-pagination btn-prev">⬅</button>
+          <div class="page-info">
+              <span class="page-number">📄 {{ currentPage }} / {{ totalPages}}</span>
+          </div>
+          <button (click)="onPageChange(currentPage + 1)" [disabled]="isLastPage()"
+              class="btn-pagination btn-next">➡</button>
+          <button (click)="onPageChange(totalPages)" [disabled]="isLastPage()"
+              class="btn-pagination btn-last">⏭</button>
+      </div>
+  </div>
+</div>

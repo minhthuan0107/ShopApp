@@ -1,0 +1,31 @@
+.custom-swal {
+    background-color: white; /* Đặt nền trắng */
+    color: black; /* Màu chữ đen để dễ đọc */
+    width: 500px;
+    max-width: 90%;
+    border-radius: 10px; /* Bo góc nhẹ */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng giúp nổi bật */
+}
+
+.custom-swal .swal2-title {
+    color: #333; /* Màu chữ tối để dễ đọc */
+    font-weight: bold; /* Làm đậm tiêu đề */
+}
+
+.custom-swal .swal2-content {
+    color: #555; /* Màu chữ nội dung dịu mắt hơn */
+}
+
+.custom-swal .swal2-confirm {
+    background-color: #4209b3; /* Màu nút confirm */
+    color: white;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+.custom-swal .swal2-cancel {
+    background-color: #ccc;
+    color: black;
+    border-radius: 5px;
+    padding: 8px 16px;
+}

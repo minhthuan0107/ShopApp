@@ -1,0 +1,34 @@
+<div class="profile-container">
+    <h2>👤 Thông tin cá nhân</h2>
+
+    <div *ngIf="!isEditing && !isChangingPassword && user" class="profile-card">
+        <div class="profile-item">
+            <label>Họ và tên:</label>
+            <span>{{ user.fullname }}</span>
+        </div>
+        <div class="profile-item">
+            <label>Số điện thoại:</label>
+            <span>{{ user.phone_number }}</span>
+        </div>
+        <div class="profile-item">
+            <label>Địa chỉ:</label>
+            <span>{{ user.address }}</span>
+        </div>
+        <div class="profile-item">
+            <label>Ngày sinh:</label>
+            <span>{{ user.date_of_birth | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="profile-actions">
+            <button class="edit-button" (click)="isEditing = true">✏️ Chỉnh sửa</button>
+            <button class="password-button" (click)="isChangingPassword= true">🔐 Đổi mật khẩu</button>
+        </div>
+    </div>
+
+    <app-edit-profile *ngIf="isEditing" [user]="user" (onCancel)="isEditing = false" (onSave)="handleSave($event)">
+    </app-edit-profile>
+
+    <app-change-password *ngIf="isChangingPassword" (onCancel)="isChangingPassword = false"
+        (onPasswordChanged)="handlePasswordChanged()">
+    </app-change-password>
+
+</div>

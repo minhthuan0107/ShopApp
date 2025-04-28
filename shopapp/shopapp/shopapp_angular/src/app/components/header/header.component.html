@@ -1,0 +1,86 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo/thuanle.png" alt="ThuanLe Logo" class="logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Trang chủ</a>
+          </li>
+
+          <li class="nav-item search-box">
+            <div class="menu-container" (mouseleave)="isCategoryVisible = false">
+              <button (click)="toggleCategory()" class="menu-btn">☰ Danh mục</button>
+              <ul *ngIf="isCategoryVisible" class="category-dropdown">
+                <li *ngFor="let category of categories">
+                  <a (click)="selectCategory(category.id)">{{ category.name }}</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">Tin tức</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Liên hệ</a>
+          </li>
+
+          <li class="nav-item search-container position-relative">
+            <div class="search-wrapper">
+              <input #searchInput 
+                     type="text" 
+                     class="form-control search-input" 
+                     placeholder="Tìm sản phẩm" 
+                     (input)="onKeywordChange(searchInput.value)">
+              <button class="search-btn" (click)="onSearch(searchInput.value)">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <!-- Hiển thị gợi ý -->
+            <ul class="suggestions-list" *ngIf="suggestedProducts.length > 0 && searchInput.value.trim() !== '' ">
+              <li *ngFor="let product of suggestedProducts" (click)="onSelectSuggestion(product.id)">
+                <img [src]="product.url_image" alt="Ảnh" width="40" height="40">
+                <span>{{ product.name }}</span> - 
+                <strong>{{ product.price | currency:'VND':'symbol' }}</strong>
+              </li>
+            </ul>
+          </li>
+
+          <ng-container *ngIf="user$ | async as user; else loginTemplate">
+            <li class="nav-item cart-item">
+              <a class="nav-link position-relative" [routerLink]="['/cart', user.id]" routerLinkActive="active">
+                <i class="fas fa-shopping-cart icon"></i>
+                <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+              </a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <span class="nav-link dropdown-toggle user-dropdown" id="userDropdown" role="button"
+                (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
+                Hi, {{ user.fullname }}
+              </span>
+              <ul class="dropdown-menu user-menu" [class.show]="isDropdownVisible" (mouseenter)="toggleDropdown(true)"
+                (mouseleave)="toggleDropdown(false)">
+                <li><a class="dropdown-item" routerLink="/profile">👤 Thông tin cá nhân</a></li>
+                <li><a class="dropdown-item" routerLink="/order-history">🧾 Lịch sử đơn hàng</a></li>
+                <li><a class="dropdown-item logout-item" (click)="logout()">🚪 Đăng xuất</a></li>
+              </ul>
+            </li>
+          </ng-container>
+          <ng-template #loginTemplate>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/signin">🔑 Đăng nhập</a>
+            </li>
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

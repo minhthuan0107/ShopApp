@@ -1,0 +1,70 @@
+.profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 24px;
+  }
+  
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .profile-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .profile-item label {
+    color: #555;
+    font-weight: bold;
+  }
+  
+  .profile-item span {
+    color: #222;
+  }
+  
+  .profile-actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .edit-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-button:hover {
+    background-color: #0056b3;
+  }
+  .password-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 30px; /* Khoảng cách với nút chỉnh sửa */
+  }
+  
+  .password-button:hover {
+    background-color: #0056b3;
+  }
