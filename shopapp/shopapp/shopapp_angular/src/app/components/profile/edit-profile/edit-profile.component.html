@@ -1,0 +1,33 @@
+<div class="edit-profile-container">
+    <h3>📝 Chỉnh sửa thông tin</h3>
+    <form [formGroup]="profileForm" (ngSubmit)="save()">
+      <div class="form-group">
+        <label for="name">Họ và tên:</label>
+        <input id="name" formControlName="name" type="text" [ngClass]="{'is-invalid': profileForm.get('name')?.invalid && profileForm.get('name')?.touched}" />
+        <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="error-message">
+          <small class="text-danger">Họ và tên không được để trống</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="address">Địa chỉ:</label>
+        <input id="address" formControlName="address" type="text" [ngClass]="{'is-invalid': profileForm.get('address')?.invalid && profileForm.get('address')?.touched}" />
+        <div *ngIf="profileForm.get('address')?.invalid && profileForm.get('address')?.touched" class="error-message">
+          <small class="text-danger">Họ và tên không được để trống</small>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="dateOfBirth">Ngày tháng năm sinh:</label>
+        <input id="dateOfBirth" formControlName="dateOfBirth" type="date" [ngClass]="{'is-invalid': profileForm.get('dateOfBirth')?.invalid && profileForm.get('dateOfBirth')?.touched}" />
+        <div *ngIf="profileForm.get('dateOfBirth')?.invalid && profileForm.get('dateOfBirth')?.touched" class="error-message">
+          <small class="text-danger">Ngày tháng năm sinh không hợp lệ</small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="save-button" [disabled]="profileForm.invalid">💾 Lưu</button>
+        <button type="button" class="cancel-button" (click)="cancel()">❌ Hủy</button>
+      </div>
+    </form>
+  </div>
+  

@@ -1,0 +1,79 @@
+.edit-profile-container {
+    max-width: 500px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .edit-profile-container h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 22px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: center; /* căn giữa */
+    gap: 40px;
+    margin-top: 25px;
+  }
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-button {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .save-button:hover {
+    background-color: #0056b3;
+  }
+  .save-button:disabled {
+    background-color: rgba(0, 86, 179, 0.5);  /* Màu mờ hơn của #0056b3 */
+    opacity: 0.6;  /* Giảm độ sáng của nút */
+  }
+  .cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+  
+  .cancel-button:hover {
+    background-color: #c0c0c0;
+  }
+  

@@ -1,0 +1,258 @@
+.order-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.order-info {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    /* Điều chỉnh khoảng cách bên trái cho phù hợp */
+}
+
+h1 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.order-status {
+    font-weight: bold;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* Trạng thái 'PENDING' */
+.order-status.pending {
+    background-color: #ff9800; /* Màu cam */
+}
+
+/* Trạng thái 'PROCESSING' */
+.order-status.processing {
+    background-color: #4caf50; /* Màu xanh lá cây */
+}
+
+/* Trạng thái 'SHIPPED' */
+.order-status.shipped {
+    background-color: #2196f3; /* Màu xanh dương */
+}
+
+/* Trạng thái 'DELIVERED' */
+.order-status.delivered {
+    background-color: #8bc34a; /* Màu xanh lá cây nhạt */
+}
+
+/* Trạng thái 'CANCELLED' */
+.order-status.cancelled {
+    background-color: #f44336; /* Màu đỏ */
+}
+
+.order-details-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.order-details-table th,
+.order-details-table td {
+    padding: 15px 20px;
+    /* Điều chỉnh padding để đảm bảo các cột đều đẹp */
+    text-align: left;
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+}
+
+.order-details-table th {
+    font-weight: 600;
+    color: #444;
+    background-color: #f9f9f9;
+}
+
+.order-details-table th:nth-child(1) {
+    width: 13%;
+}
+
+/* Họ và tên */
+.order-details-table th:nth-child(2),
+.order-details-table td:nth-child(2) {
+    width: 30%;
+    /* Cập nhật lại độ rộng nếu cần */
+    padding-left: 10px;
+    /* Điều chỉnh khoảng cách bên trái */
+}
+
+/* Email */
+.order-details-table th:nth-child(3) {
+    width: 8%;
+}
+
+/* Địa chỉ */
+.order-details-table th:nth-child(4) {
+    width: 18%;
+}
+
+/* SĐT */
+.order-details-table th:nth-child(5) {
+    width: 12%;
+}
+
+/* Ghi chú */
+.order-details-table th:nth-child(6) {
+    width: 14%;
+}
+
+/* Trạng thái */
+.order-details-table th:nth-child(7) {
+    width: 13%;
+}
+
+/* Tổng tiền */
+.order-details-table th:nth-child(8),
+.order-details-table td:nth-child(8) {
+    width: 15%;
+    /* Cập nhật lại độ rộng nếu cần */
+
+}
+
+.order-details-table td {
+    color: #555;
+    font-size: 14px;
+}
+
+.order-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.order-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-detail {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-detail:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+.order-actions button:hover {
+    transform: scale(1.05);
+}
+::ng-deep pagination-controls .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 10px;
+  }
+  
+  ::ng-deep pagination-controls .pagination .page-item {
+    list-style: none;
+  }
+  
+  ::ng-deep pagination-controls .pagination .page-link {
+    padding: 8px 15px !important;
+    border-radius: 50px !important;
+    background-color: #f8f9fa !important;
+    color: #007bff !important;
+    border: 1px solid #007bff !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  ::ng-deep pagination-controls .pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  ::ng-deep pagination-controls .pagination .active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+  }
+  
+
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .order-details-table th,
+    .order-details-table td {
+        font-size: 12px;
+        /* Giảm kích thước font chữ */
+        padding: 8px;
+        /* Giảm padding cho các cột */
+        word-wrap: break-word;
+        /* Cho phép từ dài được ngắt xuống dòng */
+        white-space: normal;
+        /* Cho phép xuống dòng */
+        overflow: hidden;
+        /* Ẩn phần thừa */
+        text-overflow: unset;
+        /* Bỏ dấu ba chấm */
+        word-break: break-word;
+        /* Ngắt từ nếu cần */
+    }
+
+    /* Điều chỉnh độ rộng tự động cho cột khi màn hình nhỏ */
+    .order-details-table th:nth-child(1),
+    .order-details-table th:nth-child(2),
+    .order-details-table th:nth-child(3),
+    .order-details-table th:nth-child(4),
+    .order-details-table th:nth-child(5),
+    .order-details-table th:nth-child(6),
+    .order-details-table th:nth-child(7),
+    .order-details-table th:nth-child(8) {
+        width: auto;
+        /* Thiết lập độ rộng tự động cho cột khi màn hình nhỏ */
+        min-width: 80px;
+        /* Đặt chiều rộng tối thiểu cho cột để tránh việc cột quá nhỏ */
+    }
+
+    /* Cập nhật cho các cột khi cần */
+    .order-details-table td:nth-child(1),
+    .order-details-table td:nth-child(2),
+    .order-details-table td:nth-child(3),
+    .order-details-table td:nth-child(4),
+    .order-details-table td:nth-child(5),
+    .order-details-table td:nth-child(6),
+    .order-details-table td:nth-child(7),
+    .order-details-table td:nth-child(8) {
+        text-align: center;
+        /* Căn giữa các nội dung */
+        word-wrap: break-word;
+        /* Ngắt từ khi cần */
+        word-break: break-word;
+        /* Ngắt từ khi cần */
+    }
+}

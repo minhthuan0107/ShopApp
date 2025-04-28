@@ -1,0 +1,97 @@
+<div class="container">
+    <div class="confirmation-container">
+        <h1>Xác nhận đơn hàng</h1>
+        <p>Cảm ơn bạn đã đặt hàng! Dưới đây là thông tin chi tiết về đơn hàng của bạn</p>
+    </div>
+
+    <div class="row">
+        <!-- Đặt hai phần trên cùng một hàng -->
+        <div class="order-payment-container">
+            <!-- Phần 1: Thông tin đơn hàng -->
+            <div class="order-details">
+                <h2>Thông tin đơn hàng</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let detail of orderDetails">
+                            <td>
+                                <div class="product-info">
+                                    <img [src]="detail.product_image" class="product-image"
+                                        alt="{{ detail.product_name }}">
+                                    <span class="product-name">{{ detail.product_name }}</span>
+                                </div>
+                            </td>
+                            <td>{{ detail.quantity}}</td>
+                            <td class="price-column">{{ detail.unit_price | number:'1.0-0' }} đ</td>
+                            <td class="price-column">{{ detail.total_price | number:'1.0-0' }} đ</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Tổng giá:</strong></td>
+                            <td class="total-price">
+                                <strong>{{ order?.total_price | number:'1.0-0' }} đ</strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="payment-container">
+                <h2>Thông tin thanh toán</h2>
+                <div class="payment-details">
+                    <p><strong>Người nhận:</strong> {{ order?.full_name }}</p>
+                    <p><strong>Địa chỉ giao hàng:</strong> {{ order?.address }}</p>
+                    <p><strong>Số điện thoại:</strong> {{ order?.phone_number }}</p>
+
+                    <p><strong>Phương thức thanh toán:</strong>
+                        {{
+                        payment?.payment_method === 'Cod' ? 'Thanh toán trực tiếp' :
+                        payment?.payment_method === 'Vnpay' ? 'Thanh toán VNPAY' : 'Không xác định'
+                        }}
+                    </p>
+
+                    <p><strong>Trạng thái thanh toán:</strong>
+                        <span [ngClass]="{
+                      'payment-status success': payment?.status === 'SUCCESS',
+                      'payment-status pending': payment?.status === 'PENDING'
+                    }">
+                            {{
+                            payment?.status === 'SUCCESS' ? 'Đã thanh toán' :
+                            payment?.status === 'PENDING' ? 'Chưa thanh toán' : 'Không xác định'
+                            }}
+                        </span>
+                    </p>
+
+                    <p><strong>Trạng thái đơn hàng:</strong>
+                        <span [ngClass]="{
+                      'order-status pending': order?.status === 'PENDING',
+                      'order-status processing': order?.status === 'PROCESSING',
+                      'order-status shipping': order?.status === 'SHIPPING',
+                      'order-status completed': order?.status === 'COMPLETED',
+                      'order-status cancelled': order?.status === 'CANCELLED'
+                    }">
+                            {{
+                            order?.status === 'PENDING' ? 'Đang chờ xử lý' :
+                            order?.status === 'PROCESSING' ? 'Đang xử lý' :
+                            order?.status === 'SHIPPING' ? 'Đang giao hàng' :
+                            order?.status === 'COMPLETED' ? 'Đã hoàn thành' :
+                            order?.status === 'CANCELLED' ? 'Đã huỷ' : 'Không xác định'
+                            }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="btn" [routerLink]="['/home']" type="button">Tiếp tục mua sắm</button>
+      </div>
+</div>

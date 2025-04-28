@@ -1,0 +1,130 @@
+/* Overlay - đảm bảo phủ toàn màn hình */
+.order-detail-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+h2 {
+    text-align: center;
+    /* Căn giữa tiêu đề */
+    margin-top: 1px;
+    /* Khoảng cách trên */
+    margin-bottom: 20px;
+    /* Khoảng cách dưới */
+}
+
+/* Container hiển thị nội dung chi tiết */
+.order-detail-container {
+    width: 80%;
+    max-width: 900px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+/* Header */
+.order-detail-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    background: #f1f1f1;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.order-detail-header .header-image {
+    visibility: hidden;
+    /* Thay vì display: none */
+}
+
+/* Header cột */
+.order-detail-header span {
+    text-align: center;
+}
+
+/* Các item chi tiết đơn hàng */
+.order-detail-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Flex rules - Đồng bộ giữa item và header */
+.order-item-image,
+.header-image {
+    flex: 1;
+}
+
+.order-item-name {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    padding-left: 10px;
+    /* Nhích sang phải */
+}
+
+.header-name {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    /* Giống item để thẳng hàng */
+}
+
+.order-item-quantity,
+.header-quantity,
+.order-item-price,
+.header-price,
+.order-item-total,
+.header-total {
+    flex: 1;
+    text-align: center;
+}
+
+/* Ảnh sản phẩm - chuyển lên đầu */
+.order-item-image {
+    order: -1;
+    /* Ảnh lên đầu */
+    text-align: center;
+}
+
+.order-item-image img {
+    max-width: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Nút đóng */
+.close-detail-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+
+    padding-left: 48px;    /* Dịch chữ sang phải 10px thêm so với padding gốc */
+}
+
+.close-detail-btn:hover {
+    background-color: #0056b3;
+}
+

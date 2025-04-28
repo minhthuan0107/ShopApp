@@ -1,0 +1,280 @@
+import { WebSocketCommentService } from './../../services/websocket/websocket-comment.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Product } from '../../models/product.model';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ProductService } from '../../services/product.service';
+import { ProductImageService } from '../../services/product-image.service';
+import { ProductImage } from '../../models/product-image.model';
+import { FormsModule } from '@angular/forms';
+import { Comment } from '../../models/comment';
+import { UserService } from '../../services/user.service';
+import { filter, Subscription } from 'rxjs';
+import { CommentDto } from '../../dtos/comment.dto';
+import { CommentService } from '../../services/comment.service';
+import { CommentRequestDto } from '../../dtos/websocket/comment-request.dto';
+import { ReplyCommentDto } from '../../dtos/reply-comment.dto';
+import { ReplyCommentRequestDto } from '../../dtos/websocket/reply-comment-request.dto';
+import { ReplyComment } from '../../models/reply-comment';
+import { RatingDto } from '../../dtos/rating.dto';
+import { RateService } from '../../services/rate.service';
+import { Rate } from '../../models/rate.model';
+
+
+
+@Component({
+  selector: 'app-detail-product',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: './detail-product.component.html',
+  styleUrl: './detail-product.component.scss'
+})
+export class DetailProductComponent implements OnInit {
+  private newCommentsSubscription?: Subscription;
+  private newRepliesSubscription?: Subscription;
+  private newRatingSubscription?: Subscription;
+  userId!: number;
+  isUserLoggedIn: boolean = false;
+  product?: Product;
+  productImages: ProductImage[] = [];
+  productId!: number;
+  comments: Comment[] = [];
+  rates: Rate[] = [];
+  isRated: boolean = false;
+  newComment: { content: string } = { content: '' };
+  replyContent: { [key: number]: string } = {};
+  replyingToCommentId: number | null = null;
+  visibleReplyCounts: { [key: number]: number } = {}; // Số lượng phản hồi hiển thị cho mỗi bình luận
+  showAllComments: boolean = false; // Biến để kiểm tra xem có hiển thị tất cả bình luận hay không
+  selectedRating: number = 0;
+  hoveredRating: number | null = null;
+  isRatingVisible: boolean = true;
+  constructor(private productService: ProductService,
+    private productImageService: ProductImageService,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private commentService: CommentService,
+    private webSocketCommentService: WebSocketCommentService,
+    private rateService: RateService) { }
+
+    ngOnInit(): void {
+      this.webSocketCommentService.connect();
+
+      this.route.paramMap.subscribe(params => {
+          const id = params.get('id');
+          if (id) {
+              this.productId = +id;
+              this.GetProductById(this.productId);
+              this.GetProductImagesByProductId(this.productId); // Gọi hàm để lấy dữ liệu sản phẩm
+          }
+          this.getAllCommentsByProductId();
+      });
+
+      this.userService.user$.pipe(filter(user => !!user)).subscribe(user => {
+          if (user) {
+              this.userId = user.id;
+              this.isUserLoggedIn = true;
+          } else {
+              this.isUserLoggedIn = false;
+          }
+      });
+
+      // Subscribe vào bình luận mới từ WebSocket
+      this.newCommentsSubscription = this.webSocketCommentService.getNewComments().subscribe((commentDto: CommentRequestDto) => {
+          const existingComment = this.comments.find(c => c.comment_id === commentDto.comment_id);
+          if (!existingComment) { // Kiểm tra xem bình luận đã tồn tại chưa
+              const comment: Comment = {
+                  comment_id: commentDto.comment_id,
+                  content: commentDto.content,
+                  user_name: commentDto.user_name,
+                  createAt: commentDto.createAt,
+                  replies: commentDto.replies,
+                  product_id: commentDto.product_id,
+                  user_id: commentDto.user_id,
+                  showReplyForm: false,
+              };
+              this.comments.unshift(comment); // Thêm bình luận mới vào đầu danh sách
+          }
+      });
+
+      this.newRepliesSubscription = this.webSocketCommentService.getNewReply().subscribe((replyCommentDto: ReplyCommentRequestDto) => {
+          const parentComment = this.comments.find(c => c.comment_id === replyCommentDto.parent_id);
+          if (parentComment) {
+              parentComment.replies.unshift(replyCommentDto);
+              this.visibleReplyCounts[parentComment.comment_id] = parentComment.replies.length;
+          }
+      });
+
+      this.newRatingSubscription = this.webSocketCommentService.getNewRating().subscribe(rate => {
+          const commentToUpdate = this.comments.find(c => c.comment_id === rate.comment_id);
+          if (commentToUpdate) {
+              commentToUpdate.rating = rate.rating;
+              // Nếu user hiện tại là người đánh giá thì chặn ô đánh giá
+              this.isRated = rate.user_id === this.userId;
+          }
+      });
+  }
+  ngOnDestroy() {
+      // Hủy các subscription để ngăn chặn rò rỉ bộ nhớ
+      this.newCommentsSubscription?.unsubscribe();
+      this.newRepliesSubscription?.unsubscribe();
+      this.newRatingSubscription?.unsubscribe();
+      this.webSocketCommentService.disconnect();
+  }
+  GetProductById(productId: number) {
+    this.productService.getProductById(productId).subscribe({
+      next: (response: any) => {
+        this.product = response.data;
+      },
+      error: (error: any) => {
+        console.error('Lỗi không tìm thấy sản phẩm', error);
+      }
+    });
+
+  }
+  GetProductImagesByProductId(productId: number) {
+    this.productImageService.getProducImagesByProductId(productId).subscribe({
+      next: (response: any) => {
+        this.productImages = response.data.map((item: ProductImage) => item.url_image);
+      },
+      error: (error: any) => {
+        console.error('Lỗi không tìm thấy hình ảnh sản phẩm', error);
+      }
+    });
+  }
+  //set nút di chuyển ảnh trong carousel
+  setActiveSlide(index: number): void {
+    const carousel = document.querySelector('#carouselExample') as any;
+    if (carousel) {
+      const carouselItemCount = carousel.querySelectorAll('.carousel-item').length;
+      if (index >= 0 && index < carouselItemCount) {
+        carousel.querySelector('.carousel-item.active').classList.remove('active');
+        carousel.querySelectorAll('.carousel-item')[index].classList.add('active');
+      }
+    }
+  }
+  submitComment() {
+    const commentDto: CommentDto = {
+      product_id: this.productId!,
+      content: this.newComment.content
+    };
+    this.commentService.submitComment(this.userId, commentDto).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          this.newComment = { content: '' };// Reset form sau khi gửi
+          this.webSocketCommentService.sendComment(response.data); // Gửi bình luận mới lên WebSocket
+          //Gửi đánh giá
+          if (!this.isRated) {
+            const ratingDto: RatingDto = {
+              comment_id: response.data.comment_id,
+              rating: this.selectedRating
+            };
+            this.submitRating(ratingDto);
+            this.isRatingVisible = false; 
+          } else {
+            console.log("Người dùng đã đánh giá, không gửi rating.");
+          }
+        }
+      },
+      error: (err) => {
+        console.error("Lỗi khi gửi bình luận:", err);
+      }
+    });
+  }
+  // Gửi phản hồi
+  submitReply(commentId: number) {
+    const replyCommentDto: ReplyCommentDto = {
+      content: this.replyContent[commentId],
+      parent_id: commentId
+    };
+    this.commentService.submitReplyComment(this.userId, replyCommentDto).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          this.webSocketCommentService.sendReply(response.data);
+          this.replyContent ='';
+        }
+      },
+      error: (err) => {
+        console.error("Lỗi khi gửi phản hồi bình luận:", err);
+      }
+    });
+  }
+  submitRating(ratingDto: RatingDto) {
+    this.rateService.submitRate(ratingDto).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          this.webSocketCommentService.sendRating(response.data);
+        }
+      },
+      error: (err) => {
+        console.error("Lỗi khi gửi đánh giá:", err);
+      }
+    });
+  }
+  getAllCommentsByProductId() {
+    this.commentService.getCommentsByProductId(this.productId).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          this.comments = response.data;
+        }
+        if (this.comments && this.comments.length > 0) {
+          this.comments.forEach(comment => {
+            this.visibleReplyCounts[comment.comment_id] = 2; // Mặc định hiển thị 2 phản hồi
+          });
+        }
+        this.getRatesByProductId(); 
+      },
+      error: (err) => {
+        console.error('Lỗi khi danh sách lấy bình luận:', err);
+      }
+    });
+  }
+  getRatesByProductId() {
+    this.rateService.getRatesByProductId(this.productId).subscribe({
+      next: (response) => {
+        //Thêm rating vào comments để hiển thị
+        const ratesMap = new Map(response.data.map(rate => [rate.comment_id, rate.rating]));
+        this.comments = this.comments.map(comment => ({
+          ...comment,
+          //Kiểm tra comment_id có tồn tại trong ratesMap k , nếu k thì gán undefined
+          rating: ratesMap.has(comment.comment_id) ? ratesMap.get(comment.comment_id) : undefined
+        }));
+         // Kiểm tra biến isRated sau khi cập nhật rating
+      this.isRated = this.comments.some(comment => 
+        comment.user_id === this.userId && 
+        comment.rating !== undefined
+      );  
+      },
+      error: (err) => {
+        console.error("Lỗi khi lấy danh sách đánh giá:", err);
+      }
+    })
+  }
+  toggleReplyForm(commentId: number) {
+    // Nếu form đang mở cho comment này -> đóng lại, nếu không -> mở form này và đóng form khác
+    this.replyingToCommentId = this.replyingToCommentId === commentId ? null : commentId;
+  }
+  showMoreReplies(commentId: number) {
+    // Tăng số lượng phản hồi hiển thị lên
+    this.visibleReplyCounts[commentId] += 3;
+  }
+  showMoreComments() {
+    // Hiển thị tất cả bình luận
+    this.showAllComments = true;
+  }
+  setRating(star: number) {
+    this.selectedRating = star; // Gán số sao khi người dùng chọn
+  }
+
+  hoverRating(star: number) {
+    this.hoveredRating = star; // Hiển thị số sao khi di chuột qua
+  }
+
+  resetHover() {
+    this.hoveredRating = null; // Reset khi chuột rời đi
+  }
+  getArray(n: number): number[] {
+    return Array(n).fill(0);
+  }
+
+}

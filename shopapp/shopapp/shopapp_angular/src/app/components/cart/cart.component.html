@@ -1,0 +1,36 @@
+<div class="cart-wrapper">
+    <div class="cart-container">
+        <h2>Giỏ hàng của bạn</h2>
+
+        <!-- Hàng tiêu đề -->
+        <div class="cart-header">
+            <span class="header-image"></span> <!-- Cột ảnh trống -->
+            <span class="header-name">Tên sản phẩm</span>
+            <span class="header-price">Giá</span>
+            <span class="header-quantity">Số lượng</span>
+            <span class="header-remove">Xóa</span>
+        </div>
+        <div class="cart-list">
+            <div class="cart-item" *ngFor="let item of cartDetail">
+                <img [src]="item.product_image" [alt]="item.product_name" class="cart-item-cell">
+                <span class="cart-item-name cart-item-cell">{{ item.product_name }}</span>
+                <p class="price cart-item-cell">{{ item.total_price | number }}đ</p>
+                <div class="quantity-control cart-item-cell">
+                    <button class="quantity-btn" (click)="decreaseQuantity(item)">−</button>
+                    <span class="quantity-value">{{ item.quantity }}</span>
+                    <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
+                </div>
+                <button class="remove-btn cart-item-cell" (click)="deleteCartDetailById(item.cart_detail_id,userId)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+            </div>
+            <div *ngIf="cartDetail.length > 0; else emptyCart" class="cart-summary">
+                <h3>Tổng tiền: <span>{{ getTotalPrice() | number }}đ</span></h3>
+                <button class="checkout-btn" (click)="updateCartDetail()">Thanh toán</button>
+            </div>
+            <ng-template #emptyCart>
+                <p>Giỏ hàng của bạn đang trống!</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

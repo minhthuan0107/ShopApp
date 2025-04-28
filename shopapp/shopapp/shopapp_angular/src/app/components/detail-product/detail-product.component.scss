@@ -1,0 +1,335 @@
+.intro-section {
+    margin: -3vw 0;
+    /* Điều chỉnh giá trị đầu tiên (margin-top) để tạo khoảng cách với header */
+    padding: 2vw;
+    border-radius: 0.5vw;
+
+}
+
+.intro-section h2 {
+    font-weight: bold;
+    font-size: 35px;
+    color: #333;
+}
+
+.product-details {
+    width: 100%;
+    max-width: 40vw;
+    height: auto;
+    margin: -3vw auto 0;
+    padding: 2vw;
+    border-radius: 0.5vw;
+}
+
+.product-actions button {
+    transition: background-color 0.3s, transform 0.3s;
+    padding: 12px 18px; /* Padding cho nút */
+    font-size: 16px; /* Kích thước font */
+}
+
+.product-actions button:hover {
+    background-color: #0056b3;
+}
+
+h4.text-muted {
+    color: black;
+    text-shadow: 0.1vw 0.1vw 0.2vw rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+.product-image {
+    max-width: 35vw;
+    height: auto;
+}
+
+.product-description {
+    color: black;
+    margin: 2vw 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    white-space: normal;
+    text-align: justify;
+    overflow-wrap: break-word;
+}
+
+.product-name,
+.product-price {
+    margin: 2vw 0;
+}
+
+.product-actions {
+    margin-top: 2vw;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2vw;
+    gap: 1.5vw;
+}
+
+.comment-reply-form {
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1.5vw;
+    padding-left: 2vw;
+}
+.reply {
+    background: white;
+    padding: 1vw;
+    border-radius: 0.5vw;
+    border: 0.1vw solid #ddd;
+    margin-left: 2vw;
+    border-left: 0.2vw solid #ddd;
+    padding-left: 1vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.1vw;
+    /* Tạo khoảng cách đều giữa các phần tử */
+}
+.reply-date {
+    font-size: 13px;
+    /* Thay đổi từ 0.9vw sang 14px */
+    color: gray;
+}
+
+
+.comments-section {
+    max-width: 80%;
+    margin: auto;
+}
+
+.comment-form {
+    max-width: 100%;
+    display: flex; /* Thay đổi thành flex để kiểm soát sắp xếp */
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px; /* Giữ khoảng cách giữa các phần tử */
+}
+
+.input-container {
+    display: flex;
+    width: 100%;
+    gap: 0.8vw;
+    flex-wrap: nowrap;
+    margin-bottom: 15px;
+}
+
+.textarea-comment {
+    flex: 1;
+    height: 60px;
+    /* Giữ nguyên chiều cao */
+    min-width: 150px;
+    /* Đảm bảo không quá nhỏ */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    line-height: 1.5;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    /* Cho phép co giãn theo container */
+    max-width: 100%;
+    /* Ngăn vượt quá container */
+}
+
+/* Khi màn hình nhỏ hơn 900px, giảm chiều cao xuống 50px */
+@media (max-width: 900px) {
+    .textarea-comment {
+        height: 50px;
+    }
+
+    .send-btn {
+        height: 40px !important;
+        font-size: 12px !important;
+    }
+    .product-actions button {
+        padding: 7px 20px; /* Padding nhỏ hơn cho nút trên màn hình nhỏ */
+        font-size: 13px; /* Kích thước font nhỏ hơn cho nút */
+    }
+}
+
+.btn-reply {
+    position: relative;
+    /* Thay đổi từ -0.5vw sang -8px */
+    margin-left: 20px;
+    /* Thay đổi từ 1vw sang 8px */
+    font-size: 14px;
+    /* Thay đổi từ 1vw sang 14px */
+}
+
+
+
+
+.send-btn {
+    white-space: nowrap;
+    padding: 0.05vw 0.6vw;
+    height: 50px;
+    /* Mặc định 50px */
+    width: auto;
+    /* Chiều ngang tự giảm theo nội dung */
+    min-width: 60px;
+    /* Đảm bảo không quá nhỏ */
+    max-width: 100px;
+    /* Giới hạn tối đa */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 0.3vw;
+    align-self: center;
+}
+
+.comment {
+    max-width: 100%; /* Đảm bảo chiều rộng không vượt quá 100% */
+    width: calc(100% - 16px); /* Giảm bớt chiều rộng để tạo khoảng cách, 2vw ~ 16px */
+    background: white;
+    padding: 16px; /* Padding cho nội dung */
+    border-radius: 8px; /* Bo tròn góc */
+    margin: 8px 0; /* Tạo khoảng cách trên và dưới */
+    border: 1px solid #ddd; /* Đường viền */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng để tạo chiều sâu */
+   
+    flex-direction: column; /* Căn chỉnh theo chiều dọc */
+    gap: 0px; /* Khoảng cách giữa các phần tử bên trong */
+}
+.comment-author,
+.reply-author {
+    font-weight: bold;
+    font-size: 16px;
+    /* Thay đổi từ clamp(0.8rem, 1.2vw, 1.2rem) sang 14px */
+}
+
+.comment-date {
+    top: 8px;
+    /* Thay đổi từ 1vw sang 8px */
+    font-size: 13px;
+    /* Thay đổi từ 0.9vw sang 14px */
+    color: gray;
+}
+.starComment{
+    margin-top: -15px;
+    font-size: 20px;
+    /* Kích thước cho sao */
+    cursor: pointer;
+    gap: 5px;
+    /* Khoảng cách giữa các sao */
+}
+.starComment span {
+    color: lightgray;
+    /* Màu mặc định cho sao */
+    transition: color 0.2s;
+    padding: 0;
+    /* Bỏ padding để căn giữa đều hơn */
+    line-height: 1;
+    /* Đảm bảo chiều cao dòng cho sao */
+}
+
+.starComment span.filled {
+    color: gold;
+    /* Màu sắc cho sao đã được chọn */
+}
+
+
+.rating-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    text-align: left;
+    margin-bottom: 16px;
+    /* Khoảng cách dưới */
+    justify-content: flex-start;
+    gap: 10px;
+    /* Khoảng cách giữa nhãn và sao */
+}
+.rating-title {
+    font-size: 30px; /* Có thể điều chỉnh kích thước font nếu cần */
+    font-weight: bold; /* Tùy chọn: có thể làm cho chữ đậm */
+    margin-bottom: 0;
+}
+.stars {
+    
+    font-size: 20px;
+    /* Kích thước cho sao */
+    cursor: pointer;
+    gap: 5px;
+    /* Khoảng cách giữa các sao */
+}
+
+.stars span {
+    color: lightgray;
+    /* Màu mặc định cho sao */
+    transition: color 0.2s;
+    padding: 0;
+    /* Bỏ padding để căn giữa đều hơn */
+    line-height: 1;
+    /* Đảm bảo chiều cao dòng cho sao */
+}
+
+.stars span.filled {
+    color: gold;
+    /* Màu sắc cho sao đã được chọn */
+}
+
+
+
+
+
+.btn-link {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 0.5vw;
+    width: 3.5vw;
+    height: 3.5vw;
+    transition: background-color 0.3s;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-control-prev {
+    left: 1vw;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-control-next {
+    right: 1vw;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.thumbnail-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2vw;
+}
+
+.thumbnail-item {
+    cursor: pointer;
+}
+
+.thumbnail-image {
+    width: 6vw;
+    height: auto;
+    border: 0.2vw solid transparent;
+    border-radius: 0.5vw;
+    transition: border-color 0.3s;
+}
+
+.thumbnail-item:hover .thumbnail-image {
+    border-color: #007bff;
+}

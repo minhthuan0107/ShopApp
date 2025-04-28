@@ -1,0 +1,334 @@
+/* Header */
+header {
+    background: linear-gradient(90deg, #7F44FF, #00C9FF);
+    color: white;
+    padding: 15px 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: transparent !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.navbar .navbar-brand {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+/* Menu Items */
+.navbar .navbar-nav {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navbar .navbar-nav .nav-item {
+    margin-right: 20px;
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #FFFFFF !important;
+    border-radius: 18px;
+    padding: 8px 16px;
+    transition: background 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    background: linear-gradient(90deg, #6933CC, #0099CC);
+    /* Giống nút Danh mục */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+.logo {
+    width: 80px; /* Điều chỉnh kích thước to hơn */
+    height: 80px;
+    border-radius: 50%; /* Bo tròn ảnh */
+    object-fit: cover; /* Giữ ảnh không bị méo */
+}
+
+.navbar .navbar-nav .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white !important;
+    border: 2px solid white;
+    /* Viền đậm khi được chọn */
+    outline: none;
+}
+
+.navbar .navbar-nav .nav-item.cart-item .nav-link.active {
+    border: 2px solid white;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 350px;
+    height: 40px;
+    padding: 10px;
+    padding-right: 40px;
+    /* Dành chỗ cho nút tìm kiếm */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    height: 30px;
+    width: 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.search-btn i {
+    color: gray;
+    font-size: 16px;
+}
+
+/* Gợi ý sản phẩm */
+.suggestions-list {
+    position: absolute;
+    top: 100%; /* Đặt danh sách gợi ý bên dưới input */
+    left: 0;
+    width: 100%;
+    max-height: 250px; /* Giới hạn chiều cao danh sách */
+    overflow-y: auto; /* Hiển thị cuộn nếu danh sách quá dài */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions-list li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: black;
+}
+
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestions-list li img {
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.suggestions-list li span {
+    flex: 1;
+}
+
+.suggestions-list li strong {
+    font-weight: bold;
+}
+
+/* Menu Container */
+.menu-container {
+    position: relative;
+    /* Đảm bảo dropdown hiển thị chính xác */
+}
+
+/* Button ☰ */
+.menu-btn {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    /* Tăng độ bo tròn */
+    background: linear-gradient(90deg, #7F44FF, #00C9FF);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.menu-btn:hover {
+    background: linear-gradient(90deg, #6933CC, #0099CC);
+    /* Hiệu ứng hover */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown Menu */
+.category-dropdown {
+    cursor: pointer;
+    position: absolute;
+    top: 100%;
+    /* Đặt nó ngay bên dưới button */
+    left: 0;
+    width: 180px;
+    /* Điều chỉnh chiều rộng nếu cần */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    /* Không cần padding tổng thể */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    /* Đảm bảo nó ở trên các phần tử khác */
+}
+
+/* Dropdown Items */
+.category-dropdown li {
+    margin: 0;
+    /* Đặt margin cho li */
+}
+
+.category-dropdown li a {
+    display: block;
+    /* Đảm bảo toàn bộ khu vực có thể nhấp vào */
+    color: black;
+    /* Đặt màu chữ thành đen */
+    text-decoration: none;
+    /* Bỏ dấu gạch ngang */
+    padding: 10px 15px;
+    /* Thêm padding để tạo không gian */
+    transition: background-color 0.3s, color 0.3s;
+    /* Hiệu ứng chuyển đổi */
+}
+
+/* Thay đổi màu chữ khi hover */
+.category-dropdown li a:hover {
+    color: white;
+    /* Đổi màu chữ khi hover */
+    background: #007bff;
+    /* Thay đổi màu nền khi hover */
+}
+
+/* Màu nền và chữ khi chọn hoặc hover */
+.category-dropdown li:hover,
+.category-dropdown li.active {
+    background: #0056b3;
+    /* Màu nền khi hover hoặc đang được chọn */
+    color: white;
+    /* Màu chữ khi hover */
+}
+
+/* Ẩn dropdown khi không click */
+.hidden {
+    display: none;
+}
+
+@media (max-width: 576px) {
+    .product-item {
+        margin: 0 auto;
+        /* Căn giữa sản phẩm */
+        width: 90%;
+        /* Hoặc điều chỉnh kích thước sản phẩm */
+    }
+}
+
+/* Định dạng dropdown người dùng */
+.user-dropdown {
+    max-width: 150px; /* Giới hạn chiều rộng tối đa */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: middle;  
+
+    &:hover {
+        color: #007bff; // Màu xanh khi hover
+    }
+}
+
+/* Định dạng menu dropdown */
+.user-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transform: translateY(10px);
+}
+
+/* Khi dropdown mở */
+.user-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.cart-item {
+    cursor: pointer; // 👉 Hiển thị con trỏ khi hover
+}
+
+/* Định dạng mục trong dropdown */
+.dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px; // Khoảng cách giữa icon và text
+    transition: background 0.2s;
+    cursor: pointer; // 👉 Hiển thị con trỏ khi hover
+
+    &:hover {
+        background: #f8f9fa;
+    }
+}
+
+/* Mục đăng xuất có màu đỏ khi hover */
+.logout-item:hover {
+    background: #ffe5e5;
+    color: #dc3545;
+}
+.icon {
+    font-size: 24px; /* Điều chỉnh kích thước icon */
+    position: relative;
+}
+.cart-badge {
+    position: absolute;
+    top: 45%;
+    left: 22px; /* Dịch số sang trái */
+    transform: translateY(-50%);
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    min-width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Tạo hiệu ứng đổ bóng nhẹ */
+}

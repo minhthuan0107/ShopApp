@@ -1,0 +1,33 @@
+<div class="order-detail-overlay">
+    <div class="order-detail-container">
+      <h2>Chi tiết đơn hàng</h2>
+  
+      <!-- Tiêu đề hàng (bỏ phần ảnh) -->
+      <div class="order-detail-header">
+        <span class="header-image"></span> <!-- giữ cột này nhưng không có nội dung -->
+        <span class="header-name">Tên sản phẩm</span>
+        <span class="header-quantity">Số lượng</span>
+        <span class="header-price">Giá mỗi sản phẩm</span>
+        <span class="header-total">Tiền thanh toán</span>
+      </div>
+  
+      <!-- Danh sách chi tiết đơn hàng -->
+      <div class="order-detail-list">
+        <div class="order-detail-item" *ngFor="let detail of order.order_details | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <span class="order-item-image">
+            <img [src]="detail.product_image" alt="Product Image" width="80" height="80">
+          </span>
+          <span class="order-item-name">{{ detail.product_name }}</span>
+          <span class="order-item-quantity">{{ detail.quantity }}</span>
+          <span class="order-item-price">{{ detail.unit_price | number:'1.0-0' }} VND</span>
+          <span class="order-item-total">{{ detail.total_price | number:'1.0-0' }} VND</span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mt-4">
+        <pagination-controls (pageChange)="page = $event" previousLabel="‹" nextLabel="›">
+        </pagination-controls>
+      </div>
+      <button class="close-detail-btn" (click)="closeDetail()">Đóng</button>
+    </div>
+  </div>
+  

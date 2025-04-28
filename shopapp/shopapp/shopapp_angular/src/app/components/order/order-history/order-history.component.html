@@ -1,0 +1,54 @@
+<div class="order-info">
+  <h1>Đơn hàng của bạn</h1>
+  <div class="table-responsive"> <!-- Làm bảng có thể cuộn khi màn hình nhỏ -->
+    <table class="order-details-table table table-bordered">
+      <thead>
+        <tr>
+          <th>Họ và tên</th>
+          <th>Địa chỉ</th>
+          <th>SĐT</th>
+          <th>Ghi chú</th>
+          <th>Trạng thái đơn hàng</th>
+          <th>Tổng tiền</th>
+          <th>Hành động</th> <!-- Thêm cột -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td>{{ order.full_name }}</td>
+          <td>{{ order.address }}</td>
+          <td>{{ order.phone_number }}</td>
+          <td>{{ order.note || 'Không có' }}</td>
+          <td>
+            <span class="order-status" [ngClass]="{
+              'pending': order.status === 'PENDING',
+              'processing': order.status === 'PROCESSING',
+              'shipped': order.status === 'SHIPPED',
+              'delivered': order.status === 'DELIVERED',
+              'cancelled': order.status === 'CANCELLED'
+            }">
+              {{ getStatusText(order.status) }}
+            </span>
+          </td>
+          <td>{{ order.total_price | number:'1.0-0' }} VND</td>
+          <td>
+            <div class="order-actions">
+              <button (click)="viewOrderDetails(order)" class="btn btn-detail" title="Xem chi tiết">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button *ngIf="order.status === 'PENDING'" class="btn btn-delete" title="Hủy đơn hàng" (click)="cancelOrder(order.order_id)">
+                <i class="fas fa-times-circle"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-order-detail *ngIf="isOrderDetailVisible" [order]="selectedOrder" (onClose)="closeOrderDetail()"></app-order-detail>
+  <!-- PHÂN TRANG -->
+  <div class="d-flex justify-content-center mt-3">
+    <pagination-controls (pageChange)="page = $event" previousLabel="‹" nextLabel="›">
+    </pagination-controls>
+  </div>
+</div>
