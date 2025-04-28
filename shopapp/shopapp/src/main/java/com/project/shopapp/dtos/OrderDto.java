@@ -1,5 +1,6 @@
 package com.project.shopapp.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.shopapp.dtos.payment.PaymentDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -3,6 +3,7 @@ package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,5 +28,7 @@ public class Comment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Comment parentComment;
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comment> replies = new ArrayList<>();
 
 }

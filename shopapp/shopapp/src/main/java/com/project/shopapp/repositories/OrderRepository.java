@@ -23,6 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                 WHERE o.status = 'PENDING'
                 AND p.payment_method IN :paymentMethods
                 AND p.status = 'PENDING'
+                AND p.create_at < DATE_SUB(NOW(), INTERVAL 20 MINUTE)
             """, nativeQuery = true)
     int deletePendingOnlineOrders(@Param("paymentMethods") List<String> paymentMethods);
 

@@ -20,6 +20,8 @@ public class CommentReplyResponse extends BaseEntity {
     @JsonProperty("user_id")
     private Long userId;
     private String content;
+    @JsonProperty("user_name")
+    private String userName;
     @JsonProperty("parent_id")
     private Long parentId;
     public static CommentReplyResponse fromReplyComment (Comment comment){
@@ -27,6 +29,7 @@ public class CommentReplyResponse extends BaseEntity {
                 .id(comment.getId())
                 .productId(comment.getProduct().getId())
                 .userId(comment.getUser().getId())
+                .userName(comment.getUser().getFullname())
                 .content(comment.getContent())
                 .parentId(comment.getParentComment().getId())
                 .build();

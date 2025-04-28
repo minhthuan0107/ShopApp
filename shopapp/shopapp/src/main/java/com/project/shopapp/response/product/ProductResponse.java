@@ -1,6 +1,7 @@
 package com.project.shopapp.response.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.shopapp.models.Brand;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.response.BaseResponseEntity;
@@ -23,6 +24,7 @@ public class ProductResponse extends BaseResponseEntity {
     private int quantity;
     private int sold;
     private Category category;
+    private Brand brand;
     public static  ProductResponse fromProduct (Product  product){
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())
@@ -33,6 +35,7 @@ public class ProductResponse extends BaseResponseEntity {
                 .sold(product.getSold())
                 .description(product.getDescription())
                 .category(product.getCategory())
+                .brand(product.getBrand())
                 .build();
         productResponse.setCreateAt(product.getCreateAt());
         productResponse.setUpdateAt(product.getUpdateAt());

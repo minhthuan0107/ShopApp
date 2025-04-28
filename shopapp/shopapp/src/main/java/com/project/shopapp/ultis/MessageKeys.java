@@ -5,6 +5,10 @@ public class MessageKeys {
     public static final String LOGIN_FAILED = "user.signin.login_failed";
     public static final String WRONG_PHONE_NUMBER = "user.signin.wrong_phone_number";
     public static final String WRONG_PASSWORD = "user.signin.wrong_password";
+
+    public static final String NEW_PASSWORD_SAME_AS_CURRENT ="user.new_password_same_as_current";
+
+    public static final String PASSWORD_CHANGE_SUCCESSFULLY = "user.password_change_successfully";
     public static final String REGISTRATION_FAILED = "user.signup.registration_failed";
     public static final String PHONENUMBER_ALREADY_EXISTS = "user.signup.phonenumber_already_exists";
     public static final String REGISTRATION_SUCCESSFULLY = "user.signup.registration_successfully";
@@ -18,6 +22,7 @@ public class MessageKeys {
     public static final String CATEGORY_DELETE_SUCCESSFULLY = "category.delete_successfully";
     public static final String USER_NOT_FOUND = "user.not_found";
     public static final String USER_FOUND_SUCCESS = "user.found_successfully";
+    public static final String USER_UPDATE_PROFILE_SUCCESSFULLY = "user.update_profile_successfully";
 
     public static final String ORDER_INVALID_SHIPPING_DATE = "order.invalid_shipping_date";
     public  static final String ORDER_NOT_FOUND = "order.not_found";
@@ -27,6 +32,8 @@ public class MessageKeys {
     public static final String  GET_ALL_ORDERS_SUCCESSFULLY = "order.get_all_order_success";
     public static final String  ORDER_UPDATED_SUCCESSFULLY = "order.updated_successfully";
     public static final String  ORDER_DELETE_SUCCESSFULLY = "order.delete_successfully";
+    public static final String ORDER_RETRIEVED_SUCCESSFULLY ="order.retrieved_successfully";
+
 
     public static final String ORDERDETAIL_NOT_FOUND = "orderdetail.not_found";
     public static final String ORDERDETAIL_CREATED_SUCCESSFULLY = "orderdetail.created_successfully";
@@ -45,7 +52,7 @@ public class MessageKeys {
     public static  final String PRODUCT_DELETE_SUCCESSFULLY = "product.delete_successfully";
     public static  final String PRODUCT_INVALID_IMAGE_FORMAT= "product.invalid_image_format";
     public static  final String PRODUCTIMAGES_GET_BY_PRODUCT_ID_SUCCESSFULLY = "productimage.get_by_product_id_successfully";
-
+    public static  final String  PRODUCT_SUGGESTIONS_GET_SUCCESSFULLY = "product.get_suggestions_successfully";
     public static final String CART_ADD_PRODUCT_SUCCESSFULLY = "cart.add_product_successfully";
     public static final String CART_NOT_FOUND = "cart.not_found";
     public static final String CART_GET_CART_ITEMS_SUCCESSFULLY = "cart.get_cart_items_successfully";
@@ -73,6 +80,21 @@ public class MessageKeys {
 
     public static final String COMMENT_CREATED_SUCCESSFULLY ="comment.created_successfully";
     public static final String COMMENT_NOT_FOUND = "comment.not_found";
+    public static final String COMMENT_GET_LIST_SUCCESSFULLY ="comment.get_list_successfully";
+
+    public static final String ERROR_COMMENT_ALREADY_RATED ="error.comment.already_rated";
+
+    public static final String ERROR_ONLY_PARENT_COMMENT_CAN_BE_RATED = "error.only_parent_comment_can_be_rated";
+    public static final String RATING_SUBMIT_SUCCESSFULLY = "rating.submit_successfully";
+    public static final String RATING_FETCH_SUCCESSFULLY = "rating.fetch_successfully";
+
+    public static final String BRAND_CREATED_SUCCESSFULLY = "brand.create_successfully";
+    public static final String BRAND_FETCHED_BY_CATEGORY_SUCCESSFULLY = "brand.fetched_by_category_successfully";
+    public static final String BRAND_NOT_FOUND ="brand.not_found";
+
+    public static final String VALUE_MIN_MAX_SUCCESSFULLY = "value.min.max.successfully";
+
+    public static final String CREATED_ACCESS_TOKEN_SUCCESSFULLY = "access_token.created_successfully";
 
 
 

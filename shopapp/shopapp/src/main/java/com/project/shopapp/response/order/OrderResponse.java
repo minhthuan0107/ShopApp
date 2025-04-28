@@ -1,14 +1,10 @@
 package com.project.shopapp.response.order;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.dtos.PaymentDto;
-import com.project.shopapp.models.Order;
 import com.project.shopapp.response.orderdetail.OrderDetailResponse;
 import com.project.shopapp.response.payment.PaymentResponse;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +17,7 @@ import java.util.List;
 public class OrderResponse  {
     @JsonProperty("order_id")
     private String orderId;
-    @JsonProperty("fullname")
+    @JsonProperty("full_name")
     private String fullName;
     @JsonProperty("email")
     private String email;

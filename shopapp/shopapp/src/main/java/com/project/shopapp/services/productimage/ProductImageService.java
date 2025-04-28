@@ -32,7 +32,6 @@ public class ProductImageService implements IProductImage {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, id)));
-        existingProduct.setUrlImage(product.getUrlImage());
         return productRepository.save(existingProduct);
     }
 

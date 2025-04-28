@@ -14,6 +14,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         show_sql: true   # Hiển thị các câu lệnh SQL trên console
         format_sql: true # Format SQL cho dễ đọc
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: lethuan01072001@gmail.com
+    password: ongooquflxxsfwjl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-file-size: 10MB   # Kích thước tối đa của file upload
@@ -22,14 +33,24 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
     default-locale: en
+  data:
+      redis:
+        host: localhost
+        port: 6379
+        password: ""  # Nếu có mật khẩu thì điền vào đây
+        timeout: 2000  # Thời gian timeout kết nối Redis (tính bằng miligiây)
 api:
   prefix: /api/v1
 bezkoder:
   jwtSecret: "bXlzdXBlcnNlY3JldGtleWZvcmphdG9yZmVjb25kdGVzdGluZ2RhdGV0byh0aXQpZ29lc2NhcGVzY2F0Y2l0cm9yZ2VuZXQ="
-  jwtExpirationMs: 86400000
+  refreshTokenSecret: "cmVmcmVzaC10b2tlbi1zZWNyZXQta2V5LWZvci1teS1zaG9wLWFwcC0xMjM0NTY="
+  jwtExpirationMs: 1800000 # 30 phút = 30 * 60 * 1000 millis
+  refreshTokenExpirationMs: 604800000 # 7 ngày = 7 * 24 * 60 * 60 * 1000 millis
 vnpay:
   tmn-code: "XCB5GDBK"
   secret-key: "DZYDEFH0PJOUI3S0VBLHGBW0WUG6KH0V"
   pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
   return-url: "${VNPAY_RETURN_URI:http://localhost:4200/payments/payment-callback}"
   api-url: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"
+server:
+  port: 8081

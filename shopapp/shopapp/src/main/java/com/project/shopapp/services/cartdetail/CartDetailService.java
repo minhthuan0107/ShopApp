@@ -1,11 +1,10 @@
 package com.project.shopapp.services.cartdetail;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.CartDetailsUpdateDto;
+import com.project.shopapp.dtos.cartdetail.CartDetailsUpdateDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Cart;
 import com.project.shopapp.models.CartDetail;
-import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.CartDetailRepository;
 import com.project.shopapp.repositories.CartRepository;
 import com.project.shopapp.repositories.UserRepository;
@@ -16,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,8 +27,6 @@ public class CartDetailService implements ICartDetailService {
     private CartDetailRepository cartDetailRepository;
     @Autowired
     private LocalizationUtils localizationUtils;
-    @Autowired
-    private UserRepository userRepository;
 
     public BigDecimal getTotalPrice(Long cartId) {
         return cartDetailRepository.sumTotalPriceByCartId(cartId);

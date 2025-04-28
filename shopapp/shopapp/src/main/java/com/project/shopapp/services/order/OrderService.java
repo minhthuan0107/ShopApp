@@ -11,6 +11,7 @@ import com.project.shopapp.response.order.OrderResponse;
 import com.project.shopapp.response.orderdetail.OrderDetailResponse;
 import com.project.shopapp.response.payment.PaymentResponse;
 import com.project.shopapp.services.cart.CartService;
+import com.project.shopapp.services.email.OrderMailService;
 import com.project.shopapp.services.order.IOrderService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,8 @@ public class OrderService implements IOrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final CartService cartService;
     private final PaymentRepository paymentRepository;
+    private final OrderMailService orderMailService;
+
 
     @Override
     @Transactional
@@ -65,6 +68,7 @@ public class OrderService implements IOrderService {
         // Chỉ xóa giỏ hàng nếu thanh toán trực tiếp
         if ("Cod".equals(orderDto.getPayment().getPaymentMethod())) {
             cartService.clearCart(userId);
+            orderMailService.sendMailOrder(order);
         }
         // Chuyển đổi Order sang OrderResponse để trả về
         OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
@@ -72,8 +76,8 @@ public class OrderService implements IOrderService {
         orderResponse.setPaymentResponse(PaymentResponse.fromPayment(payment));
         return orderResponse;
     }
+
     private Order convertToOrder(OrderDto orderDto, User user) {
-        ModelMapper modelMapper = new ModelMapper();
         modelMapper.typeMap(OrderDto.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));
         Order order = modelMapper.map(orderDto, Order.class);
@@ -81,9 +85,9 @@ public class OrderService implements IOrderService {
         order.setOrderDate(new Date());
         order.setOrderStatus(OrderStatus.PENDING);
         order.setActive(true);
-
         return order;
     }
+
     private OrderDetail convertToOrderDetail(OrderDetailDto orderDetailDto, Order order) {
         Product product = productRepository.findById(orderDetailDto.getProductId())
                 .orElseThrow(() -> new RuntimeException(
@@ -97,12 +101,22 @@ public class OrderService implements IOrderService {
                 .totalPrice(orderDetailDto.getTotalPrice())
                 .build();
     }
+
     @Override
     public OrderResponse getOrderById(Long orderId) {
         Order existingorder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
         OrderResponse orderResponse = modelMapper.map(existingorder, OrderResponse.class);
+        //Tìm kiếm payment theo orderId
+        Payment payment = paymentRepository.findByOrderId(orderId);
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(orderId);
+        // Chuyển đổi danh sách OrderDetail => OrderDetailResponse
+        List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
+                .map(OrderDetailResponse::fromOrderDetail)
+                .collect(Collectors.toList());
+        orderResponse.setOrderDetailResponses(orderDetailResponses);
+        orderResponse.setPaymentResponse(PaymentResponse.fromPayment(payment));
         return orderResponse;
     }
 
@@ -145,13 +159,27 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<OrderResponse> getOrdersByUserId(Long userId) {
-        User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, userId)));
+    public List<OrderResponse> getOrdersByUserId(Long userId) throws Exception {
+        if (!userRepository.existsById(userId)) {
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, userId));
+        }
         List<Order> orders = orderRepository.findByUserId(userId);
-        List<OrderResponse> orderResponses = orders.stream()
-                .map(order -> modelMapper.map(order, OrderResponse.class))
+        List<OrderResponse> orderResponses = orders.stream().map(order -> {
+                    OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+                    // Lấy payment theo orderId
+                    Payment payment = paymentRepository.findByOrderId(order.getId());
+                    if (payment != null) {
+                        orderResponse.setPaymentResponse(PaymentResponse.fromPayment(payment));
+                    }
+                    // Lấy danh sách order detail theo orderId
+                    List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(order.getId());
+                    List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
+                            .map(OrderDetailResponse::fromOrderDetail)
+                            .collect(Collectors.toList());
+                    orderResponse.setOrderDetailResponses(orderDetailResponses);
+                    return orderResponse;
+                })
                 .collect(Collectors.toList());
         return orderResponses;
     }

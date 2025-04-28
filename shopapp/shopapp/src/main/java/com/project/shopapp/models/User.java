@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -28,7 +29,7 @@ public class User extends BaseEntity  {
     @Column(name = "is_active",insertable = false)
     private boolean isActive;
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     @Column(name = "facebook_account_id")
     private int facebookAccountId;
     @Column(name = "google_account_id")

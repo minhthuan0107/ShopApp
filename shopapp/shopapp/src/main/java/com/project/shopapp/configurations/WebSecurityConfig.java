@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +36,15 @@ public class WebSecurityConfig {
         String ordersUrl = String.format("%s/orders/**", apiPrefix);
         String categoryUrl = String.format("%s/categories/**", apiPrefix);
         String productUrl = String.format("%s/products/**", apiPrefix);
-        String productimageUrl = String.format("%s/productimages/**", apiPrefix);
+        String productimageUrl = String.format("%s/product-images/**", apiPrefix);
         String orderDetailUrl = String.format("%s/orderdetails/**", apiPrefix);
         String cartUrl = String.format("%s/carts/**", apiPrefix);
         String cartDetailtUrl = String.format("%s/cartdetails/**", apiPrefix);
         String paymentUrl = String.format("%s/payments/**", apiPrefix);
         String commentUrl = String.format("%s/comments/**", apiPrefix);
+        String rateUrl = String.format("%s/rates/**", apiPrefix);
+        String brandUrl = String.format("%s/brands/**", apiPrefix);
+        String tokenUrl = String.format("%s/tokens/**", apiPrefix);
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
@@ -49,16 +53,19 @@ public class WebSecurityConfig {
                             // Các URL public
                             .requestMatchers(signinUrl, signupUrl)
                             .permitAll()
-                            .requestMatchers(HttpMethod.GET, categoryUrl, productUrl, productimageUrl)
+                            .requestMatchers(HttpMethod.GET, categoryUrl, productUrl, brandUrl,
+                                    productimageUrl, commentUrl, rateUrl)
                             .permitAll()
+                            //Phân quyền cho websocket
+                            .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
+                            .requestMatchers(HttpMethod.POST,tokenUrl).permitAll()
                             //Định nghĩa quyên cho payment
-                            .requestMatchers(HttpMethod.POST,paymentUrl).hasRole("USER")
-                            .requestMatchers(HttpMethod.PUT,paymentUrl).hasRole("USER")
+                            .requestMatchers(HttpMethod.POST, paymentUrl).hasRole("USER")
+                            .requestMatchers(HttpMethod.PUT, paymentUrl).hasRole("USER")
                             //Định nghĩa quyền cho comment
-                            .requestMatchers(HttpMethod.POST,commentUrl).hasAnyRole("USER", "ADMIN")
-                            .requestMatchers(HttpMethod.PUT,commentUrl).hasAnyRole("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.POST, commentUrl).hasAnyRole("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.PUT, commentUrl).hasAnyRole("USER", "ADMIN")
                             .requestMatchers(HttpMethod.DELETE, commentUrl).hasAnyRole("USER", "ADMIN")
-                            .requestMatchers(HttpMethod.GET, commentUrl).hasAnyRole("USER", "ADMIN")
                             //Định nghĩa quyền cho cart
                             .requestMatchers(HttpMethod.POST, cartUrl).hasRole("USER")
                             .requestMatchers(HttpMethod.DELETE, cartUrl).hasRole("USER")
@@ -71,7 +78,6 @@ public class WebSecurityConfig {
                             .requestMatchers(HttpMethod.GET, cartDetailtUrl).hasRole("USER")
                             //  Định nghĩa quyền cho orders
                             .requestMatchers(HttpMethod.POST, ordersUrl).hasRole("USER")
-                            .requestMatchers(HttpMethod.DELETE, ordersUrl).hasRole("ADMIN")
                             .requestMatchers(HttpMethod.PUT, ordersUrl).hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET, ordersUrl).hasAnyRole("USER", "ADMIN")
                             // Định nghĩa quyền cho categories
@@ -92,18 +98,22 @@ public class WebSecurityConfig {
                             .requestMatchers(HttpMethod.PUT, orderDetailUrl).hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET, orderDetailUrl).hasAnyRole("USER", "ADMIN")
                             .anyRequest().authenticated();
-                })
-                .csrf(AbstractHttpConfigurer::disable);
+                });
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
             @Override
             public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("*"));
-                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-                configuration.setExposedHeaders(List.of("x-auth-token"));
+                configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Chỉ cho phép Angular (hoặc dùng setAllowedOriginPatterns)
+                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "CONNECT"));
+                configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token", "sec-websocket-key",
+                        "sec-websocket-version", "sec-websocket-extensions", "upgrade", "connection"));
+                configuration.setExposedHeaders(List.of("x-auth-token", "sec-websocket-accept"));
+                configuration.setAllowCredentials(true); // Quan trọng khi có session hoặc cooki
                 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
                 source.registerCorsConfiguration("/**", configuration);
+                source.registerCorsConfiguration("/ws/**", configuration);
+                source.registerCorsConfiguration("/ws/info", configuration);
+                source.registerCorsConfiguration("/ws/info/**", configuration);
                 httpSecurityCorsConfigurer.configurationSource(source);
             }
         });
