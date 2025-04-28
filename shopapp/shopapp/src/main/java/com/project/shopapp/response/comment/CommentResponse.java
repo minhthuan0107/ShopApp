@@ -25,14 +25,17 @@ public class CommentResponse extends BaseEntity {
     @JsonProperty("user_id")
     private Long userId;
     private String content;
-    private List<CommentReplyResponse> rereplies;
+    @JsonProperty("user_name")
+    private String userName;
+    private List<CommentReplyResponse> replies;
     public static CommentResponse fromComment (Comment comment,List<CommentReplyResponse> replyResponses){
         CommentResponse commentResponse=  CommentResponse.builder()
                 .id(comment.getId())
                 .productId(comment.getProduct().getId())
                 .userId(comment.getUser().getId())
                 .content(comment.getContent())
-                .rereplies(replyResponses)
+                .userName(comment.getUser().getFullname())
+                .replies(replyResponses)
                 .build();
         commentResponse.setCreateAt(comment.getCreateAt());
         commentResponse.setUpdateAt(comment.getUpdateAt());

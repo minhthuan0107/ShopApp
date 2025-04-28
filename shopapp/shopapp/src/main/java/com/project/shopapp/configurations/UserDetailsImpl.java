@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -27,12 +28,12 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
     private boolean isActive;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private int facebookAccountId;
     private int googleAccountId;
     private Collection<? extends GrantedAuthority> authorities;
     public UserDetailsImpl(Long id, String fullname, String phoneNumber, String address, String password,
-                           boolean isActive, Date dateOfBirth, int facebookAccountId, int googleAccountId,
+                           boolean isActive, LocalDate dateOfBirth, int facebookAccountId, int googleAccountId,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.fullname = fullname;

@@ -15,9 +15,13 @@ import com.project.shopapp.response.comment.CommentResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServie implements ICommentService {
@@ -29,6 +33,8 @@ public class CommentServie implements ICommentService {
     private ProductRepository productRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @Override
     @Transactional
@@ -41,7 +47,6 @@ public class CommentServie implements ICommentService {
                         localizationUtils.getLocalizedMessage(
                                 MessageKeys.PRODUCT_NOT_FOUND, commentDto.getProductId())
                 ));
-        //Set khóa ngoại parentId = null vì parentComment là comment cha
         Comment newComment = Comment.builder()
                 .content(commentDto.getContent())
                 .user(existingUser)
@@ -69,6 +74,23 @@ public class CommentServie implements ICommentService {
                 .build();
         commentRepository.save(replyComment);
         return CommentReplyResponse.fromReplyComment(replyComment);
+    }
+
+    @Override
+    public List<CommentResponse> getParentCommentsByProductId(Long productId) {
+        // Lấy tất cả comment cha (parent_id = null)
+        List<Comment> parentComments = commentRepository.findByProductIdAndParentCommentIsNull(productId);
+        return parentComments.stream()
+                .map(comment -> {
+                    // Lấy danh sách replies của comment cha
+                    List<CommentReplyResponse> replyResponses = comment.getReplies()
+                            .stream()
+                            .map(CommentReplyResponse::fromReplyComment)
+                            .sorted(Comparator.comparing(CommentReplyResponse::getCreateAt).reversed())
+                            .collect(Collectors.toList());
+                    return CommentResponse.fromComment(comment, replyResponses);
+                })
+                .collect(Collectors.toList());
     }
 
 

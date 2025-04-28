@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,6 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private JwtTokenUtils jwtTokenUtils;
     @Autowired
     private UserDetailsService userDetailsService;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -42,12 +44,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        // Nếu là WebSocket request, bỏ qua filter
+        if ("websocket".equalsIgnoreCase(request.getHeader("Upgrade"))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         try {
             // Lấy JWT từ request
             String jwt = parseJwt(request);
-            if (jwt == null || !jwtTokenUtils.validateJwtToken(jwt))  {
-                throw new JwtAuthenticationException("Invalid JWT Token");
-            }
+            // Nếu token không hợp lệ sẽ ném exception ở đây
+            jwtTokenUtils.validateJwtToken(jwt);
             // Trích xuất thông tin từ JWT
             String phoneNumber = jwtTokenUtils.getphoneNumberFromJwtToken(jwt);
             if (phoneNumber != null) {
@@ -72,15 +78,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean isByPassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
-                Pair.of(String.format("%s/products", apiPrefix), "GET"),
-                Pair.of(String.format("%s/productimages/product", apiPrefix), "GET"),
+                Pair.of(String.format("%s/products/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/product-images/**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/categories", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/signin", apiPrefix), "POST"),
-                Pair.of(String.format("%s/users/signup", apiPrefix), "POST")
+                Pair.of(String.format("%s/users/signup", apiPrefix), "POST"),
+                Pair.of(String.format("%s/comments/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/rates/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/brands", apiPrefix), "GET"),
+                Pair.of(String.format("%s/tokens/newAccessToken", apiPrefix), "POST"),
+                Pair.of("/ws/**", "GET"),
+                Pair.of("/topic/**", "GET"),
+                Pair.of("/app/**", "GET")
         );
-        for (Pair<String, String> bypasstoken : bypassTokens) {
-            if (request.getServletPath().contains(bypasstoken.getFirst()) &&
-                    request.getMethod().equals(bypasstoken.getSecond())) {
+        for (Pair<String, String> bypass : bypassTokens) {
+            if (request.getMethod().equalsIgnoreCase(bypass.getSecond())
+                    && antPathMatcher.match(bypass.getFirst(), request.getServletPath())) {
                 return true;
             }
         }

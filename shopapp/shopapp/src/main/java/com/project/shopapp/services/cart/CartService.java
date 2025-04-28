@@ -2,7 +2,7 @@ package com.project.shopapp.services.cart;
 
 import com.project.shopapp.commons.CartStatus;
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.CartDetailDto;
+import com.project.shopapp.dtos.cartdetail.CartDetailDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Cart;
 import com.project.shopapp.models.CartDetail;
@@ -93,15 +93,11 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Long getCartItemCount(Long userId) throws Exception {
-        Cart cart = cartRepository.findByUserIdAndActiveTrue(userId)
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.CART_NOT_FOUND)
-                ));
-
-        return cartDetailRepository.countCartItems(cart.getId());
+    public Long getCartItemCount(Long userId) {
+        return cartRepository.findByUserIdAndActiveTrue(userId)
+                .map(cart -> cartDetailRepository.countCartItems(cart.getId()))
+                .orElse(0L);
     }
-
     @Override
     @Transactional
     public void clearCart(Long userId) throws Exception {

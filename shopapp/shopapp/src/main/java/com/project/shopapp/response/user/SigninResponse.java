@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 public class SigninResponse {
     @JsonProperty("message")
     private String message;
-    @JsonProperty("token")
-    private String token;
+
+    @JsonProperty("access_token")
+    private String accessToken;
+
+    @JsonProperty("refresh_token")
+    private String refreshToken;
 }

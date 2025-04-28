@@ -6,7 +6,6 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "products")
 @AllArgsConstructor
@@ -28,8 +27,11 @@ public class Product extends BaseEntity {
     private int quantity;
     private int sold;
     @ManyToOne
-    @JoinColumn(name ="category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
 
 
 }

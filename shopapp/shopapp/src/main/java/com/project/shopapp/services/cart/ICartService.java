@@ -1,6 +1,6 @@
 package com.project.shopapp.services.cart;
 
-import com.project.shopapp.dtos.CartDetailDto;
+import com.project.shopapp.dtos.cartdetail.CartDetailDto;
 import com.project.shopapp.response.cart.CartResponse;
 
 public interface ICartService {

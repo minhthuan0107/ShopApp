@@ -5,4 +5,6 @@ import com.project.shopapp.response.payment.PaymentResponse;
 
 public interface IPaymentService {
     PaymentResponse updatePaymentStatus (UpdatePaymentStatusDto statusDto) throws Exception;
+
+    Long getOrderIdByTransactionId (String transactionId) throws Exception;
 }
