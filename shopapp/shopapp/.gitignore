@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Bỏ qua node_modules trong shopapp_angular
+shopapp/shopapp/shopapp_angular/node_modules/
