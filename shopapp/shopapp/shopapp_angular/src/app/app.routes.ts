@@ -12,13 +12,15 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { orderConfirmationGuard } from './guards/order-confirmation.guard';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
 import { SearchComponent } from './components/search/search.component';
+import { BuyNowOrderComponent } from './components/order/buy-now-order/buy-now-order.component';
 
 export const routes: Routes = [ // ✅ Export `routes`
 { path: 'home', component: HomeComponent },
 { path: 'signin', component: SigninComponent },
 { path: 'cart/:userId', component: CartComponent },
 { path: 'signup', component: SignupComponent },  
-{ path: 'detail-product/:id', component: DetailProductComponent },
+{ path: 'detail-product/:productId', component: DetailProductComponent },
+{ path: 'buy-now-order/:productId', component: BuyNowOrderComponent },
 { path: '', component: HomeComponent }, 
 { path: 'category/:id', component: ProductCategoryComponent },
 { path: 'search/:keyword', component: SearchComponent },

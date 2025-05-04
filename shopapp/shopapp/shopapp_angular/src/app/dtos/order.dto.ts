@@ -9,4 +9,5 @@ export interface OrderDto {
     address: string;
     order_details: OrderDetailDto[];
     payment: PaymentDto;
+    is_buy_now: boolean;
   }

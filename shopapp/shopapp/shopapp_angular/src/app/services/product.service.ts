@@ -83,6 +83,10 @@ export class ProductService {
     return this.http.get<ApiResponse<Product>>(`${this.apiGetProducts}/${productId}`);
   }
 
+  getProductByIdWithAuth(productId: number) {
+    return this.http.get<ApiResponse<Product>>(`${this.apiGetProducts}/auth/${productId}`);
+  }
+
   getPriceRange(){
     return this.http.get<ApiResponse<any>> (`${this.apiGetProducts}/price-range`) 
   }

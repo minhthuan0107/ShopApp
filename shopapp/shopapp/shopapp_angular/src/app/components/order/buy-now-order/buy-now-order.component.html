@@ -1,0 +1,92 @@
+<div class="container">
+    <div class="intro-section">
+        <h1>Xác nhận đơn hàng</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="product-header mb-2">Thông tin người nhận</h2>
+            <form [formGroup]="buyNowOrderForm">
+                <div class="mb-2">
+                  <label for="fullname" class="form-label">Họ và Tên</label>
+                  <input type="text" id="fullname" class="form-control" formControlName="fullname" placeholder="Nhập họ và tên">
+                  <p class="text-danger" *ngIf=" buyNowOrderForm.get('fullname')?.invalid && buyNowOrderForm.get('fullname')?.touched">
+                    Họ và tên không được để trống.
+                  </p>
+                </div>
+                <div class="mb-2">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" id="email" class="form-control" formControlName="email" placeholder="Nhập email">
+                  <p class="text-danger" *ngIf=" buyNowOrderForm.get('email')?.invalid && buyNowOrderForm.get('email')?.touched">
+                    <span *ngIf="buyNowOrderForm.get('email')?.errors?.['required']">Email không được để trống.</span>
+                    <span *ngIf="buyNowOrderForm.get('email')?.errors?.['email']">Email không đúng định dạng.</span>
+                  </p>
+                </div>
+                <div class="mb-2">
+                  <label for="phone" class="form-label">Số Điện Thoại</label>
+                  <input type="tel" id="phone" class="form-control" formControlName="phone" placeholder="Nhập số điện thoại">
+                  <p class="text-danger" *ngIf=" buyNowOrderForm.get('phone')?.invalid && buyNowOrderForm.get('phone')?.touched">
+                    <span *ngIf="buyNowOrderForm.get('phone')?.errors?.['required']">Số điện thoại không được để trống.</span>
+                    <span *ngIf="buyNowOrderForm.get('phone')?.errors?.['minlength']">Số điện thoại phải có ít nhất 9 ký tự.</span>
+                  </p>
+                </div>
+                <div class="mb-2">
+                  <label for="address" class="form-label">Địa chỉ</label>
+                  <input type="text" id="address" class="form-control" formControlName="address" placeholder="Nhập địa chỉ">
+                  <p class="text-danger" *ngIf="buyNowOrderForm.get('address')?.invalid && buyNowOrderForm.get('address')?.touched">
+                    Địa chỉ không được để trống.
+                  </p>
+                </div>
+                <div class="mb-2">
+                  <label for="note" class="form-label">Ghi chú</label>
+                  <textarea id="note" class="form-control note-textarea" formControlName="note" placeholder="Nhập ghi chú"></textarea>
+                </div>
+              </form>
+        </div>
+        <div class="col-md-6">
+            <h2 class="product-order">Sản phẩm đã đặt hàng</h2>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-start">Sản phẩm</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="product-info">
+                        <img [src]="product.url_image" class="product-image">
+                        <span class="product-name">{{ product.name }}</span>
+                      </div>
+                    </td>
+                    <td>{{ 1 }}</td>
+                    <td>{{ product.price| number:'1.0-0' }}đ</td>
+                    <td>{{ product.price * 1 | number:'1.0-0' }}đ</td>
+                  </tr>
+                </tbody>
+            </table>
+            <div class="total-price">
+                <h4 class="text-end">Tổng giá: <span class="price">{{ product.price | number }}đ</span></h4>
+            </div>
+            <div class="coupon-section">
+                <h4 class="product-header">Nhập coupon</h4>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Nhập coupon">
+                    <button class="btn btn-gradient">Áp dụng</button>
+                </div>
+            </div>
+            <div class="payment-method-section">
+                <h4 class="product-header">Chọn phương thức thanh toán</h4>
+                <select class="form-select payment-method" [(ngModel)]="paymentMethod">
+                    <option value="Cod">Thanh toán trực tiếp</option>
+                    <option value="Vnpay">Thanh toán qua VNPAY</option>
+                </select>
+            </div>
+            <div class="text-center custom-margin">
+                <button class="btn btn-gradient" [disabled]="buyNowOrderForm.invalid" (click)="placeOrder()">Đặt hàng</button>
+            </div>
+        </div>
+    </div>
+</div>

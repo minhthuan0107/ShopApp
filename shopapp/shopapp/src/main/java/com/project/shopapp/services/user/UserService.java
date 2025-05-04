@@ -113,7 +113,6 @@ public class UserService implements IUserService {
         tokenEntity.setTokenType("BEARER");
         tokenEntity.setExpirationDate(LocalDateTime.now().plusDays(7)); // 7 ngày
         tokenEntity.setRevoked(false);
-        tokenEntity.setExpired(false);
         tokenEntity.setUser(existingUser);
         tokenRepository.save(tokenEntity);
 

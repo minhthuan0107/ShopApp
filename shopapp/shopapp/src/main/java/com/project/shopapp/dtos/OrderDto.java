@@ -32,4 +32,6 @@ public class OrderDto {
     private List<OrderDetailDto> orderDetails;
     @JsonProperty("payment")
     private PaymentDto payment;
+    @JsonProperty("is_buy_now")
+    private boolean isBuyNow;
 }

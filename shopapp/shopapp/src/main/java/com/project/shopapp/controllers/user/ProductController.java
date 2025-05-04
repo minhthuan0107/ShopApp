@@ -25,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -112,10 +113,29 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable("id") Long productId) {
+    @GetMapping("/{productId}")
+    public ResponseEntity<ResponseObject> getProductById(@PathVariable("productId") Long productId) {
         try {
             Product existingProduct = productService.getProductbyId(productId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .status(HttpStatus.OK)
+                    .data(ProductResponse.fromProduct(existingProduct))
+                    .message(localizationUtils.getLocalizedMessage(
+                            MessageKeys.PRODUCT_GET_BY_ID_SUCCESSFULLY, productId))
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .data(null)
+                    .message(e.getMessage())
+                    .build());
+        }
+    }
+    @GetMapping("auth/{productId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ResponseObject> getProductByIdWithAuth(@PathVariable("productId") Long productId) {
+        try {
+            Product existingProduct = productService.getProductByIdWithAuth(productId);
             return ResponseEntity.ok(ResponseObject.builder()
                     .status(HttpStatus.OK)
                     .data(ProductResponse.fromProduct(existingProduct))

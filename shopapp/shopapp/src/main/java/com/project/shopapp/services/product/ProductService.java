@@ -67,10 +67,17 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product getProductbyId(Long id) throws Exception {
-        return productRepository.findById(id)
+    public Product getProductbyId(Long productId) throws Exception {
+        return productRepository.findById(productId)
                 .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, id)));
+                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, productId)));
+    }
+
+    @Override
+    public Product getProductByIdWithAuth(Long productId) throws Exception {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, productId)));
     }
 
     @Override

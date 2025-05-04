@@ -66,7 +66,7 @@ public class OrderService implements IOrderService {
                 .map(OrderDetailResponse::fromOrderDetail)
                 .collect(Collectors.toList());
         // Chỉ xóa giỏ hàng nếu thanh toán trực tiếp
-        if ("Cod".equals(orderDto.getPayment().getPaymentMethod())) {
+        if (!orderDto.isBuyNow() && "Cod".equals(orderDto.getPayment().getPaymentMethod())) {
             cartService.clearCart(userId);
             orderMailService.sendMailOrder(order);
         }

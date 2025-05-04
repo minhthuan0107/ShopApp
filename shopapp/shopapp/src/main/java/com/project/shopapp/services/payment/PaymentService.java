@@ -41,7 +41,8 @@ public class PaymentService implements IPaymentService {
         payment.setStatus(statusDto.getStatus());
         paymentRepository.save(payment);
         // Nếu thanh toán thành công thì clear giỏ hàng
-        if (statusDto.getStatus().equals(PaymentStatus.SUCCESS)) {
+        if (statusDto.getStatus().equals(PaymentStatus.SUCCESS)
+                && !payment.getOrder().isBuyNow()) {
             Long userId = payment.getOrder().getUser().getId();
             cartService.clearCart(userId);
         }

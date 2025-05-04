@@ -30,25 +30,25 @@ import { Rate } from '../../models/rate.model';
   styleUrl: './detail-product.component.scss'
 })
 export class DetailProductComponent implements OnInit {
-  private newCommentsSubscription?: Subscription;
+  private newCommentsSubscription?: Subscription; // Subscription để theo dõi bình luận mới
   private newRepliesSubscription?: Subscription;
   private newRatingSubscription?: Subscription;
   userId!: number;
-  isUserLoggedIn: boolean = false;
+  isUserLoggedIn: boolean = false; // Kiểm tra người dùng có đăng nhập hay không
   product?: Product;
   productImages: ProductImage[] = [];
   productId!: number;
   comments: Comment[] = [];
   rates: Rate[] = [];
   isRated: boolean = false;
-  newComment: { content: string } = { content: '' };
-  replyContent: { [key: number]: string } = {};
+  newComment: { content: string } = { content: '' }; // Biến để lưu nội dung bình luận mới
+  replyContent: { [key: number]: string } = {};  // Lưu nội dung phản hồi cho mỗi bình luận
   replyingToCommentId: number | null = null;
   visibleReplyCounts: { [key: number]: number } = {}; // Số lượng phản hồi hiển thị cho mỗi bình luận
   showAllComments: boolean = false; // Biến để kiểm tra xem có hiển thị tất cả bình luận hay không
-  selectedRating: number = 0;
-  hoveredRating: number | null = null;
-  isRatingVisible: boolean = true;
+  selectedRating: number = 0; // Đánh giá hiện tại được chọn
+  hoveredRating: number | null = null; // Đánh giá hiện tại khi di chuột qua
+  isRatingVisible: boolean = true; // Kiểm tra xem có hiển thị phần đánh giá hay không
   constructor(private productService: ProductService,
     private productImageService: ProductImageService,
     private route: ActivatedRoute,
@@ -61,9 +61,8 @@ export class DetailProductComponent implements OnInit {
       this.webSocketCommentService.connect();
 
       this.route.paramMap.subscribe(params => {
-          const id = params.get('id');
-          if (id) {
-              this.productId = +id;
+          const productId = params.get('productId');
+          if (productId) {
               this.GetProductById(this.productId);
               this.GetProductImagesByProductId(this.productId); // Gọi hàm để lấy dữ liệu sản phẩm
           }
