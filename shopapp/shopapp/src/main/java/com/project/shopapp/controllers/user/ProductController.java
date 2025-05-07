@@ -25,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -112,8 +113,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable("id") Long productId) {
+    @GetMapping("/{productId}")
+    public ResponseEntity<ResponseObject> getProductById(@PathVariable("productId") Long productId) {
         try {
             Product existingProduct = productService.getProductbyId(productId);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -130,7 +131,6 @@ public class ProductController {
                     .build());
         }
     }
-
     @PostMapping(value = "")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDto productDto,

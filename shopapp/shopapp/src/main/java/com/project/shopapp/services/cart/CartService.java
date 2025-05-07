@@ -48,6 +48,7 @@ public class CartService implements ICartService {
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND, userId)
                 ));
+        //Tìm cart theo userId nếu chưa có thì tạo mới cart
         Cart cart = cartRepository.findByUserIdAndActiveTrue(userId)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
@@ -107,6 +108,7 @@ public class CartService implements ICartService {
                 ));
         cart.setStatus(CartStatus.CHECKED_OUT);
         cart.setActive(false);
+        cartRepository.save(cart);
         cartDetailRepository.deleteByCartId(cart.getId());
     }
 }

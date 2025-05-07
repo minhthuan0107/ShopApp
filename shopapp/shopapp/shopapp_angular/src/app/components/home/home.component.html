@@ -41,10 +41,11 @@
                     <i class="fa-solid fa-star-half-alt"></i>
                 </div>
                 <div class="product-actions">
-                    <button class="btn btn-primary me-4" (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
+                    <button class="btn btn-primary me-4" (click)="addToCart(product.id); $event.stopPropagation()"
+                        title="Thêm vào giỏ hàng">
                         <i class="fas fa-cart-plus"></i>
                     </button>
-                    <button class="btn btn-success me-4" title="Mua ngay">
+                    <button class="btn btn-success me-4" title="Mua ngay" (click)="onBuyNow(product.id); $event.stopPropagation()">
                         <i class="fas fa-shopping-basket"></i>
                     </button>
                     <button class="btn btn-danger" title="Yêu thích">

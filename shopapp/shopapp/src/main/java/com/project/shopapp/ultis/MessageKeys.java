@@ -95,6 +95,10 @@ public class MessageKeys {
     public static final String VALUE_MIN_MAX_SUCCESSFULLY = "value.min.max.successfully";
 
     public static final String CREATED_ACCESS_TOKEN_SUCCESSFULLY = "access_token.created_successfully";
+    public static final String REFRESH_TOKEN_NOT_FOUND = "refresh_token.not.found";
+
+    public static final String REFRESH_TOKEN_REVOKED_SUCCESSFULLY = "refresh_token.revoked.successfully";
+    public static final String REFRESH_TOKEN_REVOKED = "refresh_token.revoked";
 
 
 

@@ -2,6 +2,7 @@ package com.project.shopapp.repositories;
 
 import com.project.shopapp.models.CartDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -24,6 +25,9 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
     BigDecimal sumTotalPriceByCartId(@Param("cartId") Long cartId);
     @Query(value = "SELECT COUNT(*) FROM cart_details WHERE cart_id = :cartId", nativeQuery = true)
     Long countCartItems(@Param("cartId") Long cartId);
-    void deleteByCartId (Long cartId);
+    @Modifying
+    @Query(value = "DELETE FROM cart_details WHERE cart_id = :cartId", nativeQuery = true)
+    void deleteByCartId(@Param("cartId") Long cartId);
+
     void deleteById(Long cartDetailId);
 }

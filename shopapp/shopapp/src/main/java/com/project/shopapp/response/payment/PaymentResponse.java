@@ -22,6 +22,8 @@ public class PaymentResponse extends BaseEntity {
     private Long paymentId;
     @JsonProperty("order_id")
     private Long orderId;
+    @JsonProperty("is_buy_now")
+    private boolean isBuyNow;
     @JsonProperty("amount")
     private BigDecimal amount;
     @JsonProperty("payment_method")
@@ -35,6 +37,7 @@ public class PaymentResponse extends BaseEntity {
         PaymentResponse paymentResponse = PaymentResponse.builder()
                 .paymentId(payment.getId())
                 .orderId(payment.getOrder().getId())
+                .isBuyNow(payment.getOrder().isBuyNow())
                 .amount(payment.getAmount())
                 .paymentMethod(payment.getPaymentMethod())
                 .transactionId(payment.getTransactionId())

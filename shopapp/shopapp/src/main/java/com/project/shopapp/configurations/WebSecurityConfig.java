@@ -51,14 +51,13 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests
                             // Các URL public
-                            .requestMatchers(signinUrl, signupUrl)
+                            .requestMatchers(signinUrl, signupUrl,tokenUrl)
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, categoryUrl, productUrl, brandUrl,
                                     productimageUrl, commentUrl, rateUrl)
                             .permitAll()
                             //Phân quyền cho websocket
                             .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
-                            .requestMatchers(HttpMethod.POST,tokenUrl).permitAll()
                             //Định nghĩa quyên cho payment
                             .requestMatchers(HttpMethod.POST, paymentUrl).hasRole("USER")
                             .requestMatchers(HttpMethod.PUT, paymentUrl).hasRole("USER")

@@ -6,11 +6,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Router, RouterModule } from '@angular/router';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { UserService } from '../../services/user.service';
-import { CartDetail } from '../../dtos/cartdetail.dto';
 import { CartService } from '../../services/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { filter } from 'rxjs';
+import { CartDetailDto } from '../../dtos/cartdetail.dto';
 
 @Component({
   selector: 'app-home',
@@ -91,10 +91,10 @@ export class HomeComponent implements OnInit {
 
   addToCart(productId: number): void {
     if (this.userId) {
-      const cartDetail: CartDetail = { product_id: productId };
-      this.cartService.addtoCart(this.userId, cartDetail).subscribe({
+      const cartDetailDto: CartDetailDto = { product_id: productId };
+      this.cartService.addtoCart(this.userId, cartDetailDto).subscribe({
         next: (response) => {
-          this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công', 'Thành công', { timeOut: 2000 });
+          this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công', 'Thành công', { timeOut: 1500 });
           //Lấy quantity để lưu vào biến cartItem
           const totalItems = response?.data?.cartDetails.length;
           if (totalItems !== undefined) {
@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
           }
         },
         error: () => {
-          this.toastr.error('Lỗi khi thêm sản phẩm vào giỏ hàng', 'Lỗi', { timeOut: 2000 });
+          this.toastr.error('Lỗi khi thêm sản phẩm vào giỏ hàng', 'Lỗi', { timeOut: 1500 });
         }
       });
     } else {
@@ -121,6 +121,25 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-
+  //Hàm check user đăng nhập và mua ngay
+  onBuyNow(productId: number) {
+    if (this.userId) {
+      this.router.navigate(['/buy-now-order', productId]);
+    } else {
+      Swal.fire({
+        title: 'Bạn cần đăng nhập!',
+        text: 'Vui lòng đăng nhập để mua sản phẩm.',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Hủy',
+        confirmButtonText: 'Đăng nhập ngay',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/signin']);
+        }
+      });
+    }
+  }
 
 }

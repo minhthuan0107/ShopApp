@@ -8,6 +8,9 @@ import { CartDetail } from '../../models/cart-detail';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { CartDetailsUpdate } from '../../dtos/cartdetails-update.dto';
+import { filter, Observable } from 'rxjs';
+import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-cart',
@@ -18,23 +21,25 @@ import { CartDetailsUpdate } from '../../dtos/cartdetails-update.dto';
 })
 export class CartComponent {
   userId!: number;
+  user: User | null = null;
+  user$!: Observable<User | null>;
   cartDetail: CartDetail[] = [];
   constructor(
     private route: ActivatedRoute,
     private cartDetailService: CartDetailService,
     private cartService: CartService,
-    private router : Router
+    private router : Router,
+    private userService : UserService 
   ) { }
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const userId = params.get('userId');
-      if (userId) {
-        this.userId = +userId;
-        this.getCartDetailsByUserId(this.userId);
-      } else {
-        console.log('Không tìm thấy productId trong router');
-      }
-    });
+     //Lấy user từ behavior subject
+        this.user$ = this.userService.user$;
+        this.user$.pipe(
+          filter((user): user is User => !!user),
+        ).subscribe(user => {
+          this.userId = user.id;
+          this.getCartDetailsByUserId(this.userId);
+        });
   }
   increaseQuantity(item: any) {
     item.quantity += 1;

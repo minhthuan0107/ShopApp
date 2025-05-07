@@ -8,6 +8,7 @@ import com.project.shopapp.models.Payment;
 import com.project.shopapp.repositories.PaymentRepository;
 import com.project.shopapp.response.payment.PaymentResponse;
 import com.project.shopapp.services.cart.CartService;
+import com.project.shopapp.services.email.OrderMailService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class PaymentService implements IPaymentService {
     private LocalizationUtils localizationUtils;
     @Autowired
     private CartService cartService;
+    @Autowired
+    private OrderMailService orderMailService;
 
     @Override
     public Long getOrderIdByTransactionId(String transactionId) throws Exception {
@@ -41,10 +44,12 @@ public class PaymentService implements IPaymentService {
         payment.setStatus(statusDto.getStatus());
         paymentRepository.save(payment);
         // Nếu thanh toán thành công thì clear giỏ hàng
-        if (statusDto.getStatus().equals(PaymentStatus.SUCCESS)) {
+        if (statusDto.getStatus().equals(PaymentStatus.SUCCESS.name())
+                && !payment.getOrder().isBuyNow()) {
             Long userId = payment.getOrder().getUser().getId();
             cartService.clearCart(userId);
         }
+        orderMailService.sendMailOrder(payment.getOrder());
         return PaymentResponse.fromPayment(payment);
     }
 }

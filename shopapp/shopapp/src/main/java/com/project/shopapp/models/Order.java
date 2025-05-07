@@ -36,6 +36,8 @@ public class Order {
     private String orderStatus;
     @Column(name = "total_price")
     private BigDecimal totalPrice;
+    @Column(name = "is_buy_now")
+    private boolean isBuyNow;
     @Column(name = "shipping_method",length = 100)
     private String shippingMethod;
     @Column(name = "shipping_date")

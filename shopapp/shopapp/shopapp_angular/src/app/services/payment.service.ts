@@ -15,8 +15,8 @@ export class PaymentService {
   createPaymentUrl(payload: { amount: number, language: string }): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.apiPayment}/create_payment_url`, payload);
   }
-  updatePayment(statusDto: UpdatePaymentStatusDto): Observable<ApiResponse<UpdatePaymentStatusDto>> {
-    return this.http.put<ApiResponse<UpdatePaymentStatusDto>>(`${this.apiPayment}/update-status`,statusDto );
+  updatePayment(statusDto: UpdatePaymentStatusDto): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiPayment}/update-status`,statusDto );
   }
   getOrderIdByTransactionId(transactionId: string): Observable<ApiResponse<any>> {
     return this.http.get<ApiResponse<any>>(`${this.apiPayment}/transaction/${transactionId}`);

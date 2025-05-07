@@ -53,12 +53,10 @@ export class SigninComponent {
     this.userService.signin(signinDto).pipe(
       switchMap((response: LoginResponse) => {
         const accessToken = response.access_token;
-        const refreshToken = response.access_token;
+        const refreshToken = response.refresh_token;
         this.tokenService.setUseSessionStorage(!this.rememberMe);
         this.tokenService.setAccessToken(accessToken);
         this.tokenService.setRefreshToken(refreshToken);
-        console.log('AccessToken',accessToken);
-        console.log('RefreshToekn',refreshToken);
         // Sau khi nhận token, gọi API lấy thông tin user
         return this.userService.fetchUserInfo();
       })

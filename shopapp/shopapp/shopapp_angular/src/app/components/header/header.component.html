@@ -55,7 +55,7 @@
 
           <ng-container *ngIf="user$ | async as user; else loginTemplate">
             <li class="nav-item cart-item">
-              <a class="nav-link position-relative" [routerLink]="['/cart', user.id]" routerLinkActive="active">
+              <a class="nav-link position-relative" [routerLink]="['/cart']" routerLinkActive="active">
                 <i class="fas fa-shopping-cart icon"></i>
                 <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
               </a>

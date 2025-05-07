@@ -65,9 +65,13 @@ public class OrderService implements IOrderService {
         List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
                 .map(OrderDetailResponse::fromOrderDetail)
                 .collect(Collectors.toList());
-        // Chỉ xóa giỏ hàng nếu thanh toán trực tiếp
-        if ("Cod".equals(orderDto.getPayment().getPaymentMethod())) {
+        // Chỉ xóa giỏ hàng nếu mua sản phẩm từ giỏ hàng và thanh toán trực tiếp
+        if (!orderDto.isBuyNow() && "Cod".equals(orderDto.getPayment().getPaymentMethod())) {
             cartService.clearCart(userId);
+            orderMailService.sendMailOrder(order);
+        }
+        //Nếu bấm mua ngay và thanh toán bằng Cod thì chỉ gửi mail không xóa giỏ hảng
+        else if ("Cod".equals(orderDto.getPayment().getPaymentMethod()) && orderDto.isBuyNow()) {
             orderMailService.sendMailOrder(order);
         }
         // Chuyển đổi Order sang OrderResponse để trả về

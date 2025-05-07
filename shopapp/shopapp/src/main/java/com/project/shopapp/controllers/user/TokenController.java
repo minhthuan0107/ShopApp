@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${api.prefix}/tokens")
@@ -21,8 +22,8 @@ public class TokenController {
     @Autowired
     private LocalizationUtils localizationUtils;
 
-    @PostMapping("/newAccessToken")
-    public ResponseEntity<ResponseObject> generateAccessTokenFromRefreshToken( @RequestParam String refreshToken)  {
+    @PostMapping("/new-access-token")
+    public ResponseEntity<ResponseObject> generateAccessTokenFromRefreshToken(@RequestParam String refreshToken) {
         try {
             String newAccessToken = tokenService.generateAccessTokenFromRefreshToken(refreshToken);
             return ResponseEntity.status(HttpStatus.CREATED).body(ResponseObject.builder()
@@ -30,11 +31,27 @@ public class TokenController {
                     .message(localizationUtils.getLocalizedMessage(MessageKeys.CREATED_ACCESS_TOKEN_SUCCESSFULLY))
                     .data(Collections.singletonMap("access_token", newAccessToken))
                     .build());
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ResponseObject.builder()
                     .status(HttpStatus.UNAUTHORIZED)
                     .message(e.getMessage())
                     .build());
         }
     }
+    @PatchMapping("/refresh-token")
+    public ResponseEntity<ResponseObject> revokeRefreshToken(@RequestParam String refreshToken) {
+        try {
+            tokenService.revokeRefreshToken(refreshToken);
+            return  ResponseEntity.ok(ResponseObject.builder()
+                    .status(HttpStatus.OK)
+                    .message(localizationUtils.getLocalizedMessage(
+                            MessageKeys.REFRESH_TOKEN_REVOKED_SUCCESSFULLY))
+                    .build());
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+        }
     }
+}

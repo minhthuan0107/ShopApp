@@ -25,8 +25,6 @@ public class Token {
     private LocalDateTime expirationDate;
     @Column(name = "revoked")
     private boolean revoked;
-    @Column(name = "expired")
-    private boolean expired;
     @ManyToOne
     @JoinColumn(name ="user_id")
     private User user;
