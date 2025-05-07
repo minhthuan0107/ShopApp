@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { CartDetail } from '../dtos/cartdetail.dto';
+import { CartDetailDto } from '../dtos/cartdetail.dto';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { ApiResponse } from '../responses/api.response';
 
@@ -14,7 +14,7 @@ export class CartService {
   private apiCart = `${environment.apiBaseUrl}/carts`
   constructor(private http: HttpClient) { }
   // Api để thêm sản phẩm vào giỏ hàng
-  addtoCart(userId: number, cartDetail: CartDetail): Observable<any> {
+  addtoCart(userId: number, cartDetail: CartDetailDto): Observable<any> {
     const url = `${this.apiCart}/${userId}`;
     return this.http.post(url, cartDetail);
   }

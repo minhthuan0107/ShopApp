@@ -45,10 +45,9 @@
                         title="Thêm vào giỏ hàng">
                         <i class="fas fa-cart-plus"></i>
                     </button>
-                    <button class="btn btn-success me-4" title="Mua ngay" [routerLink]="['/buy-now-order', product.id]">
+                    <button class="btn btn-success me-4" title="Mua ngay" (click)="onBuyNow(product.id); $event.stopPropagation()">
                         <i class="fas fa-shopping-basket"></i>
                     </button>
-
                     <button class="btn btn-danger" title="Yêu thích">
                         <i class="fas fa-heart"></i>
                     </button>

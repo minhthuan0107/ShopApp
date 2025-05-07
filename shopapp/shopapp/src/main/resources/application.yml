@@ -48,7 +48,7 @@ bezkoder:
   refreshTokenExpirationMs: 604800000 # 7 ngày = 7 * 24 * 60 * 60 * 1000 millis
 vnpay:
   tmn-code: "XCB5GDBK"
-  secret-key: "DZYDEFH0PJOUI3S0VBLHGBW0WUG6KH0V"
+  secret-key: "R2M7AEGMC48SY0IK3W55C3U3F986S9DZ"
   pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
   return-url: "${VNPAY_RETURN_URI:http://localhost:4200/payments/payment-callback}"
   api-url: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"

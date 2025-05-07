@@ -16,7 +16,6 @@ import java.util.List;
 public interface IProductService {
     Product createProduct(ProductDto productDto) throws DataNotFoundException;
     Product getProductbyId (Long productId) throws Exception;
-    Product getProductByIdWithAuth (Long productId) throws Exception;
     Page<ProductResponse> getProductbyCategoryId(
             Long categoryId,
             List<Long> brandIds,

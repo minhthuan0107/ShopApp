@@ -13,8 +13,8 @@ export class CartDetailService {
   private apiCartDetail = `${environment.apiBaseUrl}/cartdetails`;
 
   constructor(private http: HttpClient) { }
-  //
-  getCartDetailsByUserId(userId: number) {
+  //Api lấy danh sách chi tiết giỏ hàng
+  getCartDetailsByUserId(userId: number): Observable<ApiResponse<CartDetail[]>> {
     return this.http.get<ApiResponse<CartDetail[]>>(`${this.apiCartDetail}/${userId}`);
   }
   //Api xóa chi tiết sản phẩm theo Id

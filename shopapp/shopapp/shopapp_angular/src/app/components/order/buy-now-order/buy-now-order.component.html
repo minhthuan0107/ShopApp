@@ -57,7 +57,7 @@
                   <tr>
                     <td>
                       <div class="product-info">
-                        <img [src]="product.url_image" class="product-image">
+                        <img *ngIf="product" [src]="product.url_image" class="product-image">
                         <span class="product-name">{{ product.name }}</span>
                       </div>
                     </td>

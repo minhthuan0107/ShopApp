@@ -13,14 +13,25 @@ import { orderConfirmationGuard } from './guards/order-confirmation.guard';
 import { OrderHistoryComponent } from './components/order/order-history/order-history.component';
 import { SearchComponent } from './components/search/search.component';
 import { BuyNowOrderComponent } from './components/order/buy-now-order/buy-now-order.component';
+import { authGuard} from './guards/auth.guard';
 
 export const routes: Routes = [ // ✅ Export `routes`
 { path: 'home', component: HomeComponent },
 { path: 'signin', component: SigninComponent },
-{ path: 'cart/:userId', component: CartComponent },
+{ 
+    path: 'cart', 
+    component: CartComponent,
+    canActivate: [authGuard],
+    data: { authMessage: 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng' }
+},
 { path: 'signup', component: SignupComponent },  
 { path: 'detail-product/:productId', component: DetailProductComponent },
-{ path: 'buy-now-order/:productId', component: BuyNowOrderComponent },
+{
+    path: 'buy-now-order/:productId',
+    component: BuyNowOrderComponent,
+    canActivate: [authGuard],
+    data: { authMessage: 'Vui lòng đăng nhập để mua sản phẩm!' }
+  },
 { path: '', component: HomeComponent }, 
 { path: 'category/:id', component: ProductCategoryComponent },
 { path: 'search/:keyword', component: SearchComponent },

@@ -67,10 +67,11 @@ export class PaymentCallbackComponent {
   private updatePaymentStatus(statusDto: UpdatePaymentStatusDto): void {
     this.paymentService.updatePayment(statusDto).subscribe({
       next: (response) => {
-        // Kiểm tra nếu API trả về SUCCESS mới thực hiện các bước tiếp theo
-        if (response.data.status === 'SUCCESS' && response.data.is_buy_now === false) {
-          this.cartService.setCartItemCount(0);
+        if (response.data.status === 'SUCCESS') {
           this.showSuccessAlert();
+        if (response.data.is_buy_now === false) {
+          this.cartService.setCartItemCount(0);
+        }
         } else {
           this.showErrorAlert();
         }

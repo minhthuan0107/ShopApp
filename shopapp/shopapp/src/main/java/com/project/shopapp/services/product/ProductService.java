@@ -72,14 +72,6 @@ public class ProductService implements IProductService {
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, productId)));
     }
-
-    @Override
-    public Product getProductByIdWithAuth(Long productId) throws Exception {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, productId)));
-    }
-
     @Override
     public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
         //Lay danh sach san pham theo trang (page) va gioi han(limit)

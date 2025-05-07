@@ -48,7 +48,7 @@ export class BuyNowOrderComponent {
       const productId = params.get('productId');
       if (productId) {
         this.productId = +productId; //Ép chuỗi về số
-        this.getProductByIdWithAuth(this.productId)
+        this.getProductById(this.productId)
       }
       // Lắng nghe user$ từ BehaviorSubject và gọi API khi có userId
       this.userService.user$.subscribe(user => {
@@ -64,8 +64,8 @@ export class BuyNowOrderComponent {
     });
   }
   // Lấy thông tin sản phẩm theo Id
-  getProductByIdWithAuth(productId: number) {
-    this.productService.getProductByIdWithAuth(productId).subscribe({
+  getProductById(productId: number) {
+    this.productService.getProductById(productId).subscribe({
       next: (response: any) => {
         this.product = response.data
       },
@@ -107,21 +107,38 @@ export class BuyNowOrderComponent {
         this.processOrder(orderDto);
       }
     }
-  
-    // Xử lý đặt hàng trực tiếp
     private processOrder(orderDto: OrderDto) {
-      this.orderService.placeOrder(this.userId, orderDto).subscribe({
-        next: (response) => {
-          const orderId = response.data.order_id;
-          Swal.fire({
-            icon: "success",
-            title: "Đặt hàng thành công!",
-            text: "Đơn hàng của bạn đã được đặt thành công!",
-            confirmButtonText: "Xem chi tiết",
-          }).then(() => this.router.navigate(['/order-confirmation', orderId]));
-        },
-        error: (error: any) => {
-          console.error("Lỗi!", error.error?.message || "Đặt hàng thất bại!");
+      Swal.fire({
+        title: 'Bạn có chắc chắn muốn đặt hàng này không?',
+        text: 'Đơn hàng của bạn sẽ được xử lý ngay sau khi bạn xác nhận.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Đặt hàng',
+        cancelButtonText: 'Hủy',
+        reverseButtons: true // Đảo vị trí của nút Confirm và Cancel
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.orderService.placeOrder(this.userId, orderDto).subscribe({
+            next: (response) => {
+              this.cartService.setCartItemCount(0);
+              const orderId = response.data.order_id; 
+    
+              Swal.fire({
+                icon: 'success',
+                title: 'Đặt hàng thành công!',
+                text: 'Đơn hàng của bạn đã được đặt thành công!',
+                confirmButtonText: 'Xem chi tiết',
+              }).then(() => {
+                this.router.navigate(['/order-confirmation', orderId]);
+              });
+            },
+            error: (error: any) => {
+              console.error('Lỗi!', error.error?.message || 'Đặt hàng thất bại!');
+            }
+          });
+        } else {
+          // Nếu người dùng chọn hủy, điều hướng về lại trang cũ
+          this.router.navigate([this.router.url]);
         }
       });
     }

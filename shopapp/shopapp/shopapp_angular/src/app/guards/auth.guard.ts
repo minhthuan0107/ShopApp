@@ -1,29 +1,21 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { UserService } from '../services/user.service';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateFn } from '@angular/router';
+import Swal from 'sweetalert2';
+import { TokenService } from '../services/token.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuard implements CanActivate {
-  constructor(private userService: UserService, private router: Router) {}
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.userService.user$.pipe(
-      map(user => {
-        if (user) {
-          return true; // Cho phép truy cập
-        } else {
-          alert('Bạn hãy đăng nhập để thêm sản phẩm vào giỏ hàng')
-          this.router.navigate(['/signin']); // Chuyển hướng đến trang đăng nhập
-          return false; // Từ chối truy cập
-        }
-      })
-    );
+export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
+  const authMessage = route.data['authMessage'] || 'Vui lòng đăng nhập để truy cập trang này!';
+  const accessToken = tokenService.getAccessToken();
+  if (accessToken) {
+    return Promise.resolve(true);
+  } else {
+    return Swal.fire({
+      title: 'Vui lòng đăng nhập!',
+      text: authMessage,
+      icon: 'warning',
+      confirmButtonText: 'Đăng nhập'
+    }).then(() => router.parseUrl('/signin')); // Angular tự redirect
   }
 }

@@ -131,26 +131,6 @@ public class ProductController {
                     .build());
         }
     }
-    @GetMapping("auth/{productId}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ResponseObject> getProductByIdWithAuth(@PathVariable("productId") Long productId) {
-        try {
-            Product existingProduct = productService.getProductByIdWithAuth(productId);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .status(HttpStatus.OK)
-                    .data(ProductResponse.fromProduct(existingProduct))
-                    .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.PRODUCT_GET_BY_ID_SUCCESSFULLY, productId))
-                    .build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .message(e.getMessage())
-                    .build());
-        }
-    }
-
     @PostMapping(value = "")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDto productDto,
