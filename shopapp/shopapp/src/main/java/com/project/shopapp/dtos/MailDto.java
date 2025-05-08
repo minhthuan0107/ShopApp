@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MailDto {
-    private String from = "ThuanLe Shop";
+    private String from = "ThuanLeShop <lethuan01072001@gmail.com>";
     private String to;
     private String subject;
     private String body;

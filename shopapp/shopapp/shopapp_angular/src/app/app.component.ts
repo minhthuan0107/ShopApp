@@ -13,18 +13,7 @@ import { TokenService } from './services/token.service';
 })
 export class AppComponent  {
   constructor(private userService: UserService, private tokenService: TokenService) {}
-  ngOnInit() {
-    this.loadUserFromToken();
 
-}
-private loadUserFromToken(): void {
-  const token = this.tokenService.getAccessToken();
-  if (!token) return;
-  this.userService.fetchUserInfo().subscribe({
-    next: user => this.userService.setCurrentUser(user),
-    error: error => console.error('Lỗi khi load user:', error)
-  });
-}
 }
 
 
