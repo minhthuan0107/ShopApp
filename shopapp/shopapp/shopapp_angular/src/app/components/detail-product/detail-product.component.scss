@@ -14,11 +14,15 @@
 
 .product-details {
     width: 100%;
-    max-width: 40vw;
+    max-width: 768px;
     height: auto;
-    margin: -3vw auto 0;
-    padding: 2vw;
-    border-radius: 0.5vw;
+    padding: 38px;
+    border-radius: 10px;
+   
+
+}
+.name-up {
+    margin-top: -1px !important;
 }
 
 .product-actions button {

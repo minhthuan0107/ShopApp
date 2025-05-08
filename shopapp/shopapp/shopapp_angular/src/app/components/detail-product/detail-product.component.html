@@ -31,17 +31,27 @@
             </div>
         </div>
         <div class="col-md-6 d-flex flex-column align-items-start">
-            <div class="product-details w-100 p-0">
-                <h2 class="product-name">{{ product?.name }}</h2>
-                <h4 class="text-muted">Mô tả sản phẩm</h4>
-                <p class="product-description">{{ product?.description }}</p>
-                <p class="product-price fw-bold text-danger">Giá: {{ product?.price | number: '1.0-0' }}đ</p>
-                <div class="product-actions mt-4">
-                    <button class="btn btn-primary me-2">
-                        <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+            <div class="product-details w-100 p-3 shadow-sm rounded bg-white">
+                <h2 class="product-name mb-3 fw-bold text-primary name-up">{{ product.name }}</h2>
+        
+                <h3 class="text-muted mb-2">Mô tả sản phẩm</h3>
+                <p class="product-description text-secondary mb-4">{{ product.description }}</p>
+        
+                <p class="product-price h4 fw-bold text-danger mb-4">
+                    Giá: {{ product.price | number: '1.0-0' }}đ
+                </p>
+        
+                <div class="product-actions d-flex gap-3">
+                    <button class="btn btn-primary d-flex align-items-center gap-2" (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
+                        <i class="fas fa-cart-plus"></i> <span>Thêm giỏ</span>
                     </button>
-                    <button class="btn btn-success">
-                        <i class="fas fa-shopping-basket"></i> Mua ngay
+        
+                    <button class="btn btn-success d-flex align-items-center gap-2" (click)="onBuyNow(product.id); $event.stopPropagation()" title="Mua ngay">
+                        <i class="fas fa-shopping-basket"></i> <span>Mua ngay</span>
+                    </button>
+        
+                    <button class="btn btn-outline-danger d-flex align-items-center gap-2" title="Yêu thích">
+                        <i class="fas fa-heart"></i> <span>Yêu thích</span>
                     </button>
                 </div>
             </div>
