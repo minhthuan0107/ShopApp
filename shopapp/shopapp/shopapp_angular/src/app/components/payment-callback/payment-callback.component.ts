@@ -56,7 +56,7 @@ export class PaymentCallbackComponent {
               };
               this.updatePaymentStatus(statusDto);
           },
-          error: (err) => {
+          error: () => {
             this.showErrorAlert();
           }
         });

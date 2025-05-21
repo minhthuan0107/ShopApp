@@ -1,6 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.cartdetail.CartDetailsUpdateDto;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.cartdetail.CartDetailResponse;
@@ -9,6 +10,7 @@ import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,10 @@ public class CartDetailController {
     @Autowired
     private LocalizationUtils localizationUtils;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ResponseObject> getCartDetailsByUserId(@PathVariable Long userId) throws Exception {
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> getCartDetailsByUserId(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         try {
             List<CartDetailResponse> cartDetails = cartDetailService.getCartDetailsByUserId(userId);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -39,9 +43,11 @@ public class CartDetailController {
         }
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<ResponseObject> updateCartDetails(@PathVariable Long userId,
-                                                            @RequestBody List<CartDetailsUpdateDto> updateCartDetails) throws Exception {
+    @PutMapping("")
+    public ResponseEntity<ResponseObject> updateCartDetails(Authentication authentication,
+                                                            @RequestBody List<CartDetailsUpdateDto> updateCartDetails) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         try {
             List<CartDetailResponse> cartDetailResponses = cartDetailService.updateCartDetails(userId, updateCartDetails);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -59,9 +65,11 @@ public class CartDetailController {
     }
 
 
-    @DeleteMapping("/{userId}/{cartDetailId}")
-    public ResponseEntity<ResponseObject> deleteCartDetailById(@PathVariable Long userId,
+    @DeleteMapping("/{cartDetailId}")
+    public ResponseEntity<ResponseObject> deleteCartDetailById(Authentication authentication,
                                                                @PathVariable Long cartDetailId) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         try {
             cartDetailService.deleteCartDetailById(userId, cartDetailId);
             return ResponseEntity.ok(ResponseObject.builder()

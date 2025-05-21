@@ -1,6 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.cartdetail.CartDetailDto;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.cart.CartResponse;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +26,12 @@ public class CartController {
     @Autowired
     private LocalizationUtils localizationUtils;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<ResponseObject> addProductToCart(@PathVariable Long userId,
+    @PostMapping("")
+    public ResponseEntity<ResponseObject> addProductToCart(Authentication authentication,
                                                            @RequestBody @Valid CartDetailDto cartDetailDto,
                                                            BindingResult result) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
@@ -42,11 +46,11 @@ public class CartController {
             CartResponse cartResponse = cartService.addProductToCart(userId, cartDetailDto);
             return ResponseEntity.status(HttpStatus.CREATED).
                     body(ResponseObject.builder()
-                    .status(HttpStatus.CREATED)
-                    .data(cartResponse)
-                    .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.CART_ADD_PRODUCT_SUCCESSFULLY, cartDetailDto.getProductId()))
-                    .build());
+                            .status(HttpStatus.CREATED)
+                            .data(cartResponse)
+                            .message(localizationUtils.getLocalizedMessage(
+                                    MessageKeys.CART_ADD_PRODUCT_SUCCESSFULLY, cartDetailDto.getProductId()))
+                            .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
                     .status(HttpStatus.BAD_REQUEST)
@@ -55,15 +59,17 @@ public class CartController {
         }
     }
 
-    @GetMapping("/count/{userId}")
-    public ResponseEntity<ResponseObject> getCartItemCount(@PathVariable Long userId) {
-            Long cartItems = cartService.getCartItemCount(userId);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .status(HttpStatus.OK)
-                    .data(cartItems)
-                    .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.CART_GET_CART_ITEMS_SUCCESSFULLY))
-                    .build());
+    @GetMapping("/count")
+    public ResponseEntity<ResponseObject> getCartItemCount(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        Long cartItems = cartService.getCartItemCount(userId);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .data(cartItems)
+                .message(localizationUtils.getLocalizedMessage(
+                        MessageKeys.CART_GET_CART_ITEMS_SUCCESSFULLY))
+                .build());
     }
 
     @DeleteMapping("/clear/{userId}")

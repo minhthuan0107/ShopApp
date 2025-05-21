@@ -14,16 +14,16 @@ export class CartDetailService {
 
   constructor(private http: HttpClient) { }
   //Api lấy danh sách chi tiết giỏ hàng
-  getCartDetailsByUserId(userId: number): Observable<ApiResponse<CartDetail[]>> {
-    return this.http.get<ApiResponse<CartDetail[]>>(`${this.apiCartDetail}/${userId}`);
+  getCartDetailsByUserId(): Observable<ApiResponse<CartDetail[]>> {
+    return this.http.get<ApiResponse<CartDetail[]>>(`${this.apiCartDetail}`);
   }
   //Api xóa chi tiết sản phẩm theo Id
-  deleteCartDetailById(userId: number, cartDetailId: number): Observable<ApiResponse<any>> {
-    return this.http.delete<ApiResponse<any>>(`${this.apiCartDetail}/${userId}/${cartDetailId}`);
+  deleteCartDetailById(cartDetailId: number): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiCartDetail}/${cartDetailId}`);
   }
   //Api cập nhật chi tiết sản phẩm (số lượng, tổng tiền)
-  updateCartDetails(userId: number, cartDetails: CartDetailsUpdate[]): Observable<ApiResponse<any>> {
-    return this.http.put<ApiResponse<any>>(`${this.apiCartDetail}/${userId}`, cartDetails);
+  updateCartDetails(cartDetails: CartDetailsUpdate[]): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiCartDetail}`, cartDetails);
   }
 
 

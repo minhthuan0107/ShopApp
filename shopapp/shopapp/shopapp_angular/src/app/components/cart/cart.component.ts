@@ -38,7 +38,7 @@ export class CartComponent {
           filter((user): user is User => !!user),
         ).subscribe(user => {
           this.userId = user.id;
-          this.getCartDetailsByUserId(this.userId);
+          this.getCartDetailsByUserId();
         });
   }
   increaseQuantity(item: any) {
@@ -53,8 +53,8 @@ export class CartComponent {
     }
   }
   // Hàm lấy thông tin giỏ hàng theo userId
-  getCartDetailsByUserId(userId: number) {
-    this.cartDetailService.getCartDetailsByUserId(userId).subscribe({
+  getCartDetailsByUserId() {
+    this.cartDetailService.getCartDetailsByUserId().subscribe({
       next: (response: any) => {
         this.cartDetail = response.data.map((item: any) => ({
           ...item, // Sao chép toàn bộ thuộc tính của item
@@ -75,7 +75,7 @@ export class CartComponent {
     return this.cartDetail.reduce((sum, item) => sum + item.total_price, 0);
   }
 
-  deleteCartDetailById(cartDetailId: number, userId: number) {
+  deleteCartDetailById(cartDetailId: number) {
     Swal.fire({
       title: "Bạn có chắc chắn muốn xóa?",
       text: "Sản phẩm này sẽ bị xóa khỏi giỏ hàng!",
@@ -87,7 +87,7 @@ export class CartComponent {
       cancelButtonText: "Hủy"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cartDetailService.deleteCartDetailById(userId, cartDetailId).subscribe({
+        this.cartDetailService.deleteCartDetailById(cartDetailId).subscribe({
           next: () => {
             Swal.fire({
               title: "Đã xóa!",
@@ -98,7 +98,7 @@ export class CartComponent {
             });
             setTimeout(() => {
               //gọi lại hàm lấy danh sách chi tiết
-              this.getCartDetailsByUserId(userId);
+              this.getCartDetailsByUserId();
             }, 1500);
           },
           error: (error) => {
@@ -113,7 +113,7 @@ export class CartComponent {
       cart_detail_id: item.cart_detail_id,
       new_quantity: item.quantity
     }));
-    this.cartDetailService.updateCartDetails(this.userId, cartDetailsUpdateDto).subscribe({
+    this.cartDetailService.updateCartDetails(cartDetailsUpdateDto).subscribe({
       next: () => {
         this.router.navigate(['/check-out']);
       },

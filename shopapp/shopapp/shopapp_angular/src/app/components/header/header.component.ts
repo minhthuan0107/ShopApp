@@ -42,11 +42,7 @@ export class HeaderComponent implements OnInit {
     this.loadCategories();
     //Lấy user từ behavior subject
     this.user$ = this.userService.user$;
-    this.user$.pipe(
-      filter((user): user is User => !!user),
-    ).subscribe(user => {
-      this.cartService.getCartItemCount(user.id).subscribe();
-    });
+    this.cartService.getCartItemCount().subscribe();
     //Lấy số lượng cart từ behavior subject
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
