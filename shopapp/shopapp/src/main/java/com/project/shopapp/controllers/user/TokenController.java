@@ -1,18 +1,15 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.response.ResponseObject;
+import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.services.token.TokenService;
 import com.project.shopapp.ultis.MessageKeys;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.Map;
 
 @RestController
 @RequestMapping("${api.prefix}/tokens")

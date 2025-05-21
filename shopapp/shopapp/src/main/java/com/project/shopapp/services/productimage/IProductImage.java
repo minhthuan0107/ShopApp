@@ -3,7 +3,7 @@ package com.project.shopapp.services.productimage;
 import com.project.shopapp.dtos.ProductImageDto;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.models.ProductImage;
-import com.project.shopapp.response.productimages.ProductImagesResponse;
+import com.project.shopapp.responses.productimages.ProductImagesResponse;
 
 import java.util.List;
 

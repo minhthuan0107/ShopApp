@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   suggestedProducts: ProductResponse[] = [];
   private keywordSubject = new Subject<string>();
   searchQuery: string = '';
+  favoriteItemCount: number = 0;
 
   constructor(private categoryService: CategoryService,
     private router: Router,

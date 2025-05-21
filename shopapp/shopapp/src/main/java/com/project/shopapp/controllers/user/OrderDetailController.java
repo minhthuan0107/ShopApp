@@ -2,8 +2,8 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.OrderDetailDto;
-import com.project.shopapp.response.orderdetail.OrderDetailResponse;
-import com.project.shopapp.response.ResponseObject;
+import com.project.shopapp.responses.orderdetail.OrderDetailResponse;
+import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.services.orderdetail.OrderDetailService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;

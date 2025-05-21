@@ -34,11 +34,8 @@
 
           <li class="nav-item search-container position-relative">
             <div class="search-wrapper">
-              <input #searchInput 
-                     type="text" 
-                     class="form-control search-input" 
-                     placeholder="Tìm sản phẩm" 
-                     (input)="onKeywordChange(searchInput.value)">
+              <input #searchInput type="text" class="form-control search-input" placeholder="Tìm sản phẩm"
+                (input)="onKeywordChange(searchInput.value)">
               <button class="search-btn" (click)="onSearch(searchInput.value)">
                 <i class="fas fa-search"></i>
               </button>
@@ -47,7 +44,7 @@
             <ul class="suggestions-list" *ngIf="suggestedProducts.length > 0 && searchInput.value.trim() !== '' ">
               <li *ngFor="let product of suggestedProducts" (click)="onSelectSuggestion(product.id)">
                 <img [src]="product.url_image" alt="Ảnh" width="40" height="40">
-                <span>{{ product.name }}</span> - 
+                <span>{{ product.name }}</span> -
                 <strong>{{ product.price | currency:'VND':'symbol' }}</strong>
               </li>
             </ul>
@@ -55,12 +52,18 @@
 
           <ng-container *ngIf="user$ | async as user; else loginTemplate">
             <li class="nav-item cart-item">
-              <a class="nav-link position-relative" [routerLink]="['/cart']" routerLinkActive="active">
+              <a class="nav-link position-relative" title="Giỏ hàng" [routerLink]="['/cart']" routerLinkActive="active">
                 <i class="fas fa-shopping-cart icon"></i>
                 <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
               </a>
             </li>
-
+            <li class="nav-item favorite-item">
+              <a class="nav-link position-relative" title="Yêu thích" [routerLink]="['/favorite']" routerLinkActive="active"
+                title="Yêu thích">
+                <i class="fas fa-heart icon"></i>
+                <span *ngIf="favoriteItemCount > 0" class="favorite-badge">{{ favoriteItemCount }}</span>
+              </a>
+            </li>
             <li class="nav-item dropdown">
               <span class="nav-link dropdown-toggle user-dropdown" id="userDropdown" role="button"
                 (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">

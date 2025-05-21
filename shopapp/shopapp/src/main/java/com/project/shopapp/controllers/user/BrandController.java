@@ -3,7 +3,7 @@ package com.project.shopapp.controllers.user;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.BrandDto;
 import com.project.shopapp.models.Brand;
-import com.project.shopapp.response.ResponseObject;
+import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.services.brand.BrandService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;

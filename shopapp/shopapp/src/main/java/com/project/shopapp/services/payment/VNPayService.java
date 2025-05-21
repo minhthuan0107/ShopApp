@@ -6,12 +6,9 @@ import com.project.shopapp.configurations.VNPayConfig;
 import com.project.shopapp.dtos.payment.PaymentRequestDto;
 import com.project.shopapp.dtos.payment.PaymentQueryDto;
 import com.project.shopapp.dtos.payment.PaymentRefundDto;
-import com.project.shopapp.models.Payment;
 import com.project.shopapp.repositories.PaymentRepository;
-import com.project.shopapp.response.payment.PaymentResponse;
 import com.project.shopapp.ultis.VNPayUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

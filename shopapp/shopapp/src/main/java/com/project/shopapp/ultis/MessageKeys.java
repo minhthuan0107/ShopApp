@@ -100,6 +100,11 @@ public class MessageKeys {
     public static final String REFRESH_TOKEN_REVOKED_SUCCESSFULLY = "refresh_token.revoked.successfully";
     public static final String REFRESH_TOKEN_REVOKED = "refresh_token.revoked";
 
+    public static final String FAVORITE_ADD_PRODUCT_SUCCESSFULLY = "favorite.add_product_successfully";
+    public static final String FAVORITE_REMOVE_PRODUCT_SUCCESSFULLY ="favorite.remove_product_successfully";
+
+    public static final String FAVORITE_NOT_FOUND = "favorite.not_found";
+    public static final String FAVORITE_GET_LIST_PRODUCTS_SUCCESSFULLY = "favorite.get.list.products.successfully";
 
 
 

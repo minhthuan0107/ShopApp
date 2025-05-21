@@ -6,7 +6,7 @@ import com.project.shopapp.dtos.user.UpdateProfileDto;
 import com.project.shopapp.dtos.user.UserDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.User;
-import com.project.shopapp.response.user.UserResponse;
+import com.project.shopapp.responses.user.UserResponse;
 
 
 public interface IUserService {
