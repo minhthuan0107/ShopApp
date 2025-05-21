@@ -20,7 +20,7 @@
                     <span class="quantity-value">{{ item.quantity }}</span>
                     <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
                 </div>
-                <button class="remove-btn cart-item-cell" (click)="deleteCartDetailById(item.cart_detail_id,userId)">
+                <button class="remove-btn cart-item-cell" (click)="deleteCartDetailById(item.cart_detail_id)">
                     <i class="fa fa-trash"></i>
                   </button>
             </div>

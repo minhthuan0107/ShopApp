@@ -14,13 +14,12 @@ export class CartService {
   private apiCart = `${environment.apiBaseUrl}/carts`
   constructor(private http: HttpClient) { }
   // Api để thêm sản phẩm vào giỏ hàng
-  addtoCart(userId: number, cartDetail: CartDetailDto): Observable<any> {
-    const url = `${this.apiCart}/${userId}`;
-    return this.http.post(url, cartDetail);
+  addToCart(cartDetail: CartDetailDto): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiCart}`, cartDetail);
   }
   //Api lấy số count trong cart
-  getCartItemCount(userId: number): Observable<ApiResponse<number>> {
-    return this.http.get<ApiResponse<number>>(`${this.apiCart}/count/${userId}`).pipe(
+  getCartItemCount(): Observable<ApiResponse<number>> {
+    return this.http.get<ApiResponse<number>>(`${this.apiCart}/count`).pipe(
       tap(response => {
         this.cartItemCount.next(response.data);
       })

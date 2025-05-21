@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
   addToCart(productId: number): void {
     if (this.userId) {
       const cartDetailDto: CartDetailDto = { product_id: productId };
-      this.cartService.addtoCart(this.userId, cartDetailDto).subscribe({
+      this.cartService.addToCart(cartDetailDto).subscribe({
         next: (response) => {
           this.toastr.success('Thêm sản phẩm vào giỏ hàng thành công', 'Thành công', { timeOut: 1500 });
           //Lấy quantity để lưu vào biến cartItem

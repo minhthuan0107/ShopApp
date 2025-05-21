@@ -47,7 +47,7 @@ export class OrderComponent {
     this.userService.user$.subscribe(user => {
       if (user && user.id) {
         this.userId = user.id;
-        this.getCartDetailsByUserId(this.userId);
+        this.getCartDetailsByUserId();
         this.orderForm.patchValue({
           fullname: user.fullname,
           phone: user.phone_number,
@@ -57,8 +57,8 @@ export class OrderComponent {
     });
   }
   // Lấy thông tin giỏ hàng theo userId
-  getCartDetailsByUserId(userId: number) {
-    this.cartDetailService.getCartDetailsByUserId(userId).subscribe({
+  getCartDetailsByUserId() {
+    this.cartDetailService.getCartDetailsByUserId().subscribe({
       next: (response: any) => {
         this.cartDetails = response.data.map((item: any) => ({
           ...item, // Sao chép toàn bộ thuộc tính của item
