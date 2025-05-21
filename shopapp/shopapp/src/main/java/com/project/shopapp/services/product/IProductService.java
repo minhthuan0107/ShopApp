@@ -1,11 +1,9 @@
 package com.project.shopapp.services.product;
 import com.project.shopapp.dtos.ProductDto;
-import com.project.shopapp.dtos.ProductImageDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Product;
-import com.project.shopapp.models.ProductImage;
-import com.project.shopapp.response.product.PriceRangeResponse;
-import com.project.shopapp.response.product.ProductResponse;
+import com.project.shopapp.responses.product.PriceRangeResponse;
+import com.project.shopapp.responses.product.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

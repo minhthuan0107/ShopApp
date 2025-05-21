@@ -14,6 +14,7 @@ import { OrderHistoryComponent } from './components/order/order-history/order-hi
 import { SearchComponent } from './components/search/search.component';
 import { BuyNowOrderComponent } from './components/order/buy-now-order/buy-now-order.component';
 import { authGuard} from './guards/auth.guard';
+import { FavoriteComponent } from './components/favorite/favorite.component';
 
 export const routes: Routes = [ // ✅ Export `routes`
 { path: 'home', component: HomeComponent },
@@ -40,4 +41,5 @@ export const routes: Routes = [ // ✅ Export `routes`
 { path: 'order-history', component: OrderHistoryComponent},
 { path: 'payments/payment-callback', component: PaymentCallbackComponent },
 { path: 'profile', component: ProfileComponent},
+{ path: 'favorite', component: FavoriteComponent},
 ];

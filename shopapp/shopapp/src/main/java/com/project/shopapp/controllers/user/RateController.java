@@ -2,11 +2,10 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.RatingDto;
-import com.project.shopapp.response.ResponseObject;
-import com.project.shopapp.response.rate.RatingResponse;
+import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.rate.RatingResponse;
 import com.project.shopapp.services.rate.RatingService;
 import com.project.shopapp.ultis.MessageKeys;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

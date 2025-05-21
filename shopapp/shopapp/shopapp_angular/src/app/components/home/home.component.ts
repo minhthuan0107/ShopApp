@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { filter } from 'rxjs';
 import { CartDetailDto } from '../../dtos/cartdetail.dto';
+import { FavoriteService } from '../../services/favorite.service';
+import { FavoriteResponse } from '../../responses/favorite.response';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit {
   totalPages: number = 1;
   totalItems: number = 1;
   visiblePages: number[] = [];
+  favoriteProductIds: Set<number> = new Set();
   slides = [
     { id: 1, url: 'assets/banner/banner-tet-6.jpg' },
     { id: 2, url: 'assets/banner/banner-tet-3.jpg' },
@@ -47,16 +50,19 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private cartService: CartService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private favoriteService: FavoriteService
   ) { }
 
   ngOnInit(): void {
     this.getProducts(this.currentPage - 1, this.itemsPerPage);
     this.userService.user$.pipe(filter(user => !!user)).subscribe(user => {
-        if (user) {
-          this.userId = user.id;
-        }
-      });
+      if (user) {
+        this.userId = user.id;
+         this.getFavoriteProductsByUserId();
+      }
+    });
+   
   }
   getProducts(page: number, limit: number) {
     this.productService.getProducts(page, limit).subscribe({
@@ -141,5 +147,52 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-
+  //Hàm thêm sản phẩm vào danh sách yêu thích 
+  addToFavorite(productId: number) {
+    if (this.userId) {
+      this.favoriteService.addToFavorite(productId).subscribe({
+        next: (res) => {
+          if (res.status === 'CREATED') {
+            this.toastr.success('Sản phẩm đã được thêm vào danh mục yêu thích', 'Thành công', { timeOut: 1500 });
+            this.favoriteProductIds.add(productId);
+          } else if (res.status === 'OK') {
+            this.toastr.info('Sản phẩm đã bị xóa khỏi danh mục yêu thích', 'Thành công', { timeOut: 1500 });
+            this.favoriteProductIds.delete(productId);
+          }
+        },
+        error: (error) => {
+          console.error("Lỗi!", error.error?.message || "Thêm sản phẩm vào danh mục yêu thích thất bại!");
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Bạn cần đăng nhập!',
+        text: 'Vui lòng đăng nhập để thêm sản phẩm vào danh mục yêu thích.',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Hủy',
+        confirmButtonText: 'Đăng nhập ngay',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/signin']);
+        }
+      });
+    }
+  }
+  //Hàm lấy danh sách yêu thích của người dùng
+  getFavoriteProductsByUserId() {
+    if (this.userId) {
+      this.favoriteService.getFavoriteProductsByUserId().subscribe({
+        next: (response) => {
+          this.favoriteProductIds = new Set(response.data.map((favorite: FavoriteResponse) => favorite.product_id));
+          console.log('Array', this.favoriteProductIds)
+        },
+        error: (error) => {
+          console.error("Lỗi!", error.error?.message || "Lỗi khi lấy danh sách sản phẩm yêu thích");
+          this.favoriteProductIds = new Set();
+        }
+      });
+    }
+  }
 }

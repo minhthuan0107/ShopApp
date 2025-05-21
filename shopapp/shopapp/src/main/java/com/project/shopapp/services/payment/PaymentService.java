@@ -6,15 +6,13 @@ import com.project.shopapp.dtos.payment.UpdatePaymentStatusDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Payment;
 import com.project.shopapp.repositories.PaymentRepository;
-import com.project.shopapp.response.payment.PaymentResponse;
+import com.project.shopapp.responses.payment.PaymentResponse;
 import com.project.shopapp.services.cart.CartService;
 import com.project.shopapp.services.email.OrderMailService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class PaymentService implements IPaymentService {

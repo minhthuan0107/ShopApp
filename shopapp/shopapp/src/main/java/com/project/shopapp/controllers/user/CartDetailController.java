@@ -2,8 +2,8 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.cartdetail.CartDetailsUpdateDto;
-import com.project.shopapp.response.ResponseObject;
-import com.project.shopapp.response.cartdetail.CartDetailResponse;
+import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.cartdetail.CartDetailResponse;
 import com.project.shopapp.services.cartdetail.CartDetailService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;

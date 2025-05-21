@@ -1,43 +1,26 @@
 package com.project.shopapp.controllers.user;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.github.javafaker.Faker;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.ProductDto;
-import com.project.shopapp.dtos.ProductImageDto;
-import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Product;
-import com.project.shopapp.models.ProductImage;
-import com.project.shopapp.response.ResponseObject;
-import com.project.shopapp.response.product.PriceRangeResponse;
-import com.project.shopapp.response.product.ProductListResponse;
-import com.project.shopapp.response.product.ProductResponse;
+import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.product.PriceRangeResponse;
+import com.project.shopapp.responses.product.ProductListResponse;
+import com.project.shopapp.responses.product.ProductResponse;
 import com.project.shopapp.services.product.ProductService;
 import com.project.shopapp.ultis.MessageKeys;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 

@@ -45,11 +45,16 @@
                         title="Thêm vào giỏ hàng">
                         <i class="fas fa-cart-plus"></i>
                     </button>
-                    <button class="btn btn-success me-4" title="Mua ngay" (click)="onBuyNow(product.id); $event.stopPropagation()">
+                    <button class="btn btn-success me-4" title="Mua ngay"
+                        (click)="onBuyNow(product.id); $event.stopPropagation()">
                         <i class="fas fa-shopping-basket"></i>
                     </button>
-                    <button class="btn btn-danger" title="Yêu thích">
-                        <i class="fas fa-heart"></i>
+                    <button class="btn btn-danger" [title]="favoriteProductIds.has(product.id) ? 'Bỏ yêu thích' : 'Yêu thích'"
+                        (click)="addToFavorite(product.id); $event.stopPropagation()">
+                        <i class="fas fa-heart" [ngClass]="{
+                        'text-secondary': favoriteProductIds.has(product.id),
+                        'text-white': !favoriteProductIds.has(product.id)
+                        }"></i>
                     </button>
                 </div>
             </div>

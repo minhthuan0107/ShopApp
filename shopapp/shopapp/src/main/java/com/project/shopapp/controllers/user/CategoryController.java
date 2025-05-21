@@ -3,7 +3,7 @@ package com.project.shopapp.controllers.user;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.CategoryDto;
 import com.project.shopapp.models.Category;
-import com.project.shopapp.response.ResponseObject;
+import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.services.category.CategoryService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;

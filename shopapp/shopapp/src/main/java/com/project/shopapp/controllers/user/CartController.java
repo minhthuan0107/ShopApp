@@ -2,8 +2,8 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.cartdetail.CartDetailDto;
-import com.project.shopapp.response.ResponseObject;
-import com.project.shopapp.response.cart.CartResponse;
+import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.cart.CartResponse;
 import com.project.shopapp.services.cart.CartService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;

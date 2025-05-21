@@ -8,7 +8,7 @@ import com.project.shopapp.models.Product;
 import com.project.shopapp.repositories.OrderDetailRepository;
 import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.ProductRepository;
-import com.project.shopapp.response.orderdetail.OrderDetailResponse;
+import com.project.shopapp.responses.orderdetail.OrderDetailResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,0 +1,37 @@
+<div class="favorite-wrapper">
+    <div class="favorite-container">
+        <h2 class="favorite-title">Sản phẩm yêu thích của bạn</h2>
+        <div class="favorite-header">
+            <div class="header-cell header-image"></div>
+            <div class="header-cell header-name">Tên sản phẩm</div>
+            <div class="header-cell header-price">Giá</div>
+            <div class="header-cell header-actions">Hành động</div>
+        </div>
+
+        <div class="favorite-list">
+            <div class="favorite-item" *ngFor="let item of favorites">
+                <div class="favorite-item-cell favorite-item-image">
+                    <img [src]="item.product_image" [alt]="item.product_name" />
+                </div>
+                <div class="favorite-item-cell favorite-item-name">{{ item.product_name }}</div>
+                <div class="favorite-item-cell favorite-item-price">{{ item.product_price | number }}đ</div>
+                <div class="favorite-item-cell favorite-item-actions">
+                    <button class="btn btn-danger"
+                        (click)="removeFromFavorites(item.product_id); $event.stopPropagation()"
+                        title="Xóa khỏi yêu thích">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Nút xóa tất cả -->
+            <div class="favorite-controls">
+                <p class="favorite-summary">Danh sách yêu thích của bạn có {{ 1}} sản phẩm.</p>
+                <button class="btn btn-clear-all" (click)="clearAllFavorites()">Xóa tất cả</button>
+            </div>
+
+            <ng-template #emptyFavoriteList>
+                <p class="empty-message">Danh sách yêu thích của bạn đang trống!</p>
+            </ng-template>
+        </div>
+    </div>
+</div>
