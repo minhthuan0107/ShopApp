@@ -104,7 +104,11 @@ public class MessageKeys {
     public static final String FAVORITE_REMOVE_PRODUCT_SUCCESSFULLY ="favorite.remove_product_successfully";
 
     public static final String FAVORITE_NOT_FOUND = "favorite.not_found";
-    public static final String FAVORITE_GET_LIST_PRODUCTS_SUCCESSFULLY = "favorite.get.list.products.successfully";
+    public static final String FAVORITE_GET_LIST_PRODUCTS_SUCCESSFULLY = "favorite.get_list_products_successfully";
+
+    public static final String FAVORITE_GET_ITEMS_SUCCESSFULLY = "favorite.get_items_successfully";
+
+    public static final String FAVORITE_REMOVE_ALL_PRODUCT_SUCCESSFULLY = "favorite.remove_all_product_successfully";
 
 
 

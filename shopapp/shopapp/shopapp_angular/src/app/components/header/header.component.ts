@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, filter, Observable, Subject, switch
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { ProductResponse } from '../../responses/product.response';
+import { FavoriteService } from '../../services/favorite.service';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
   @ViewChild('categoryList') categoryList!: ElementRef;
   user: User | null = null;
   cartItemCount: number = 0;
+  favoriteItemCount: number = 0;
   categories: Category[] = [];
   user$!: Observable<User | null>;
   isCategoryVisible = false;
@@ -29,14 +31,14 @@ export class HeaderComponent implements OnInit {
   suggestedProducts: ProductResponse[] = [];
   private keywordSubject = new Subject<string>();
   searchQuery: string = '';
-  favoriteItemCount: number = 0;
 
   constructor(private categoryService: CategoryService,
     private router: Router,
     private userService: UserService,
     private tokenService: TokenService,
     private cartService: CartService,
-    private productService: ProductService
+    private productService: ProductService,
+    private favoriteService: FavoriteService
   ) { }
   ngOnInit(): void {
     this.loadCategories();
@@ -46,6 +48,11 @@ export class HeaderComponent implements OnInit {
     //Lấy số lượng cart từ behavior subject
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
+    });
+    this.favoriteService.getFavoriteItemsCount().subscribe();
+    //Lấy số lượng favorite từ behavior subject
+    this.favoriteService.favoriteItemCount$.subscribe(count => {
+      this.favoriteItemCount = count;
     });
     //Lấy danh sách gợi ý khi người tìm kiếm sản phẩm
     this.keywordSubject.pipe(
