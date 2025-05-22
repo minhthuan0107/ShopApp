@@ -59,10 +59,10 @@ export class HomeComponent implements OnInit {
     this.userService.user$.pipe(filter(user => !!user)).subscribe(user => {
       if (user) {
         this.userId = user.id;
-         this.getFavoriteProductsByUserId();
+        this.getFavoriteProductsByUserId();
       }
     });
-   
+
   }
   getProducts(page: number, limit: number) {
     this.productService.getProducts(page, limit).subscribe({
@@ -151,13 +151,21 @@ export class HomeComponent implements OnInit {
   addToFavorite(productId: number) {
     if (this.userId) {
       this.favoriteService.addToFavorite(productId).subscribe({
-        next: (res) => {
-          if (res.status === 'CREATED') {
+        next: (response) => {
+          if (response.status === 'CREATED') {
             this.toastr.success('Sản phẩm đã được thêm vào danh mục yêu thích', 'Thành công', { timeOut: 1500 });
-            this.favoriteProductIds.add(productId);
-          } else if (res.status === 'OK') {
+            this.favoriteProductIds.add(response.data.favorite.product.id);
+            const totalItems = response.data.favorite_count;
+            if (totalItems !== undefined) {
+              this.favoriteService.updateFavoriteItemCount(totalItems);
+            }
+          } else if (response.status === 'OK') {
             this.toastr.info('Sản phẩm đã bị xóa khỏi danh mục yêu thích', 'Thành công', { timeOut: 1500 });
-            this.favoriteProductIds.delete(productId);
+            this.favoriteProductIds.delete(response.data.favorite.product.id);
+            const totalItems = response.data.favorite_count;
+            if (totalItems !== undefined) {
+              this.favoriteService.updateFavoriteItemCount(totalItems);
+            }
           }
         },
         error: (error) => {
@@ -185,8 +193,8 @@ export class HomeComponent implements OnInit {
     if (this.userId) {
       this.favoriteService.getFavoriteProductsByUserId().subscribe({
         next: (response) => {
+          //Thêm những sản phẩm dc yêu thích vào Set
           this.favoriteProductIds = new Set(response.data.map((favorite: FavoriteResponse) => favorite.product_id));
-          console.log('Array', this.favoriteProductIds)
         },
         error: (error) => {
           console.error("Lỗi!", error.error?.message || "Lỗi khi lấy danh sách sản phẩm yêu thích");

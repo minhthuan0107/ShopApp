@@ -9,6 +9,7 @@
         </div>
 
         <div class="favorite-list">
+            <ng-container *ngIf="favorites.length > 0; else emptyFavoriteList">
             <div class="favorite-item" *ngFor="let item of favorites">
                 <div class="favorite-item-cell favorite-item-image">
                     <img [src]="item.product_image" [alt]="item.product_name" />
@@ -17,7 +18,7 @@
                 <div class="favorite-item-cell favorite-item-price">{{ item.product_price | number }}đ</div>
                 <div class="favorite-item-cell favorite-item-actions">
                     <button class="btn btn-danger"
-                        (click)="removeFromFavorites(item.product_id); $event.stopPropagation()"
+                        (click)="deleteFavoriteProduct(item.product_id); $event.stopPropagation()"
                         title="Xóa khỏi yêu thích">
                         <i class="fas fa-trash-alt"></i>
                     </button>
@@ -25,10 +26,10 @@
             </div>
             <!-- Nút xóa tất cả -->
             <div class="favorite-controls">
-                <p class="favorite-summary">Danh sách yêu thích của bạn có {{ 1}} sản phẩm.</p>
-                <button class="btn btn-clear-all" (click)="clearAllFavorites()">Xóa tất cả</button>
+                <p class="favorite-summary">Danh sách yêu thích của bạn có {{favoritesLength}} sản phẩm.</p>
+                <button class="btn btn-clear-all" (click)="deleteAllFavoriteProducts()">Xóa tất cả</button>
             </div>
-
+            </ng-container>
             <ng-template #emptyFavoriteList>
                 <p class="empty-message">Danh sách yêu thích của bạn đang trống!</p>
             </ng-template>

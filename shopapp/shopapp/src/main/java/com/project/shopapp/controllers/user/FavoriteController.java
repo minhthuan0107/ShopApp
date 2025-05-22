@@ -38,7 +38,7 @@ public class FavoriteController {
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(ResponseObject.builder()
                                 .status(HttpStatus.CREATED)
-                                .data(favoriteAction.getFavorite())
+                                .data(favoriteAction)
                                 .message(localizationUtils.getLocalizedMessage(
                                         MessageKeys.FAVORITE_ADD_PRODUCT_SUCCESSFULLY, productId))
                                 .build());
@@ -46,7 +46,7 @@ public class FavoriteController {
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(ResponseObject.builder()
                                 .status(HttpStatus.OK)
-                                .data(favoriteAction.getFavorite())
+                                .data(favoriteAction)
                                 .message(localizationUtils.getLocalizedMessage(
                                         MessageKeys.FAVORITE_REMOVE_PRODUCT_SUCCESSFULLY, productId))
                                 .build());
@@ -59,16 +59,39 @@ public class FavoriteController {
         }
     }
 
-    @DeleteMapping("{favoriteId}")
+    @DeleteMapping("{productId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ResponseObject> deleteFavoriteProduct(@PathVariable Long favoriteId) {
+    public ResponseEntity<ResponseObject> deleteFavoriteProduct(Authentication authentication,
+                                                                @PathVariable Long productId) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         try {
-            favoriteService.deleteFavoriteProduct(favoriteId);
+            favoriteService.deleteFavoriteProduct(userId,productId);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseObject.builder()
                             .status(HttpStatus.OK)
                             .message(localizationUtils.getLocalizedMessage(
-                                    MessageKeys.FAVORITE_REMOVE_PRODUCT_SUCCESSFULLY, favoriteId))
+                                    MessageKeys.FAVORITE_REMOVE_PRODUCT_SUCCESSFULLY, productId))
+                            .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+        }
+    }
+    @DeleteMapping("/remove-all")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ResponseObject> deleteAllFavoriteProducts(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        try {
+            favoriteService.deleteAllFavoriteProducts(userId);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ResponseObject.builder()
+                            .status(HttpStatus.OK)
+                            .message(localizationUtils.getLocalizedMessage(
+                                    MessageKeys.FAVORITE_REMOVE_ALL_PRODUCT_SUCCESSFULLY))
                             .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
@@ -97,5 +120,17 @@ public class FavoriteController {
                     .message(e.getMessage())
                     .build());
         }
+    }
+    @GetMapping("/count")
+    public ResponseEntity<ResponseObject> getFavoriteItemsCount(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        Long favotiteItems = favoriteService.getFavoriteItemsCount(userId);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .data(favotiteItems)
+                .message(localizationUtils.getLocalizedMessage(
+                        MessageKeys.FAVORITE_GET_ITEMS_SUCCESSFULLY))
+                .build());
     }
 }

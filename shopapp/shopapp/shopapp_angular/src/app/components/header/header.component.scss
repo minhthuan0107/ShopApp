@@ -314,7 +314,7 @@ header {
     font-size: 24px; /* Điều chỉnh kích thước icon */
     position: relative;
 }
-.cart-badge {
+.cart-badge{
     position: absolute;
     top: 45%;
     left: 22px; /* Dịch số sang trái */
@@ -323,7 +323,25 @@ header {
     color: white;
     font-size: 10px;
     font-weight: bold;
-    padding: 2px 6px;
+    padding: 1.5px 3px;
+    border-radius: 50%;
+    min-width: 17px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Tạo hiệu ứng đổ bóng nhẹ */
+}
+.favorite-badge{
+    position: absolute;
+    top: 45%;
+    left: 19px; /* Dịch số sang trái */
+    transform: translateY(-50%);
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1.5px 3px;
     border-radius: 50%;
     min-width: 17px;
     height: 17px;

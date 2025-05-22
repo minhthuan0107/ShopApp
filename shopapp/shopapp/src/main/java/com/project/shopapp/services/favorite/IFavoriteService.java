@@ -9,9 +9,11 @@ import java.util.List;
 public interface IFavoriteService {
     FavoriteActionResult addProductToFavorite(Long userId, Long productId) throws Exception;
 
-    void deleteFavoriteProduct (Long favoriteId) throws Exception;
+    void deleteFavoriteProduct (Long userId,Long productId) throws Exception;
+
+    void deleteAllFavoriteProducts (Long userId) throws Exception;
 
     List<FavoriteResponse> getFavoriteProductsByUserId (Long userId)  throws Exception;
-
+    Long getFavoriteItemsCount (Long userId);
 
 }

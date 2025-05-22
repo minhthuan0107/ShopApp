@@ -32,6 +32,7 @@ public class FavoriteService implements IFavoriteService {
 
 
     @Override
+    @Transactional
     public FavoriteActionResult addProductToFavorite(Long userId, Long productId) throws Exception {
         User user = userRepository.findById(userId).
                 orElseThrow(()-> new DataNotFoundException(
@@ -40,28 +41,42 @@ public class FavoriteService implements IFavoriteService {
                 orElseThrow(()-> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND)));
         Optional<Favorite> existingFavorite = favoriteRepository.findByUserIdAndProductId(userId, productId);
-        if (existingFavorite.isPresent()) { // Kiểm tra xem favorite đã được thêm vào hay chưa
+        if (existingFavorite.isPresent()) {// Kiểm tra xem favorite đã được thêm vào hay chưa
             favoriteRepository.delete(existingFavorite.get());
-            return new FavoriteActionResult(null, false);
+            long countFavotites = getFavoriteItemsCount(userId);
+            return new FavoriteActionResult(null, false,countFavotites);
         } else {
             Favorite favorite = new Favorite();
             favorite.setUser(user);
             favorite.setProduct(product);
             favoriteRepository.save(favorite);
-            return new FavoriteActionResult(favorite,true);
+            long countFavotites = getFavoriteItemsCount(userId);
+            return new FavoriteActionResult(favorite,true,countFavotites);
         }
     }
 
     @Override
     @Transactional
-    public void deleteFavoriteProduct(Long favoriteId) throws Exception {
-        if (!favoriteRepository.existsById(favoriteId)) {
-            throw new DataNotFoundException(
-                    localizationUtils.getLocalizedMessage(MessageKeys.FAVORITE_NOT_FOUND,favoriteId));
+    public void deleteFavoriteProduct(Long userId,Long productId) throws Exception {
+        if (!userRepository.existsById(userId)) {
+            throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND));
         }
-        favoriteRepository.deleteById(favoriteId);
-    }
+        Optional<Favorite> existingFavorite = favoriteRepository.findByUserIdAndProductId(userId,productId);
+        if (existingFavorite.isEmpty()) {
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.FAVORITE_NOT_FOUND, productId));
+        }
 
+        favoriteRepository.delete(existingFavorite.get());
+    }
+    @Override
+    @Transactional
+    public void deleteAllFavoriteProducts(Long userId) throws Exception {
+        if (!userRepository.existsById(userId)) {
+            throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND));
+        }
+        favoriteRepository.deleteByUserId(userId);
+    }
     @Override
     public List<FavoriteResponse> getFavoriteProductsByUserId(Long userId) throws Exception {
         if (!userRepository.existsById(userId)) {
@@ -73,5 +88,10 @@ public class FavoriteService implements IFavoriteService {
                 .map(favorite -> FavoriteResponse.fromFavorite(favorite))
                 .collect(Collectors.toList());
         return favoriteResponses;
+    }
+
+    @Override
+    public Long getFavoriteItemsCount(Long userId) {
+                return favoriteRepository.countFavoriteItems(userId);
     }
 }
