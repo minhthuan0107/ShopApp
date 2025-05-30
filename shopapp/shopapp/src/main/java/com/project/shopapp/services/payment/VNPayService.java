@@ -95,7 +95,6 @@ public class VNPayService implements IVNPayService {
                 }
             }
         }
-
         String secureHash = vnPayUtils.hmacSHA512(vnPayConfig.getSecretKey(), hashData.toString());
         queryData.append("&vnp_SecureHash=").append(secureHash);
 

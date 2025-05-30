@@ -11,6 +11,7 @@ import { Product } from '../../../models/product.model';
 import { OrderDto } from '../../../dtos/order.dto';
 import Swal from 'sweetalert2';
 import { CartService } from '../../../services/cart.service';
+import { CouponService } from '../../../services/coupon.service';
 
 @Component({
   selector: 'app-buy-now-order',
@@ -25,6 +26,10 @@ export class BuyNowOrderComponent {
   product!: Product;
   productId!: number;
   paymentMethod: string = 'Cod';
+  couponValue: number = 0;
+  totalPrice: number = 0;
+  couponCode: string = '';
+  errorMessage: string | null = null;
   constructor(private userService: UserService,
     private fb: FormBuilder,
     private productService: ProductService,
@@ -33,7 +38,8 @@ export class BuyNowOrderComponent {
     private orderService: OrderService,
     private router: Router,
     private route: ActivatedRoute,
-    private paymentService: PaymentService) {
+    private paymentService: PaymentService,
+    private couponService : CouponService) {
     this.buyNowOrderForm = this.fb.group({
       fullname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -86,17 +92,13 @@ export class BuyNowOrderComponent {
         phone_number: this.buyNowOrderForm.value.phone,
         address: this.buyNowOrderForm.value.address,
         note: this.buyNowOrderForm.value.note || '',
-        total_price: this.product.price * 1,
+        coupon_code: this.couponCode,
         order_details: [{
           product_id: this.product.id,
           quantity: 1,
-          unit_price: this.product.price,
-          total_price: this.product.price * 1
         }],
         payment: {
-          amount: this.product.price * 1,
           payment_method: this.paymentMethod,
-          transaction_id: '',
         },
         is_buy_now: true
       };
@@ -143,35 +145,66 @@ export class BuyNowOrderComponent {
       });
     }
   
-    // Xử lý thanh toán VNPAY
-    private handleVnpayPayment(orderDto: OrderDto) {
-      this.paymentService.createPaymentUrl({ amount: orderDto.total_price, language: 'vn' }).subscribe({
-        next: (paymentResponse) => {
-          const paymentUrl = paymentResponse.data;
-          if (!paymentUrl) {
-            console.error('Không thể lấy link thanh toán.');
-            return;
-          }
-          // Parse mã giao dịch VNPAY từ URL
-          const urlParams = new URLSearchParams(new URL(paymentUrl).search);
-          const vnp_TxnRef = urlParams.get("vnp_TxnRef");
-          if (!vnp_TxnRef) {
-            console.error('Không thể lấy mã giao dịch VNPAY.');
-            return;
-          }
-          // Cập nhật vnp_TxnRef rồi lưu đơn hàng
-          orderDto.payment.transaction_id = vnp_TxnRef;
-          this.orderService.placeOrder(this.userId, orderDto).subscribe({
-            next: () => window.location.href = paymentUrl
-            ,
-            error: (error: any) => {
-              console.error("Lỗi!", error.error?.message || "Không thể đặt hàng với VNPAY");
+   // Xử lý thanh toán VNPAY
+  private handleVnpayPayment(orderDto: OrderDto) {
+    // Bước 1: Đặt hàng trước, backend tính toán giá chính xác
+    this.orderService.placeOrder(this.userId, orderDto).subscribe({
+      next: (orderResponse) => {
+        const orderId = orderResponse.data.order_id;
+        const actualTotalPrice = orderResponse.data.total_price; // lấy giá tổng tiền thật từ backend
+        // Bước 2: Tạo link thanh toán VNPAY với số tiền chính xác
+        this.paymentService.createPaymentUrl({
+          amount: actualTotalPrice,
+          language: 'vn'
+        }).subscribe({
+          next: (paymentResponse) => {
+            const paymentUrl = paymentResponse.data;
+            if (!paymentUrl) {
+              console.error('Không thể lấy link thanh toán.');
+              return;
             }
-          });
-        },
-        error: (error: any) => {
-          console.error("Lỗi!", error.error?.message || "Không thể tạo URL thanh toán");
-        }
-      });
-    }
+            // Lấy mã giao dịch VNPAY trong URL (nếu cần dùng)
+            const urlParams = new URLSearchParams(new URL(paymentUrl).search);
+            const vnp_TxnRef = urlParams.get("vnp_TxnRef");
+            if (!vnp_TxnRef) {
+              console.error('Không thể lấy mã giao dịch VNPAY.');
+              return;
+            }
+            // Gọi API cập nhật transactionId trước khi chuyển hướng
+            this.paymentService.updateTransactionId({
+              orderId: orderId, 
+              transactionId: vnp_TxnRef}).subscribe({
+              next: () => {
+                debugger;
+                window.location.href = paymentUrl;
+              },
+              error: (error: any) => {
+                console.error("Lỗi!", error.error?.message || "Lỗi khi cập nhật transactionId");
+              }
+
+            });
+          },
+          error: (error: any) => {
+            console.error("Lỗi!", error.error?.message || "Không thể tạo URL thanh toán");
+          }
+        });
+      },
+      error: (error: any) => {
+        console.error("Lỗi!", error.error?.message || "Không thể đặt hàng");
+      }
+    });
+  }
+  //Hàm check mã giám giá
+  checkCouponCode() {
+    this.couponService.applyCoupon(this.couponCode).subscribe({
+      next: (response) => {
+        this.errorMessage = null;
+        this.couponValue = response.data.value;
+        this.toastr.success('Áp dụng mã giảm giá thành công', 'Thành công', { timeOut: 1500 });
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Có lỗi xảy ra';
+      }
+    });
+  }
 }

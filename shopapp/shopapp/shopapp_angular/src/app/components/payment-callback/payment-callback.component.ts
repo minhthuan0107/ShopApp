@@ -40,7 +40,7 @@ export class PaymentCallbackComponent {
       });
     }
   }
-  private handleUser(user: User): void {
+ private handleUser(user: User): void {
     this.userId = user.id;
     this.route.queryParams.subscribe(params => {
       const vnp_ResponseCode = params['vnp_ResponseCode'];
@@ -51,6 +51,7 @@ export class PaymentCallbackComponent {
            this.orderId = response?.data?.order_id;
               let status = vnp_ResponseCode === '00' ? 'SUCCESS' : 'FAILED';
               const statusDto = {
+                orderId: this.orderId,
                 transactionId: this.transactionId!,
                 status: status
               };
@@ -63,6 +64,7 @@ export class PaymentCallbackComponent {
       }
     });
   }
+
 
   private updatePaymentStatus(statusDto: UpdatePaymentStatusDto): void {
     this.paymentService.updatePayment(statusDto).subscribe({

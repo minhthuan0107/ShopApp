@@ -55,29 +55,6 @@ public class OrderDetailService implements IOrderDetailService {
                 .collect(Collectors.toList());
         return orderDetailResponses;
     }
-
-    @Override
-    @Transactional
-    public OrderDetailResponse updateOrderDetail(Long orderId,Long orderDetailId, OrderDetailDto orderDetailDto) throws Exception {
-        OrderDetail existingOrderDetail = orderDetailRepository.findById(orderDetailId)
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.ORDERDETAIL_NOT_FOUND, orderDetailId)));
-        Order existingOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
-        Product existingProduct = productRepository.findById(orderDetailDto.getProductId())
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND,orderDetailDto.getProductId())));
-        existingOrderDetail.setUnitPrice(orderDetailDto.getUnitPrice());
-        existingOrderDetail.setQuantity(orderDetailDto.getQuantity());
-        existingOrderDetail.setTotalPrice(orderDetailDto.getTotalPrice());
-        existingOrderDetail.setOrder(existingOrder);
-        existingOrderDetail.setProduct(existingProduct);
-        orderDetailRepository.save(existingOrderDetail);
-        OrderDetailResponse orderDetailResponse = modelMapper.map(existingOrderDetail,OrderDetailResponse.class);
-        return orderDetailResponse;
-    }
-
     @Override
     public void deleteOrderDetailById(Long orderDetailId) {
         Optional<OrderDetail> existingorderDetail = orderDetailRepository

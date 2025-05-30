@@ -73,40 +73,6 @@ public class OrderDetailController {
         }
     }
 
-    @PutMapping("/{orderId}/{orderDetailId}")
-    public ResponseEntity<ResponseObject> updateOrderDetail(@Valid @PathVariable Long orderId,
-                                                            @PathVariable Long orderDetailId,
-                                                            @RequestBody OrderDetailDto orderDetailDto,
-                                                            BindingResult result) {
-        if (result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList();
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .message(errorMessages.toString())
-                    .build());
-        }
-        try {
-            OrderDetailResponse orderDetailResponse = orderDetailService.updateOrderDetail(
-                    orderId, orderDetailId, orderDetailDto);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .status(HttpStatus.OK)
-                    .data(orderDetailResponse)
-                    .message(localizationUtils.getLocalizedMessage(
-                            MessageKeys.ORDERDETAIL_UPDATE_SUCCESSFULLY, orderDetailId))
-                    .build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .message(e.getMessage())
-                    .build());
-        }
-    }
-
     @DeleteMapping("/{orderDetailId}")
     public ResponseEntity<ResponseObject> deleteOrderDetail(@Valid @PathVariable Long orderDetailId) {
         orderDetailService.deleteOrderDetailById(orderDetailId);

@@ -1,4 +1,13 @@
 <app-header></app-header>
 <router-outlet></router-outlet> <!-- Đây là nơi các component sẽ được hiển thị -->
+
+<!-- Nút cuộn lên đầu trang -->
+<button
+  class="scroll-to-top"
+  *ngIf="showScrollButton"
+  (click)="scrollToTop()"
+  title="Cuộn lên đầu">
+  ⬆
+</button>
 <app-footer></app-footer> <!-- Footer của bạn -->
 

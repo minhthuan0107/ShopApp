@@ -9,9 +9,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentDto {
-    @JsonProperty("amount")
-    @Min(value = 0, message = "Tổng số tiền phải lớn hơn 0")
-    private BigDecimal amount;
     @JsonProperty("payment_method")
     private String paymentMethod;
     @JsonProperty("transaction_id")

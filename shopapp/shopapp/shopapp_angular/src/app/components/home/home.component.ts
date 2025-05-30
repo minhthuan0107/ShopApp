@@ -154,14 +154,19 @@ export class HomeComponent implements OnInit {
         next: (response) => {
           if (response.status === 'CREATED') {
             this.toastr.success('Sản phẩm đã được thêm vào danh mục yêu thích', 'Thành công', { timeOut: 1500 });
+            //Thêm productId vào  favoritePRoductId đồng thời cập nhật lại favoriteProductId
             this.favoriteProductIds.add(response.data.favorite.product.id);
             const totalItems = response.data.favorite_count;
+            this.favoriteProductIds = new Set(this.favoriteProductIds);
             if (totalItems !== undefined) {
               this.favoriteService.updateFavoriteItemCount(totalItems);
+
             }
           } else if (response.status === 'OK') {
             this.toastr.info('Sản phẩm đã bị xóa khỏi danh mục yêu thích', 'Thành công', { timeOut: 1500 });
-            this.favoriteProductIds.delete(response.data.favorite.product.id);
+            //Xóa product ra khỏi favoritePRoductId đồng thời cập nhật lại favoriteProductIds
+            this.favoriteProductIds.delete(productId);
+            this.favoriteProductIds = new Set(this.favoriteProductIds);
             const totalItems = response.data.favorite_count;
             if (totalItems !== undefined) {
               this.favoriteService.updateFavoriteItemCount(totalItems);

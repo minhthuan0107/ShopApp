@@ -25,13 +25,12 @@ public class OrderDto {
     @NotBlank(message = "Địa chỉ là bắt buộc")
     private String address;
     private String note;
-    @JsonProperty("total_price")
-    @Min(value = 0, message = "Tổng số tiền phải lớn hơn 0")
-    private BigDecimal totalPrice;
     @JsonProperty("order_details")
     private List<OrderDetailDto> orderDetails;
     @JsonProperty("payment")
     private PaymentDto payment;
     @JsonProperty("is_buy_now")
     private boolean isBuyNow;
+    @JsonProperty("coupon_code")
+    private String couponCode;
 }

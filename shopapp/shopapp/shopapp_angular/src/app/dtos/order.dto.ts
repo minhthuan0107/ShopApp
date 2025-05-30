@@ -5,9 +5,9 @@ export interface OrderDto {
     email: string;
     phone_number: string;
     note: string;
-    total_price: number;
     address: string;
     order_details: OrderDetailDto[];
     payment: PaymentDto;
     is_buy_now: boolean;
+    coupon_code: string;
   }
