@@ -17,10 +17,4 @@ public class OrderDetailDto {
     private Long productId;
     @Min(value = 1, message = "Số lượng sản phẩm phải lớn hơn 0")
     private int quantity;
-    @Min(value = 0, message = "Đơn giá phải lớn hơn hoặc bằng 0")
-    @JsonProperty("unit_price")
-    private BigDecimal unitPrice;
-    @Min(value = 0, message = "Thành tiền phải lớn hơn hoặc bằng 0")
-    @JsonProperty("total_price")
-    private BigDecimal totalPrice;
 }

@@ -76,6 +76,7 @@ public class MessageKeys {
     public static final String PAYMENT_REFUND_QUERY_TRANSACTION ="payment.refund_successfully";
     public static final String PAYMENT_REFUND_FAILED ="payment.refund_failed";
     public static final String PAYMENT_TRANSACTION_NOT_FOUND ="payment.transaction_not_found";
+    public static final String PAYMENT_ORDER_NOT_FOUND = "payment.order_not_found";
     public static final String PAYMENT_UPDATE_SUCCESSFULLY ="payment.update_successfully";
 
     public static final String COMMENT_CREATED_SUCCESSFULLY ="comment.created_successfully";
@@ -109,6 +110,18 @@ public class MessageKeys {
     public static final String FAVORITE_GET_ITEMS_SUCCESSFULLY = "favorite.get_items_successfully";
 
     public static final String FAVORITE_REMOVE_ALL_PRODUCT_SUCCESSFULLY = "favorite.remove_all_product_successfully";
+
+    public static final String COUPON_CODE_ALREADY_EXISTS = "coupon.code_already_exists";
+    public static final String COUPON_CREATED_SUCCESSFULLY = "coupon.created_successfully";
+
+    public static final String COUPON_NOT_FOUND = "coupon.not_found";
+    public static final String COUPON_EXPIRED = "coupon.expired";
+    public static final String COUPON_ALREADY_USED = "coupon.already_used";
+    public static final String COUPON_APPLIED_SUCCESSFULLY = "coupon.applied_successfully";
+    public static final String COUPON_INVALID ="coupon.invalid";
+
+
+    public static final String USERCOUPON_NOT_FOUND = "usercoupon.not_found";
 
 
 

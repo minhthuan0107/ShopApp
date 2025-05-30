@@ -1,10 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.payment.PaymentRequestDto;
-import com.project.shopapp.dtos.payment.PaymentQueryDto;
-import com.project.shopapp.dtos.payment.PaymentRefundDto;
-import com.project.shopapp.dtos.payment.UpdatePaymentStatusDto;
+import com.project.shopapp.dtos.payment.*;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.payment.PaymentResponse;
 import com.project.shopapp.services.payment.PaymentService;
@@ -32,7 +29,6 @@ public class PaymentController {
     private LocalizationUtils localizationUtils;
     @Autowired
     private PaymentService paymentService;
-
 
 
     @PostMapping("/create_payment_url")
@@ -80,12 +76,38 @@ public class PaymentController {
                     .data(paymentResponse)
                     .build());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResponseObject.builder()
-                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .message(localizationUtils.getLocalizedMessage(
-                                    MessageKeys.ERROR_GENERATED_PAYMENT_URL, e.getMessage()))
-                            .build());
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+        }
+    }
+    @PatchMapping("/update-transaction")
+    public ResponseEntity<ResponseObject> updatePaymentTransactionId(@RequestBody UpdateTransactionDto statusDto,
+                                                              BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errorMessages = result.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .toList();
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(errorMessages.toString())
+                    .build());
+        }
+        try {
+            PaymentResponse paymentResponse = paymentService.updatePaymentTransactionId(statusDto);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .status(HttpStatus.OK)
+                    .message(localizationUtils.getLocalizedMessage(
+                            MessageKeys.PAYMENT_UPDATE_SUCCESSFULLY))
+                    .data(paymentResponse)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
         }
     }
 
@@ -163,5 +185,7 @@ public class PaymentController {
                     .build());
         }
     }
+
+
 
 }

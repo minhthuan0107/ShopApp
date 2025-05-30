@@ -24,9 +24,9 @@ public class Cart extends BaseEntity {
     private Integer totalQuantity = 0; // Tổng số lượng sản phẩm
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CartStatus status = CartStatus.PENDING; // Mặc định là PENDING
+    private CartStatus status ;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Tạo khóa ngoại
-    private User user; // Quan hệ với bảng User
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     private boolean active;
 }
