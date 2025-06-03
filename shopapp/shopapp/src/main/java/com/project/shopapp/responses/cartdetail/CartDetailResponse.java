@@ -20,6 +20,8 @@ public class CartDetailResponse extends BaseEntity {
     private String productName;
     @JsonProperty("product_image")
     private String productImage;
+    @JsonProperty("product_quantity")
+    private int productQuantity;
     private int quantity;
     @JsonProperty("unit_price")
     private BigDecimal unitPrice;
@@ -31,6 +33,7 @@ public class CartDetailResponse extends BaseEntity {
                 .cartDetailId(cartDetail.getId())
                 .productId(cartDetail.getProduct().getId())
                 .productName(cartDetail.getProduct().getName())
+                .productQuantity(cartDetail.getProduct().getQuantity())
                 .quantity(cartDetail.getQuantity())
                 .productImage(cartDetail.getProduct().getUrlImage())
                 .unitPrice(cartDetail.getUnitPrice())

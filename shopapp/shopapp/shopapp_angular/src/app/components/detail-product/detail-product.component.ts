@@ -293,8 +293,8 @@ export class DetailProductComponent implements OnInit {
             this.cartService.updateCartItemCount(totalItems);
           }
         },
-        error: () => {
-          this.toastr.error('Lỗi khi thêm sản phẩm vào giỏ hàng', 'Lỗi', { timeOut: 1500 });
+        error: (error) => {
+          this.toastr.error(error.error?.message || 'Lỗi khi thêm sản phẩm vào giỏ hàng', 'Lỗi', { timeOut: 1500 });
         }
       });
     } else {

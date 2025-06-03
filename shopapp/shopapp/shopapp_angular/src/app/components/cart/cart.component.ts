@@ -58,7 +58,9 @@ export class CartComponent {
       next: (response: any) => {
         this.cartDetail = response.data.map((item: any) => ({
           ...item, // Sao chép toàn bộ thuộc tính của item
-          total_price: item.unit_price * item.quantity // Thêm hoặc cập nhật total_price
+          total_price: item.unit_price * item.quantity, // Thêm hoặc cập nhật total_price
+          //Kiểm tra xem số lượng tồn kho có , nếu k thì thông báo hết sản phẩm
+          outOfStock: item.product_quantity <= 0 
         }));
         const totalItems = this.cartDetail.length;
         // Cập nhật số lượng giỏ hàng trên header

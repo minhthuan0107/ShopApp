@@ -62,7 +62,11 @@
     height: 100%;
     text-align: center;
 }
-
+.out-of-stock {
+  opacity: 0.5;           /* Làm mờ */
+  pointer-events: none;   /* Không cho thao tác */
+  user-select: none;      /* Không thể chọn text */
+}
 /* Tên sản phẩm */
 .cart-item-name {
     font-weight: bold;
@@ -101,6 +105,7 @@
     border-radius: 8px;
     margin: 0; /* Bỏ margin-bottom */
 }
+
 
 .quantity-btn {
     width: 32px;
