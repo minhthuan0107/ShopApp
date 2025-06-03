@@ -64,6 +64,11 @@ public class CartService implements ICartService {
                         localizationUtils.getLocalizedMessage(
                                 MessageKeys.PRODUCT_NOT_FOUND, cartDetailDto.getProductId())
                 ));
+        //Kiểm tra như số lượng sản phẩm hết thì đưa ra thông báo sản phẩm đã hết
+        if (product.getQuantity() < 1) {
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_OUT_OF_STOCK));
+        }
         //Kiểm tra cartdetail có trong csdl hay chưa , nếu chưa có thì tạo mới, nếu có rồi thì set totalprice và quantity
         CartDetail cartDetail = cartDetailRepository.findByCartIdAndProductId(
                 cart.getId(), product.getId()).orElseGet(() -> {
@@ -75,6 +80,11 @@ public class CartService implements ICartService {
             newCartDetail.setTotalPrice(BigDecimal.ZERO);
             return newCartDetail;
         });
+        // Kiểm tra nếu thêm 1 nữa thì vượt quá số lượng tồn kho không
+        if (cartDetail.getQuantity() + 1 > product.getQuantity()) {
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_OUT_OF_STOCK));
+        }
         // Nếu sản phẩm đã tồn tại trong giỏ, tăng quantity và cập nhật totalprice
         cartDetail.setQuantity(cartDetail.getQuantity() + 1);
         cartDetail.setTotalPrice(cartDetail.getTotalPrice().add(product.getPrice()));

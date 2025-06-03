@@ -51,6 +51,7 @@ public class MessageKeys {
     public static  final String PRODUCT_ERROR_FILE_MUST_BE_IMAGE = "product.upload_images.file_must_be_image";
     public static  final String PRODUCT_DELETE_SUCCESSFULLY = "product.delete_successfully";
     public static  final String PRODUCT_INVALID_IMAGE_FORMAT= "product.invalid_image_format";
+    public static  final String PRODUCT_OUT_OF_STOCK = "product.out_of_stock";
     public static  final String PRODUCTIMAGES_GET_BY_PRODUCT_ID_SUCCESSFULLY = "productimage.get_by_product_id_successfully";
     public static  final String  PRODUCT_SUGGESTIONS_GET_SUCCESSFULLY = "product.get_suggestions_successfully";
     public static final String CART_ADD_PRODUCT_SUCCESSFULLY = "cart.add_product_successfully";

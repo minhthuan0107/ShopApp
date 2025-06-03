@@ -11,7 +11,8 @@
             <span class="header-remove">Xóa</span>
         </div>
         <div class="cart-list">
-            <div class="cart-item" *ngFor="let item of cartDetail">
+            <div class="cart-item" *ngFor="let item of cartDetail"
+                  [ngClass]="{'out-of-stock': item.product_quantity <= 0}">
                 <img [src]="item.product_image" [alt]="item.product_name" class="cart-item-cell">
                 <span class="cart-item-name cart-item-cell">{{ item.product_name }}</span>
                 <p class="price cart-item-cell">{{ item.total_price | number }}đ</p>
