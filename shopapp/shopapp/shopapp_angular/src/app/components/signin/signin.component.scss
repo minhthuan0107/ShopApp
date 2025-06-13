@@ -123,6 +123,30 @@
     font-weight: bold;
     transition: all 0.3s ease-in-out;
 }
+.login-button-google:hover {
+    background: linear-gradient(to right, #c70039, #9e002a); /* gradient đậm hơn */
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+.login-button-google{
+    background: linear-gradient(to right, #ff4b5c, #c70039);
+    color: white;
+    border-radius: 30px;
+    width: 60%;
+    max-width: 220px;
+    padding: 12px 0;
+    margin: 20px auto 0;
+    border: none;
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+.social-login-text {
+  margin-top: 15px; /* cách xuống 15px, bạn chỉnh số px phù hợp */
+  font-weight: bold;   /* chữ đậm */
+}
 
 /* Hiệu ứng hover nút */
 .login-button:hover {

@@ -2,6 +2,8 @@ package com.project.shopapp.services.user;
 
 import com.project.shopapp.components.JwtTokenUtils;
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.configurations.UserDetailsServiceImpl;
+import com.project.shopapp.dtos.social.SocialLoginDto;
 import com.project.shopapp.dtos.user.ChangePasswordDto;
 import com.project.shopapp.dtos.user.SigninDto;
 import com.project.shopapp.dtos.user.UpdateProfileDto;
@@ -22,6 +24,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +48,16 @@ public class UserService implements IUserService {
     private LocalizationUtils localizationUtils;
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
     @Override
-    public User getUserByPhoneNumber (String phoneNumber) throws Exception{
-        return userRepository.findByPhoneNumber(phoneNumber)
+    public User getUserById(Long userId) throws Exception {
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND)));
     }
+
     @Override
     @Transactional
     public User createUser(UserDto userDto) throws DataNotFoundException {
@@ -78,7 +86,7 @@ public class UserService implements IUserService {
         Role role = roleRepository.findByName("USER")
                 .orElseThrow(() -> new DataNotFoundException("Role not found"));
         newUser.setRole(role);
-        if (userDto.getFacebookAccountId() == 0 && userDto.getGoogleAccountId() == 0) {
+        if (userDto.getFacebookAccountId() == null && userDto.getGoogleAccountId() == null) {
             String password = userDto.getPassword();
             String encodePassword = passwordEncoder.encode(password);
             newUser.setPassword(encodePassword);
@@ -117,15 +125,50 @@ public class UserService implements IUserService {
 
         return new SigninDto(accessToken, refreshToken);
     }
+
     //Hàm check user có phải là tài khoản google hay facebook
     private boolean isLinkedWithSocialAccount(User user) {
-        return user.getFacebookAccountId() == 0 && user.getGoogleAccountId() == 0;
+        return (user.getFacebookAccountId() == null || user.getFacebookAccountId().isBlank())
+                && (user.getGoogleAccountId() == null || user.getGoogleAccountId().isBlank());
     }
 
     @Override
     @Transactional
-    public void changePassword(String phoneNumber,ChangePasswordDto changePasswordDto) throws Exception {
-        User user = getUserByPhoneNumber(phoneNumber);
+    public SigninDto signinSocial(SocialLoginDto socialLoginDto) throws Exception {
+        User user = userRepository.findByGoogleAccountId(socialLoginDto.getGoogleAccountId())
+                .map(existingUser -> {
+                    existingUser.setFullname(socialLoginDto.getFullname());
+                    return userRepository.save(existingUser);
+                })
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setGoogleAccountId(socialLoginDto.getGoogleAccountId());
+                    newUser.setFullname(socialLoginDto.getFullname());
+                    Role role = roleRepository.findByName("USER").get();
+                    newUser.setRole(role);
+                    return userRepository.save(newUser);
+                });
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByGoogleAccountId(user.getGoogleAccountId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+
+        String accessToken = jwtTokenUtils.generateAccessToken(authentication);
+        String refreshToken = jwtTokenUtils.generateRefreshToken(authentication);
+
+        Token tokenEntity = new Token();
+        tokenEntity.setToken(refreshToken); // Lưu refreshToken
+        tokenEntity.setTokenType("BEARER");
+        tokenEntity.setExpirationDate(LocalDateTime.now().plusDays(7)); // 7 ngày
+        tokenEntity.setRevoked(false);
+        tokenEntity.setUser(user);
+        tokenRepository.save(tokenEntity);
+        return new SigninDto(accessToken, refreshToken);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(Long userId,ChangePasswordDto changePasswordDto) throws Exception {
+        User user = getUserById(userId);
         if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())) {
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(
                     MessageKeys.WRONG_PASSWORD));
@@ -139,8 +182,8 @@ public class UserService implements IUserService {
     }
     @Transactional
     @Override
-    public UserResponse updateProfile(String phoneNumber ,UpdateProfileDto updateProfileDto) throws Exception {
-        User user = getUserByPhoneNumber(phoneNumber);
+    public UserResponse updateProfile(Long userId ,UpdateProfileDto updateProfileDto) throws Exception {
+        User user = getUserById(userId);
         if (updateProfileDto.getFullName() != null) {
             user.setFullname(updateProfileDto.getFullName());
         }

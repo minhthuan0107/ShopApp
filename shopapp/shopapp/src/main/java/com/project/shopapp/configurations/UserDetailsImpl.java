@@ -29,11 +29,11 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private boolean isActive;
     private LocalDate dateOfBirth;
-    private int facebookAccountId;
-    private int googleAccountId;
+    private String facebookAccountId;
+    private String googleAccountId;
     private Collection<? extends GrantedAuthority> authorities;
     public UserDetailsImpl(Long id, String fullname, String phoneNumber, String address, String password,
-                           boolean isActive, LocalDate dateOfBirth, int facebookAccountId, int googleAccountId,
+                           boolean isActive, LocalDate dateOfBirth, String facebookAccountId, String googleAccountId,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.fullname = fullname;

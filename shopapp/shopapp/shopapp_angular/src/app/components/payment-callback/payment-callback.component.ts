@@ -81,7 +81,7 @@ export class PaymentCallbackComponent {
       error: (error) => {
         console.error("Lỗi khi cập nhật thanh toán:", error);
         this.showErrorAlert();
-      }
+      } 
     });
   }
   showSuccessAlert() {

@@ -8,6 +8,7 @@ import com.project.shopapp.models.Product;
 import com.project.shopapp.models.ProductImage;
 import com.project.shopapp.repositories.ProductImageRepository;
 import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.responses.product.ProductResponse;
 import com.project.shopapp.responses.productimages.ProductImagesResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
@@ -27,12 +28,13 @@ public class ProductImageService implements IProductImage {
     private ProductImageRepository productImageRepository;
     @Override
     @Transactional
-    public Product updateProductImage(
-            Long id, Product product) throws Exception {
+    public ProductResponse updateProductImage(Long id) throws Exception {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, id)));
-        return productRepository.save(existingProduct);
+        productRepository.save(existingProduct);
+
+        return ProductResponse.fromProduct(existingProduct);
     }
 
     @Override

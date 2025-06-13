@@ -14,6 +14,8 @@ export class Product {
     name: string;
   };
   url_image: string;
+  total_reviews: number;
+  average_rating: number;
 
   // Constructor để khởi tạo các thuộc tính
   constructor(
@@ -27,7 +29,9 @@ export class Product {
     categoryName: string,
     brandId: number,
     brandName: string,
-    url_image: string
+    url_image: string,
+    total_reviews: number,
+    average_rating: number
   ) {
     this.id = id;
     this.name = name;
@@ -44,5 +48,7 @@ export class Product {
       name: brandName,
     };
     this.url_image = url_image;
+    this.total_reviews = total_reviews;
+    this.average_rating = average_rating;
   }
 }

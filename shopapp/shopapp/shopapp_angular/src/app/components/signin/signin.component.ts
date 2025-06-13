@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { TokenService } from '../../services/token.service';
 import { LoginResponse } from '../../responses/login.response';
 import { switchMap } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -27,7 +28,8 @@ export class SigninComponent {
   constructor(private userService: UserService,
     private tokenService: TokenService,
     private router: Router,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private authService: AuthService) {
     this.phoneNumber = '';
     this.password = '';
   }
@@ -82,5 +84,17 @@ export class SigninComponent {
         });
       }
     });
-  }  
+  }
+   // Mở redirect url gg
+  loginWithSocial(type: string) {
+    this.authService.getSocialLoginUrl(type).subscribe({
+      next: res => {
+        window.location.href = res.data; // Redirect đến Google login
+      },
+      error: (error) => {
+         console.error('Lỗi!', error.error?.message || 'Lỗi khi tạo link đăng nhập');
+      }
+    });
+  }
 }
+

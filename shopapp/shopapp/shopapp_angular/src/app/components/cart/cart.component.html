@@ -19,7 +19,8 @@
                 <div class="quantity-control cart-item-cell">
                     <button class="quantity-btn" (click)="decreaseQuantity(item)">−</button>
                     <span class="quantity-value">{{ item.quantity }}</span>
-                    <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
+                    <button class="quantity-btn" (click)="increaseQuantity(item)"
+                    [disabled]="item.quantity >= item.product_quantity">+</button>
                 </div>
                 <button class="remove-btn cart-item-cell" (click)="deleteCartDetailById(item.cart_detail_id)">
                     <i class="fa fa-trash"></i>

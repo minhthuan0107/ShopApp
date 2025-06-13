@@ -7,6 +7,7 @@ import com.project.shopapp.dtos.ProductImageDto;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.models.ProductImage;
 import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.product.ProductResponse;
 import com.project.shopapp.responses.productimages.ProductImagesResponse;
 import com.project.shopapp.services.product.ProductService;
 import com.project.shopapp.services.productimage.ProductImageService;
@@ -63,7 +64,7 @@ public class ProductImageController {
     public ResponseEntity<?> uploadImages(@RequestParam("files") List<MultipartFile> files,
                                           @PathVariable("id") Long productId) {
         try {
-            Product existingProduct = productService.getProductbyId(productId);
+            ProductResponse existingProduct = productService.getProductbyId(productId);
             files = files == null ? new ArrayList<MultipartFile>() : files;
             if (files.size() > ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
                 return ResponseEntity.badRequest().body(
@@ -107,7 +108,7 @@ public class ProductImageController {
                                                     @PathVariable("id") Long productId) {
 
         try {
-            Product existingProduct = productService.getProductbyId(productId);
+            ProductResponse existingProduct = productService.getProductbyId(productId);
             files = files == null ? new ArrayList<>() : files;
 
             if (files.size() > ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
@@ -142,7 +143,7 @@ public class ProductImageController {
             if (!productImages.isEmpty()) {
                 String firstImageUrl = productImages.get(0).getImageUrl(); // Lấy URL của ảnh đầu tiên
                 existingProduct.setUrlImage(firstImageUrl);
-                productImageService.updateProductImage(productId, existingProduct);// Cập nhật sản phẩm với ảnh đầu tiên
+                productImageService.updateProductImage(productId);// Cập nhật sản phẩm với ảnh đầu tiên
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(productImages);
 

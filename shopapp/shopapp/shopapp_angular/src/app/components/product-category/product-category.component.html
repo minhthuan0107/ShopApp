@@ -61,13 +61,15 @@
                             <p class="product-description">{{ product.description }}</p>
                             <p class="product-warranty">Bảo hành: 12 tháng</p>
                             <p class="product-price">Giá: {{ product.price | number: '1.0-0' }}đ</p>
-                            <div class="product-rating">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star-half-alt"></i>
+                            <div class="product-rating-simple" *ngIf="product.total_reviews > 0; else noReview">
+                                <i class="fa-solid fa-star" style="color: gold;"></i>
+                                {{ product.average_rating.toFixed(1) }} ({{ product.total_reviews }} lượt đánh giá)
                             </div>
+                            <ng-template #noReview>
+                                <div class="product-rating-simple">
+                                    (0 lượt đánh giá)
+                                </div>
+                            </ng-template>
                             <div class="product-actions">
                                 <button class="btn btn-primary me-4" title="Thêm vào giỏ hàng">
                                     <i class="fas fa-cart-plus"></i>

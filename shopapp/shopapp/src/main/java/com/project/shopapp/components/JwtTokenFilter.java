@@ -1,6 +1,7 @@
 package com.project.shopapp.components;
 
 import com.project.shopapp.configurations.UserDetailsImpl;
+import com.project.shopapp.configurations.UserDetailsServiceImpl;
 import com.project.shopapp.exception.JwtAuthenticationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -54,20 +55,38 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             // Nếu token không hợp lệ sẽ ném exception ở đây
             jwtTokenUtils.validateJwtToken(jwt);
-            // Trích xuất thông tin từ JWT
-            String phoneNumber = jwtTokenUtils.getphoneNumberFromJwtToken(jwt);
-            if (phoneNumber != null) {
-                request.setAttribute("phoneNumber", phoneNumber);
+
+            String loginType = jwtTokenUtils.getLoginTypeFromJwtToken(jwt);
+            request.setAttribute("loginType", loginType);
+            if("Phone".equalsIgnoreCase(loginType)) {
+                // Trích xuất thông tin từ JWT
+                String phoneNumber = jwtTokenUtils.getSubjectFromJwtToken(jwt);
+                if (phoneNumber != null) {
+                    request.setAttribute("phoneNumber", phoneNumber);
+                }
+                // Tải thông tin người dùng từ UserDetailsService
+                UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(phoneNumber);
+                // Thiết lập thông tin xác thực
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
+                );
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // Đặt thông tin xác thực vào SecurityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else if ("Google".equalsIgnoreCase(loginType)){
+                String googleAccountId = jwtTokenUtils.getSubjectFromJwtToken(jwt);
+                if (googleAccountId != null) {
+                    request.setAttribute("googleAccountId", googleAccountId);
+                }
+                UserDetailsImpl userDetails = (UserDetailsImpl) ((UserDetailsServiceImpl) userDetailsService).loadUserByGoogleAccountId(googleAccountId);
+                // Thiết lập thông tin xác thực
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
+                );
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // Đặt thông tin xác thực vào SecurityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            // Tải thông tin người dùng từ UserDetailsService
-            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(phoneNumber);
-            // Thiết lập thông tin xác thực
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            // Đặt thông tin xác thực vào SecurityContext
-            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token is invalid or has expired");
@@ -88,6 +107,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/brands", apiPrefix), "GET"),
                 Pair.of(String.format("%s/tokens/new-access-token", apiPrefix), "POST"),
                 Pair.of(String.format("%s/tokens/refresh-token", apiPrefix), "PATCH"),
+                Pair.of(String.format("%s/users/auth/social-login", apiPrefix), "GET"),
+                Pair.of(String.format("%s/users/auth/social/callback", apiPrefix), "GET"),
+
 
                 Pair.of("/ws/**", "GET"),
                 Pair.of("/topic/**", "GET"),

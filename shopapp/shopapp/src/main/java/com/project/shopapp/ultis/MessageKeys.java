@@ -124,6 +124,8 @@ public class MessageKeys {
 
     public static final String USERCOUPON_NOT_FOUND = "usercoupon.not_found";
 
+    public static final String SOCIAL_LOGIN_URL_GENERATED = "social.login_url_generated";
+
 
 
 
