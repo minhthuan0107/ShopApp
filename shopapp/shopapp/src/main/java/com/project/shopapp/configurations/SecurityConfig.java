@@ -17,17 +17,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
     @Bean
     public UserDetailsService userDetailsService() {
-        return phoneNumber -> {
-            User user = userRepository
-                    .findByPhoneNumber(phoneNumber)
-                    .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with phone number = " + phoneNumber));
-
-            return (UserDetails) UserDetailsImpl.build(user); // Đảm bảo UserDetailsImpl.build() đã được định nghĩa đúng
-        };
+        // Trả về bean UserDetailsServiceImpl đã tạo
+        return userDetailsServiceImpl;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

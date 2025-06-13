@@ -1,5 +1,6 @@
 package com.project.shopapp.services.user;
 
+import com.project.shopapp.dtos.social.SocialLoginDto;
 import com.project.shopapp.dtos.user.ChangePasswordDto;
 import com.project.shopapp.dtos.user.SigninDto;
 import com.project.shopapp.dtos.user.UpdateProfileDto;
@@ -12,8 +13,10 @@ import com.project.shopapp.responses.user.UserResponse;
 public interface IUserService {
     User createUser (UserDto userDto) throws DataNotFoundException;
     SigninDto signin (String phoneNumber, String password) throws Exception;
-    User  getUserByPhoneNumber (String phoneNumber) throws Exception;
-   void changePassword (String phoneNumber,ChangePasswordDto changePasswordDto) throws Exception;
 
-   UserResponse updateProfile  (String phoneNumber, UpdateProfileDto updateProfileDto) throws Exception;
+    SigninDto signinSocial (SocialLoginDto socialLoginDto) throws Exception ;
+    User  getUserById (Long userId)  throws Exception;
+   void changePassword (Long userId,ChangePasswordDto changePasswordDto) throws Exception;
+
+   UserResponse updateProfile  (Long userId, UpdateProfileDto updateProfileDto) throws Exception;
 }

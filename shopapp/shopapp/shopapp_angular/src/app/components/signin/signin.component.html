@@ -34,6 +34,13 @@
                     <div class="form-group">
                         <button type="button" (click)="signin(signinForm)" class="login-button">Đăng Nhập</button>
                     </div>
+
+                    <div class="form-group text-center">
+                        <p class="social-login-text">Hoặc đăng nhập bằng :</p>
+                        <button type="button" class="btn btn-danger login-button-google" (click)="loginWithSocial('google')">
+                            <i class="fab fa-google"></i> Đăng nhập bằng Google
+                        </button>
+                    </div>
                     <div class="divider"></div>
                     <p class="text-center">
                         Bạn chưa đăng ký?

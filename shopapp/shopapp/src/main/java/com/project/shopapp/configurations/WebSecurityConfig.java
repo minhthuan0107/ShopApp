@@ -33,6 +33,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         String signinUrl = String.format("%s/users/signin", apiPrefix);
         String signupUrl = String.format("%s/users/signup", apiPrefix);
+        String socialLoginUrl = String.format("%s/users/auth/social-login", apiPrefix);
+        String socialCallbackUrl = String.format("%s/users/auth/social/callback", apiPrefix);
         String ordersUrl = String.format("%s/orders/**", apiPrefix);
         String categoryUrl = String.format("%s/categories/**", apiPrefix);
         String productUrl = String.format("%s/products/**", apiPrefix);
@@ -51,7 +53,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests
                             // Các URL public
-                            .requestMatchers(signinUrl, signupUrl,tokenUrl)
+                            .requestMatchers(signinUrl, signupUrl,tokenUrl,socialLoginUrl,socialCallbackUrl)
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, categoryUrl, productUrl, brandUrl,
                                     productimageUrl, commentUrl, rateUrl)

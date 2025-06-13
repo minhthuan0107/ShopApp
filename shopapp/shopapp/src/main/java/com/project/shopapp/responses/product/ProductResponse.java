@@ -25,6 +25,10 @@ public class ProductResponse extends BaseResponseEntity {
     private int sold;
     private Category category;
     private Brand brand;
+    @JsonProperty("total_reviews")
+    private Long totalReviews;
+    @JsonProperty("average_rating")
+    private Double averageRating;
     public static  ProductResponse fromProduct (Product  product){
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())

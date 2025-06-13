@@ -33,23 +33,36 @@
         <div class="col-md-6 d-flex flex-column align-items-start">
             <div class="product-details w-100 p-3 shadow-sm rounded bg-white">
                 <h2 class="product-name mb-3 fw-bold text-primary name-up">{{ product.name }}</h2>
-        
-                <h3 class="text-muted mb-2">Mô tả sản phẩm</h3>
+
+                <div class="d-flex align-items-center mb-2" style="justify-content: start; gap: 30px;">
+                    <h3 class="text-muted m-0">Mô tả sản phẩm</h3>
+                    <div class="product-rating-simple" *ngIf="product.total_reviews > 0; else noReview">
+                        <i class="fa-solid fa-star" style="color: gold;"></i>
+                        {{ product.average_rating.toFixed(1) }} ({{ product.total_reviews }} lượt đánh giá)
+                    </div>
+                </div>
+                <ng-template #noReview>
+                    <div class="product-rating-simple">
+                        (0 lượt đánh giá)
+                    </div>
+                </ng-template>
                 <p class="product-description text-secondary mb-4">{{ product.description }}</p>
-        
+
                 <p class="product-price h4 fw-bold text-danger mb-4">
                     Giá: {{ product.price | number: '1.0-0' }}đ
                 </p>
-        
+
                 <div class="product-actions d-flex gap-3">
-                    <button class="btn btn-primary d-flex align-items-center gap-2" (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
+                    <button class="btn btn-primary d-flex align-items-center gap-2"
+                        (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
                         <i class="fas fa-cart-plus"></i> <span>Thêm giỏ</span>
                     </button>
-        
-                    <button class="btn btn-success d-flex align-items-center gap-2" (click)="onBuyNow(product.id); $event.stopPropagation()" title="Mua ngay">
+
+                    <button class="btn btn-success d-flex align-items-center gap-2"
+                        (click)="onBuyNow(product.id); $event.stopPropagation()" title="Mua ngay">
                         <i class="fas fa-shopping-basket"></i> <span>Mua ngay</span>
                     </button>
-        
+
                     <button class="btn btn-outline-danger d-flex align-items-center gap-2" title="Yêu thích">
                         <i class="fas fa-heart"></i> <span>Yêu thích</span>
                     </button>
@@ -95,7 +108,7 @@
                 <p class="comment-date text-muted">Ngày: {{ comment.createAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
 
                 <!-- Nút reply -->
-                <button *ngIf="isUserLoggedIn" class="btn btn-sm btn-link btn-reply"
+                <button *ngIf="isUserLoggedIn" class="btn btn-sm btn-link btn-reply mb-3"
                     (click)="toggleReplyForm(comment.comment_id)">
                     <i class="fas fa-reply"></i> Trả lời
                 </button>

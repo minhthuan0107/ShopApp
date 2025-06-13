@@ -1,6 +1,7 @@
 package com.project.shopapp.components;
 
 import com.project.shopapp.configurations.UserDetailsImpl;
+import com.project.shopapp.configurations.UserDetailsServiceImpl;
 import com.project.shopapp.exception.InvalidParamException;
 import com.project.shopapp.services.user.UserService;
 import io.jsonwebtoken.*;
@@ -38,16 +39,21 @@ public class JwtTokenUtils {
 
     public String generateAccessToken(Authentication authentication) throws Exception {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        //Nếu đăng nhập bình thường thì set subject là phonenumber, còn gooler là GoogleAccountId
+        String subject = userPrincipal.getPhoneNumber() != null ? userPrincipal.getPhoneNumber()
+                : userPrincipal.getGoogleAccountId();
+        //Nếu có phoneNumber là đăng nhập bình thường, còn không có thì đăng nhập gg
+        String loginType = userPrincipal.getPhoneNumber() != null ? "Phone" : "Google";
         Date dateJwtDate = new Date();
         try {
             List<String> roles = userPrincipal.getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
-
             String token = Jwts.builder()
-                    .setSubject(userPrincipal.getPhoneNumber())
+                    .setSubject(subject)
                     .claim("userId", userPrincipal.getId())
+                    .claim("loginType", loginType)
                     .claim("authorities", roles)
                     .setIssuedAt(dateJwtDate)
                     .setExpiration(new Date(dateJwtDate.getTime() + jwtExpirationMs))
@@ -61,10 +67,16 @@ public class JwtTokenUtils {
 
     public String generateRefreshToken(Authentication authentication) throws Exception {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        String subject = userPrincipal.getPhoneNumber() != null ? userPrincipal.getPhoneNumber()
+                : userPrincipal.getGoogleAccountId();
+        //Nếu có phoneNumber là đăng nhập bình thường, còn không có thì đăng nhập gg
+        String loginType = userPrincipal.getPhoneNumber() != null ? "Phone" : "Google";
+
         Date now = new Date();
         try {
             String refreshToken = Jwts.builder()
-                    .setSubject(userPrincipal.getPhoneNumber())
+                    .setSubject(subject)
+                    .claim("loginType", loginType)
                     .setIssuedAt(now)
                     .setExpiration(new Date(now.getTime() + refreshTokenExpirationMs)) // refresh token sống lâu hơn
                     .signWith(SignatureAlgorithm.HS256, refreshTokenSecret)
@@ -75,8 +87,20 @@ public class JwtTokenUtils {
         }
     }
 
-    public String getphoneNumberFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    public String getSubjectFromJwtToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(jwtSecret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+    public String getLoginTypeFromJwtToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("loginType", String.class);
     }
 
     public String generateAccessTokenFromRefreshToken(String refreshToken) throws Exception {
@@ -86,14 +110,22 @@ public class JwtTokenUtils {
                     .setSigningKey(refreshTokenSecret)
                     .parseClaimsJws(refreshToken)
                     .getBody();
-            // Lấy thông tin phoneNumber từ refresh token
-            String phoneNumber = claims.getSubject();
-            // Kiểm tra xem phoneNumber có hợp lệ không
-            if (phoneNumber == null || phoneNumber.isEmpty()) {
-                throw new InvalidParamException("Số điện thoại không có trong refresh token");
+            String subject = claims.getSubject(); // subject là phoneNumber hoặc googleAccountId
+            String loginType = claims.get("loginType", String.class);
+            //Kiểm tra xem có thông tin đăng nhập hay chưa
+            if (subject == null || subject.isEmpty()) {
+                throw new InvalidParamException("Thông tin đăng nhập không có trong refresh token");
             }
-            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(phoneNumber);
-            // Thiết lập thông tin xác thực
+            UserDetailsImpl userDetails;
+
+            if ("Phone".equalsIgnoreCase(loginType)) {
+                userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(subject);
+            } else if ("Google".equalsIgnoreCase(loginType)) {
+                userDetails = (UserDetailsImpl) ((UserDetailsServiceImpl) userDetailsService).loadUserByGoogleAccountId(subject);
+            } else {
+                throw new InvalidParamException("Loại đăng nhập không hợp lệ trong Refresh Token");
+            }
+           // Thiết lập thông tin xác thực
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
             );

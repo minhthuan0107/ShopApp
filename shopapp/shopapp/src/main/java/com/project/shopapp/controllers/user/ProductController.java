@@ -99,10 +99,10 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ResponseObject> getProductById(@PathVariable("productId") Long productId) {
         try {
-            Product existingProduct = productService.getProductbyId(productId);
+            ProductResponse existingProduct = productService.getProductbyId(productId);
             return ResponseEntity.ok(ResponseObject.builder()
                     .status(HttpStatus.OK)
-                    .data(ProductResponse.fromProduct(existingProduct))
+                    .data(existingProduct)
                     .message(localizationUtils.getLocalizedMessage(
                             MessageKeys.PRODUCT_GET_BY_ID_SUCCESSFULLY, productId))
                     .build());

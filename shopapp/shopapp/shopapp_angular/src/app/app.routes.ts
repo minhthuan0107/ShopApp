@@ -15,8 +15,9 @@ import { SearchComponent } from './components/search/search.component';
 import { BuyNowOrderComponent } from './components/order/buy-now-order/buy-now-order.component';
 import { authGuard} from './guards/auth.guard';
 import { FavoriteComponent } from './components/favorite/favorite.component';
+import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 
-export const routes: Routes = [ // ✅ Export `routes`
+export const routes: Routes = [ 
 { path: 'home', component: HomeComponent },
 { path: 'signin', component: SigninComponent },
 { 
@@ -42,4 +43,5 @@ export const routes: Routes = [ // ✅ Export `routes`
 { path: 'payments/payment-callback', component: PaymentCallbackComponent },
 { path: 'profile', component: ProfileComponent},
 { path: 'favorite', component: FavoriteComponent},
+{ path: 'auth/google/callback', component: AuthCallbackComponent},
 ];

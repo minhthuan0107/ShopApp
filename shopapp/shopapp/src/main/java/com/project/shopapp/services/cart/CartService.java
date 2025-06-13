@@ -35,12 +35,15 @@ public class CartService implements ICartService {
     private LocalizationUtils localizationUtils;
     @Autowired
     private CartDetailRepository cartDetailRepository;
+
     public BigDecimal getTotalPrice(Long cartId) {
         return cartDetailRepository.sumTotalPriceByCartId(cartId);
     }
+
     public Integer getTotalQuantity(Long cartId) {
         return cartDetailRepository.sumQuantityByCartId(cartId);
     }
+
     @Override
     @Transactional
     public CartResponse addProductToCart(Long userId, CartDetailDto cartDetailDto) throws Exception {
@@ -50,15 +53,8 @@ public class CartService implements ICartService {
                 ));
         //Tìm cart theo userId nếu chưa có thì tạo mới cart
         Cart cart = cartRepository.findByUserIdAndActiveTrue(userId)
-                .orElseGet(() -> {
-                    Cart newCart = new Cart();
-                    newCart.setUser(user);
-                    newCart.setStatus(CartStatus.PENDING);
-                    newCart.setTotalPrice(BigDecimal.ZERO);
-                    newCart.setTotalQuantity(0);
-                    newCart.setActive(true);
-                    return cartRepository.save(newCart);
-                });
+                .orElseGet(() -> createNewCart(user));
+
         Product product = productRepository.findById(cartDetailDto.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(
@@ -71,21 +67,13 @@ public class CartService implements ICartService {
         }
         //Kiểm tra cartdetail có trong csdl hay chưa , nếu chưa có thì tạo mới, nếu có rồi thì set totalprice và quantity
         CartDetail cartDetail = cartDetailRepository.findByCartIdAndProductId(
-                cart.getId(), product.getId()).orElseGet(() -> {
-            CartDetail newCartDetail = new CartDetail();
-            newCartDetail.setCart(cart);
-            newCartDetail.setProduct(product);
-            newCartDetail.setQuantity(0);
-            newCartDetail.setUnitPrice(product.getPrice());
-            newCartDetail.setTotalPrice(BigDecimal.ZERO);
-            return newCartDetail;
-        });
-        // Kiểm tra nếu thêm 1 nữa thì vượt quá số lượng tồn kho không
+                cart.getId(), product.getId()).orElseGet(() -> createNewCartDetail(cart, product));
+        // Kiểm tra stock cho cả item mới (0+1) và item cũ (current+1)
         if (cartDetail.getQuantity() + 1 > product.getQuantity()) {
             throw new DataNotFoundException(
                     localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_OUT_OF_STOCK));
         }
-        // Nếu sản phẩm đã tồn tại trong giỏ, tăng quantity và cập nhật totalprice
+        // Tăng quantity lên 1 (từ 0→1 hoặc current→current+1)
         cartDetail.setQuantity(cartDetail.getQuantity() + 1);
         cartDetail.setTotalPrice(cartDetail.getTotalPrice().add(product.getPrice()));
         cartDetailRepository.save(cartDetail);
@@ -103,12 +91,36 @@ public class CartService implements ICartService {
         return CartResponse.fromCart(cart, cartDetailResponses);
     }
 
+    //Hàm tạo mới cart
+    private Cart createNewCart(User user) {
+        Cart newCart = Cart.builder()
+                .user(user)
+                .status(CartStatus.PENDING)
+                .totalPrice(BigDecimal.ZERO)
+                .totalQuantity(0)
+                .active(true)
+                .build();
+        return cartRepository.save(newCart);
+    }
+
+    //Hàm tạo mới cartDetail
+    private CartDetail createNewCartDetail(Cart cart, Product product) {
+        return CartDetail.builder()
+                .cart(cart)
+                .product(product)
+                .quantity(0)
+                .unitPrice(product.getPrice())
+                .totalPrice(BigDecimal.ZERO)
+                .build();
+    }
+
     @Override
     public Long getCartItemCount(Long userId) {
         return cartRepository.findByUserIdAndActiveTrue(userId)
                 .map(cart -> cartDetailRepository.countCartItems(cart.getId()))
                 .orElse(0L);
     }
+
     @Override
     @Transactional
     public void clearCart(Long userId) throws Exception {

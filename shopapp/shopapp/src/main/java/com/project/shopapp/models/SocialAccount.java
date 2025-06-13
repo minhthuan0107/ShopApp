@@ -28,6 +28,4 @@ public class SocialAccount {
     private User user;
 
 
-
-
 }

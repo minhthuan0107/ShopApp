@@ -9,6 +9,7 @@ import com.project.shopapp.models.Product;
 import com.project.shopapp.repositories.BrandRepository;
 import com.project.shopapp.repositories.CategoryRepository;
 import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.repositories.RateRepository;
 import com.project.shopapp.repositories.projection.PriceRangeProjection;
 import com.project.shopapp.responses.product.PriceRangeResponse;
 import com.project.shopapp.responses.product.ProductResponse;
@@ -20,7 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,8 @@ public class ProductService implements IProductService {
     private LocalizationUtils localizationUtils;
     @Autowired
     private BrandRepository brandRepository;
+    @Autowired
+    private RateRepository rateRepository;
 
     @Override
     @Transactional
@@ -63,16 +68,61 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product getProductbyId(Long productId) throws Exception {
-        return productRepository.findById(productId)
+    public ProductResponse getProductbyId(Long productId) throws Exception {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, productId)));
+
+        ProductResponse productResponse = ProductResponse.fromProduct(product);
+        //Lấy thống kê dánh giá theo productId
+        Object statObj = rateRepository.findStatByProductId(product.getId());
+        if (statObj != null) {
+            Object[] stat = (Object[]) statObj; // Ép về Object[] để truy cập từng cột
+            Long count = (stat[0] != null) ? ((Number) stat[0]).longValue() : 0L;
+            Double avg = (stat[1] != null) ? ((Number) stat[1]).doubleValue() : 0.0;
+
+            productResponse.setTotalReviews(count);
+            productResponse.setAverageRating(avg);
+        } else {
+            productResponse.setTotalReviews(0L);
+            productResponse.setAverageRating(0.0);
+        }
+        return productResponse;
     }
+
     @Override
     public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
         //Lay danh sach san pham theo trang (page) va gioi han(limit)
-        return productRepository.findAll(pageRequest)
-                .map(ProductResponse::fromProduct);
+        Page<Product> productPage = productRepository.findAll(pageRequest);
+        //Lấy danh sách producId
+        List<Long> productIds = productPage.stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+        //Lấy thống kê dánh giá theo productId
+        List<Object[]> stats = rateRepository.findStatsByProductIds(productIds);
+
+        // Tạo map: key = productId, value = Object[]{productId, count, avg}
+        Map<Long, Object[]> reviewStatsMap = stats.stream().collect(Collectors.toMap(
+                obj -> ((Number) obj[0]).longValue(), // key: productId
+                obj -> obj            // value: Object[]{productId, count, avg}
+        ));
+        Page<ProductResponse> productResponses = productPage.map(product -> {
+            ProductResponse response = ProductResponse.fromProduct(product);
+            Object[] stat = reviewStatsMap.get(product.getId());
+            if (stat != null) {
+                Long count = ((Number) stat[1]).longValue();         // ép kiểu COUNT
+                Double avg = ((Number) stat[2]).doubleValue();       // ép kiểu AVG
+
+                response.setTotalReviews(count);
+                response.setAverageRating(avg);
+            } else {
+                response.setTotalReviews(0L);
+                response.setAverageRating(0.0);
+            }
+
+            return response;
+        });
+        return productResponses;
     }
 
     @Override
@@ -94,21 +144,78 @@ public class ProductService implements IProductService {
         Page<Product> productPage = productRepository.findByFilters(
                 categoryId, brandIds, minPrice, maxPrice, pageRequest
         );
-        return productPage.map(ProductResponse::fromProduct);
+        //Lấy danh sách producId
+        List<Long> productIds = productPage.stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+        //Lấy thống kê dánh giá theo productId
+        List<Object[]> stats = rateRepository.findStatsByProductIds(productIds);
+
+        // Tạo map: key = productId, value = Object[]{productId, count, avg}
+        Map<Long, Object[]> reviewStatsMap = stats.stream().collect(Collectors.toMap(
+                obj -> ((Number) obj[0]).longValue(), // key: productId
+                obj -> obj            // value: Object[]{productId, count, avg}
+        ));
+        Page<ProductResponse> productResponses = productPage.map(product -> {
+            ProductResponse response = ProductResponse.fromProduct(product);
+            Object[] stat = reviewStatsMap.get(product.getId());
+            if (stat != null) {
+                Long count = ((Number) stat[1]).longValue();         // ép kiểu COUNT
+                Double avg = ((Number) stat[2]).doubleValue();       // ép kiểu AVG
+
+                response.setTotalReviews(count);
+                response.setAverageRating(avg);
+            } else {
+                response.setTotalReviews(0L);
+                response.setAverageRating(0.0);
+            }
+
+            return response;
+        });
+        return productResponses;
     }
 
     @Override
     public Page<ProductResponse> searchProductsByKeyword(String keyword,
                                                          BigDecimal minPrice,
                                                          BigDecimal maxPrice,
-                                                         PageRequest pageRequest)  {
+                                                         PageRequest pageRequest) {
         String[] words = keyword.trim().toLowerCase().split("\\s+");
         String likePattern = String.join("%", words);  // "samsung%s24"
-       Page<Product> productPage = productRepository.searchByKeyword(
-               likePattern, minPrice, maxPrice, pageRequest
+        Page<Product> productPage = productRepository.searchByKeyword(
+                likePattern, minPrice, maxPrice, pageRequest
         );
-        return productPage.map(ProductResponse:: fromProduct);
+        //Lấy danh sách producId
+        List<Long> productIds = productPage.stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+        //Lấy thống kê dánh giá theo productId
+        List<Object[]> stats = rateRepository.findStatsByProductIds(productIds);
+
+        // Tạo map: key = productId, value = Object[]{productId, count, avg}
+        Map<Long, Object[]> reviewStatsMap = stats.stream().collect(Collectors.toMap(
+                obj -> ((Number) obj[0]).longValue(), // key: productId
+                obj -> obj            // value: Object[]{productId, count, avg}
+        ));
+        Page<ProductResponse> productResponses = productPage.map(product -> {
+            ProductResponse response = ProductResponse.fromProduct(product);
+            Object[] stat = reviewStatsMap.get(product.getId());
+            if (stat != null) {
+                Long count = ((Number) stat[1]).longValue();         // ép kiểu COUNT
+                Double avg = ((Number) stat[2]).doubleValue();       // ép kiểu AVG
+
+                response.setTotalReviews(count);
+                response.setAverageRating(avg);
+            } else {
+                response.setTotalReviews(0L);
+                response.setAverageRating(0.0);
+            }
+
+            return response;
+        });
+        return productResponses;
     }
+
 
     @Override
     public List<ProductResponse> getProductSuggestions(String keyword) {
@@ -118,9 +225,9 @@ public class ProductService implements IProductService {
         List<Product> products = productRepository.getProductSuggestions(likePattern);
 
         List<ProductResponse> productResponses = products.stream()
-                .map(ProductResponse :: fromProduct)
+                .map(ProductResponse::fromProduct)
                 .collect(Collectors.toList());
-        return  productResponses;
+        return productResponses;
     }
 
     @Override
@@ -128,14 +235,15 @@ public class ProductService implements IProductService {
     public Product updateProduct(
             Long id,
             ProductDto productDto) throws Exception {
-        Product existingProduct = getProductbyId(id);
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, id)));
         if (existingProduct != null) {
             //Copy thuoc tinh Dto -> Product
             existingProduct.setName(productDto.getName());
             Category existingCategory = categoryRepository.findById(productDto.getCategoryId())
-                    .orElseThrow(() ->
-                            new DataNotFoundException(
-                                    localizationUtils.getLocalizedMessage(MessageKeys.CATEGORY_NOT_FOUND, productDto.getCategoryId())));
+                    .orElseThrow(() -> new DataNotFoundException(
+                            localizationUtils.getLocalizedMessage(MessageKeys.CATEGORY_NOT_FOUND, productDto.getCategoryId())));
             existingProduct.setCategory(existingCategory);
             existingProduct.setPrice(productDto.getPrice());
             existingProduct.setDescription(productDto.getDescription());

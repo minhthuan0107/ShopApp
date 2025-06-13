@@ -28,22 +28,24 @@ export class CartComponent {
     private route: ActivatedRoute,
     private cartDetailService: CartDetailService,
     private cartService: CartService,
-    private router : Router,
-    private userService : UserService 
+    private router: Router,
+    private userService: UserService
   ) { }
   ngOnInit(): void {
-     //Lấy user từ behavior subject
-        this.user$ = this.userService.user$;
-        this.user$.pipe(
-          filter((user): user is User => !!user),
-        ).subscribe(user => {
-          this.userId = user.id;
-          this.getCartDetailsByUserId();
-        });
+    //Lấy user từ behavior subject
+    this.user$ = this.userService.user$;
+    this.user$.pipe(
+      filter((user): user is User => !!user),
+    ).subscribe(user => {
+      this.userId = user.id;
+      this.getCartDetailsByUserId();
+    });
   }
   increaseQuantity(item: any) {
-    item.quantity += 1;
-    item.total_price = item.unit_price * item.quantity;
+    if (item.quantity < item.product_quantity) {
+      item.quantity += 1;
+      item.total_price = item.unit_price * item.quantity;
+    }
   }
 
   decreaseQuantity(item: any) {
@@ -60,7 +62,7 @@ export class CartComponent {
           ...item, // Sao chép toàn bộ thuộc tính của item
           total_price: item.unit_price * item.quantity, // Thêm hoặc cập nhật total_price
           //Kiểm tra xem số lượng tồn kho có , nếu k thì thông báo hết sản phẩm
-          outOfStock: item.product_quantity <= 0 
+          outOfStock: item.product_quantity <= 0
         }));
         const totalItems = this.cartDetail.length;
         // Cập nhật số lượng giỏ hàng trên header
@@ -111,6 +113,18 @@ export class CartComponent {
     });
   }
   updateCartDetail() {
+  const outOfStockItems = this.cartDetail.filter(item => item.product_quantity <= 0);
+  if (outOfStockItems.length > 0) {
+    const outOfStockNames = outOfStockItems.map(i => i.product_name).join(', ');
+    Swal.fire({
+      icon: 'warning',
+      title: 'Sản phẩm hết hàng',
+      html: `Các sản phẩm sau đã hết hàng: <strong>${outOfStockNames}</strong><br>Vui lòng xóa khỏi giỏ hàng để tiếp tục thanh toán.`,
+      confirmButtonText: 'Đã hiểu'
+    });
+    // không tiếp tục gọi API nếu có hàng hết
+    return;
+  }
     const cartDetailsUpdateDto: CartDetailsUpdate[] = this.cartDetail.map(item => ({
       cart_detail_id: item.cart_detail_id,
       new_quantity: item.quantity
@@ -120,7 +134,7 @@ export class CartComponent {
         this.router.navigate(['/check-out']);
       },
       error: (error) => {
-        console.error("Lỗi!", error?.error?.message || "Cập nhật chi tiết giỏ hàng thất bại","error");
+        console.error("Lỗi!", error?.error?.message || "Cập nhật chi tiết giỏ hàng thất bại", "error");
       },
     });
   }

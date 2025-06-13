@@ -97,7 +97,6 @@ h4.text-muted {
     color: gray;
 }
 
-
 .comments-section {
     max-width: 80%;
     margin: auto;
@@ -113,8 +112,8 @@ h4.text-muted {
 
 .input-container {
     display: flex;
-    width: 100%;
-    gap: 0.8vw;
+    width: calc(100% - 15px); /* Giảm chiều rộng đi 10px */
+    gap: 10px;
     flex-wrap: nowrap;
     margin-bottom: 15px;
 }
@@ -254,7 +253,7 @@ h4.text-muted {
 .rating-title {
     font-size: 30px; /* Có thể điều chỉnh kích thước font nếu cần */
     font-weight: bold; /* Tùy chọn: có thể làm cho chữ đậm */
-    margin-bottom: 0;
+    margin-bottom: 20px;
 }
 .stars {
     
