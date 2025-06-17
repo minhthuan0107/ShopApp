@@ -41,6 +41,17 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query(value = "SELECT * FROM products p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :likePattern, '%')) LIMIT 3", nativeQuery = true)
     List<Product> getProductSuggestions(@Param("likePattern") String likePattern);
 
+    @Query(value = "SELECT * FROM products p ORDER BY sold DESC LIMIT 14",nativeQuery = true)
+    List<Product> findTop14BestSellingProducts();
+
+    @Query(value = "SELECT p.*, COUNT(r.id) AS total_reviews, AVG(r.rating) as avg_rating " +
+            "FROM products p " +
+            "LEFT JOIN rates r ON r.product_id = p.id " +
+            "GROUP BY p.id " +
+            "ORDER BY (avg_rating IS NULL),avg_rating DESC, total_reviews DESC " +
+            "LIMIT 14", nativeQuery = true)
+    List<Product> findTop14MostHighlyRatedProducts();
+
     @Query(value = "SELECT MIN(price) AS minPrice, MAX(price) AS maxPrice FROM products", nativeQuery = true)
     PriceRangeProjection findMinAndMaxPrice();
 }

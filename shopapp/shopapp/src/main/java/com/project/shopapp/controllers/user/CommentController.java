@@ -1,6 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.comment.CommentDto;
 import com.project.shopapp.dtos.comment.ReplyCommentDto;
 import com.project.shopapp.responses.ResponseObject;
@@ -11,6 +12,7 @@ import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +27,12 @@ public class CommentController {
     @Autowired
     private LocalizationUtils localizationUtils;
 
-    @PostMapping("create-coment/{userId}")
-    public ResponseEntity<ResponseObject> createComment(@PathVariable Long userId,
+    @PostMapping("create-coment")
+    public ResponseEntity<ResponseObject> createComment(Authentication authentication,
                                                         @RequestBody CommentDto commentDto,
                                                         BindingResult result) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
@@ -57,10 +61,12 @@ public class CommentController {
         }
     }
 
-    @PostMapping("create-reply-coment/{userId}")
-    public ResponseEntity<ResponseObject> createReplyComment(@PathVariable Long userId,
+    @PostMapping("create-reply-coment")
+    public ResponseEntity<ResponseObject> createReplyComment(Authentication authentication,
                                                              @RequestBody ReplyCommentDto replyCommentDto,
                                                              BindingResult result) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()

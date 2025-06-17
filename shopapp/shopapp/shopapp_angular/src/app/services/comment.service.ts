@@ -14,12 +14,12 @@ import { ReplyCommentDto } from '../dtos/reply-comment.dto';
 export class CommentService {
   private apiComments = `${environment.apiBaseUrl}/comments`;
   constructor(private http: HttpClient) { }
-  submitComment(userId: number, commentDto: CommentDto): Observable<ApiResponse<Comment>> {
-    return this.http.post<ApiResponse<Comment>>(`${this.apiComments}/create-coment/${userId}`, commentDto)
+  submitComment(commentDto: CommentDto): Observable<ApiResponse<Comment>> {
+    return this.http.post<ApiResponse<Comment>>(`${this.apiComments}/create-coment`, commentDto)
   }
 
-  submitReplyComment(userId: number, replyCommentDto: ReplyCommentDto): Observable<ApiResponse<ReplyComment>> {
-    return this.http.post<ApiResponse<ReplyComment>>(`${this.apiComments}/create-reply-coment/${userId}`, replyCommentDto)
+  submitReplyComment(replyCommentDto: ReplyCommentDto): Observable<ApiResponse<ReplyComment>> {
+    return this.http.post<ApiResponse<ReplyComment>>(`${this.apiComments}/create-reply-coment`, replyCommentDto)
   }
   
   getCommentsByProductId(productId: number): Observable<ApiResponse<Comment[]>> {

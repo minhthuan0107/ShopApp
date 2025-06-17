@@ -12,7 +12,7 @@
         <label for="address">Địa chỉ:</label>
         <input id="address" formControlName="address" type="text" [ngClass]="{'is-invalid': profileForm.get('address')?.invalid && profileForm.get('address')?.touched}" />
         <div *ngIf="profileForm.get('address')?.invalid && profileForm.get('address')?.touched" class="error-message">
-          <small class="text-danger">Họ và tên không được để trống</small>
+          <small class="text-danger">Địa chỉ không được để trống</small>
         </div>
       </div>
       

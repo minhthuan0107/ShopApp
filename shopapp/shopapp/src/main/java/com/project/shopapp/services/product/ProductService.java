@@ -231,6 +231,77 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<ProductResponse> getTop14BestSellingProducts() {
+        // Lấy danh sách productId từ 8 sản phẩm bán chạy
+        List<Product> products = productRepository.findTop14BestSellingProducts();
+        //Lấy danh sách producId
+        List<Long> productIds = products.stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+        //Lấy thống kê dánh giá theo productId
+        List<Object[]> stats = rateRepository.findStatsByProductIds(productIds);
+        // Tạo map: key = productId, value = Object[]{productId, count, avg}
+        Map<Long, Object[]> reviewStatsMap = stats.stream().collect(Collectors.toMap(
+                obj -> ((Number) obj[0]).longValue(), // key: productId
+                obj -> obj            // value: Object[]{productId, count, avg}
+        ));
+        // Ghép thống kê vào từng ProductResponse
+        List<ProductResponse> productResponses = products.stream().map(product -> {
+            ProductResponse response = ProductResponse.fromProduct(product);
+            Object[] stat = reviewStatsMap.get(product.getId());
+            if (stat != null) {
+                Long count = ((Number) stat[1]).longValue();         // ép kiểu COUNT
+                Double avg = ((Number) stat[2]).doubleValue();       // ép kiểu AVG
+
+                response.setTotalReviews(count);
+                response.setAverageRating(avg);
+            } else {
+                response.setTotalReviews(0L);
+                response.setAverageRating(0.0);
+            }
+
+            return response;
+        }).collect(Collectors.toList());
+        return productResponses;
+    }
+    @Override
+    public List<ProductResponse> getTop14MostHighlyRatedProducts() {
+        // Lấy danh sách productId từ 14 nổi bật theo đánh giá
+        List<Product> products = productRepository.findTop14MostHighlyRatedProducts();
+        //Lấy danh sách producId
+        List<Long> productIds = products.stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+        //Lấy thống kê dánh giá theo productId
+        List<Object[]> stats = rateRepository.findStatsByProductIds(productIds);
+        // Tạo map: key = productId, value = Object[]{productId, count, avg}
+        Map<Long, Object[]> reviewStatsMap = stats.stream().collect(Collectors.toMap(
+                obj -> ((Number) obj[0]).longValue(), // key: productId
+                obj -> obj            // value: Object[]{productId, count, avg}
+        ));
+        // Ghép thống kê vào từng ProductResponse
+        List<ProductResponse> productResponses = products.stream().map(product -> {
+            ProductResponse response = ProductResponse.fromProduct(product);
+            Object[] stat = reviewStatsMap.get(product.getId());
+            if (stat != null) {
+                Long count = ((Number) stat[1]).longValue();         // ép kiểu COUNT
+                Double avg = ((Number) stat[2]).doubleValue();       // ép kiểu AVG
+
+                response.setTotalReviews(count);
+                response.setAverageRating(avg);
+            } else {
+                response.setTotalReviews(0L);
+                response.setAverageRating(0.0);
+            }
+
+            return response;
+        }).collect(Collectors.toList());
+        return productResponses;
+    }
+
+
+
+    @Override
     @Transactional
     public Product updateProduct(
             Long id,

@@ -49,7 +49,7 @@ export const orderConfirmationGuard: CanActivateFn = (route, state) => {
         return orderService.getOrderById(orderId).pipe(
           map(response => {
             const order = response.data;
-            if (order.phone_number === currentUser.phone_number &&
+            if (order.user_id === currentUser.id &&
               (order.payment.status === 'SUCCESS' || order.payment.status === 'PENDING')) {
               return true;
             } else {
@@ -95,7 +95,7 @@ export const orderConfirmationGuard: CanActivateFn = (route, state) => {
               return orderService.getOrderById(orderId).pipe(
                 map(response => {
                   const order = response.data;
-                  if (order.phone_number === currentUser.phone_number &&
+                  if (order.user_id === currentUser.id &&
                     (order.payment.status === 'SUCCESS' || order.payment.status === 'PENDING')) {
                     return true;
                   } else {

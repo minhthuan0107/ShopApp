@@ -34,6 +34,10 @@ public interface IProductService {
     void deleteProduct (Long id);
     boolean existsByName (String name);
     PriceRangeResponse getPriceRange ();
+    List<ProductResponse>  getTop14BestSellingProducts();
+
+    List<ProductResponse>  getTop14MostHighlyRatedProducts();
+
 
 
 }

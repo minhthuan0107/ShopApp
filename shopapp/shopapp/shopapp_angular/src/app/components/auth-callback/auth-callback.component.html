@@ -1,1 +1,6 @@
-<p>Đang xử lí đăng nhập...</p>
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">🔄 Đang xác thực tài khoản... Vui lòng chờ</p>
+  </div>
+</div>

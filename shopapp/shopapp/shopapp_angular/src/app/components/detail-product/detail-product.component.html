@@ -115,7 +115,7 @@
 
                 <form *ngIf="replyingToCommentId === comment.comment_id" (ngSubmit)="submitReply(comment.comment_id)"
                     class="comment-reply-form">
-                    <div class="input-container">
+                    <div class="input-container1">
                         <textarea [(ngModel)]="replyContent[comment.comment_id]" name="replyContent"
                             class="form-control textarea-comment" placeholder="Nhập phản hồi..." required>
                         </textarea>

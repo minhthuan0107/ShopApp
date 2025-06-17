@@ -163,7 +163,7 @@ export class DetailProductComponent implements OnInit {
       product_id: this.productId!,
       content: this.newComment.content
     };
-    this.commentService.submitComment(this.userId, commentDto).subscribe({
+    this.commentService.submitComment(commentDto).subscribe({
       next: (response) => {
         if (response && response.data) {
           this.newComment = { content: '' };// Reset form sau khi gửi
@@ -192,7 +192,7 @@ export class DetailProductComponent implements OnInit {
       content: this.replyContent[commentId],
       parent_id: commentId
     };
-    this.commentService.submitReplyComment(this.userId, replyCommentDto).subscribe({
+    this.commentService.submitReplyComment(replyCommentDto).subscribe({
       next: (response) => {
         if (response && response.data) {
           this.webSocketCommentService.sendReply(response.data);

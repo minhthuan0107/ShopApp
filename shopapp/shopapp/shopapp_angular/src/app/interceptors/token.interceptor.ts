@@ -28,7 +28,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
         if (!refreshToken) {
           // Không có refresh token → logout ngay
           tokenService.logout();
-          router.navigate(['/signin']);
           return EMPTY;
         }
 
