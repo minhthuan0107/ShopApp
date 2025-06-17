@@ -126,6 +126,9 @@ public class MessageKeys {
 
     public static final String SOCIAL_LOGIN_URL_GENERATED = "social.login_url_generated";
 
+    public static final String PRODUCT_TOP_SELLER_FETCH_SUCCESSFULLY = "product.top_seller_fetch_successfully";
+    public static final String PRODUCT_TOP_RATED_FETCH_SUCCESSFULLY = "product.top_rated_fetch_successfully";
+
 
 
 

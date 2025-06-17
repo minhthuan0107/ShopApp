@@ -39,7 +39,7 @@
 }
 
 .product-item {
-   
+
     background-color: white;
     border: 1px solid rgb(200, 200, 200);
     border-radius: 20px;
@@ -51,7 +51,8 @@
     max-width: 350px;
     text-align: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer; /* Luôn hiển thị con trỏ bàn tay */
+    cursor: pointer;
+    /* Luôn hiển thị con trỏ bàn tay */
 }
 
 //Để đổ khung nhẹ khi click vào
@@ -62,8 +63,10 @@
 }
 
 
-.product-item:hover .product-actions { /* Đảm bảo sử dụng .product-item để hover */
-    display: flex; /* Hiện các nút hành động khi rê chuột vào vùng chứa */
+.product-item:hover .product-actions {
+    /* Đảm bảo sử dụng .product-item để hover */
+    display: flex;
+    /* Hiện các nút hành động khi rê chuột vào vùng chứa */
 }
 
 .product-actions button {
@@ -71,17 +74,24 @@
 }
 
 .product-actions button:hover {
-    transform: scale(1.05); /* Tăng kích thước nhẹ */
+    transform: scale(1.05);
+    /* Tăng kích thước nhẹ */
 }
+
 .product-actions {
-    opacity: 0; /* Bắt đầu với độ trong suốt 0 (ẩn) */
-    visibility: hidden; /* Ẩn đi */
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Thêm chuyển tiếp cho độ trong suốt và tính khả dụng */
+    opacity: 0;
+    /* Bắt đầu với độ trong suốt 0 (ẩn) */
+    visibility: hidden;
+    /* Ẩn đi */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* Thêm chuyển tiếp cho độ trong suốt và tính khả dụng */
 }
 
 .product-item:hover .product-actions {
-    opacity: 1; /* Khi hover, độ trong suốt là 1 (hiển thị) */
-    visibility: visible; /* Đặt khả dụng thành có thể nhìn thấy */
+    opacity: 1;
+    /* Khi hover, độ trong suốt là 1 (hiển thị) */
+    visibility: visible;
+    /* Đặt khả dụng thành có thể nhìn thấy */
 }
 
 @media (max-width: 576px) {
@@ -145,8 +155,9 @@
 }
 
 .product-price {
-    color: black;
-    /* Đổi màu chữ thành đen */
+    color: #e53935;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 .product-rating {
@@ -197,11 +208,13 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.3);
-        position: relative; /* Thêm vị trí tương đối để sử dụng hiệu ứng */
-        
+        position: relative;
+        /* Thêm vị trí tương đối để sử dụng hiệu ứng */
+
         /* Hiệu ứng nhấn nút */
         &:active {
-            transform: scale(0.95); /* Giảm kích thước một chút khi nhấn */
+            transform: scale(0.95);
+            /* Giảm kích thước một chút khi nhấn */
             box-shadow: 0px 2px 4px rgba(0, 123, 255, 0.5);
         }
 
@@ -209,17 +222,21 @@
             background-color: #007bff;
             color: white;
             box-shadow: 0px 6px 10px rgba(0, 123, 255, 0.5);
-            transform: translateY(-2px); /* Đẩy nút lên một chút khi hover */
+            transform: translateY(-2px);
+            /* Đẩy nút lên một chút khi hover */
         }
 
         &:disabled {
             border-color: #ccc;
             color: #ccc;
-            cursor: default; /* Không hiển thị bàn tay khi hover */
+            cursor: default;
+            /* Không hiển thị bàn tay khi hover */
             background-color: #f8f9fa;
             box-shadow: none;
-            opacity: 0.6; /* Làm mờ nút để báo hiệu không dùng được */
-            transform: none; /* Không có hiệu ứng khi nút bị vô hiệu hóa */
+            opacity: 0.6;
+            /* Làm mờ nút để báo hiệu không dùng được */
+            transform: none;
+            /* Không có hiệu ứng khi nút bị vô hiệu hóa */
         }
     }
 
@@ -237,11 +254,77 @@
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
     }
 }
-.carousel{
-    margin-top: 15px;
-}
+
 .carousel .slick-slide {
-    margin-right: 10px; /* Điều chỉnh khoảng cách hợp lý */
-    flex: 0 0 auto; /* Ngăn việc hình bị ép co nhỏ */
-    max-width: calc(100% / 3 - 10px); /* Giữ ảnh không bị quá lớn */
+    margin-right: 10px;
+    /* Điều chỉnh khoảng cách hợp lý */
+    flex: 0 0 auto;
+    /* Ngăn việc hình bị ép co nhỏ */
+    max-width: calc(100% / 1 - 10px);
+    /* Giữ ảnh không bị quá lớn */
+}
+
+.seller-intro-section {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.top-seller-section .product-item {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 15px;
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.top-seller-section .product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.top-seller-section .product-img {
+    height: 130px;
+    width: 70%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    /* Đảm bảo ảnh là khối để margin auto hoạt động */
+    margin: 0 auto;
+    /* 👈 Căn giữa theo chiều ngang */
+}
+
+.top-seller-section .product-name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+    height: 40px; /* 👈 cố định chiều cao cho đúng 2 dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+.top-seller-section .product-price {
+    color: #e53935;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.top-seller-section .product-rating-simple {
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+}
+
+.top-seller-section .carousel-item {
+    display: flex;
+    justify-content: center;
 }

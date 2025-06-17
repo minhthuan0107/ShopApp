@@ -22,18 +22,19 @@ export class ProfileComponent {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
-    this.userService.user$
-      .pipe(
-        filter(user => !!user),
-        distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(user => {
-        this.user = user;
-      });
-  }
-
+ngOnInit(): void {
+  this.userService.user$
+    .pipe(
+      filter((user): user is User => user !== null), // ✅ lọc null an toàn cho TS
+      distinctUntilChanged((prev, curr) => prev.id === curr.id),
+      takeUntil(this.destroy$)
+    )
+    .subscribe(user => {
+      console.log("User data nhận được:", user);
+      console.log('google_account_id:', user.google_account_id, typeof user.google_account_id);
+      this.user = user;
+    });
+}
   handleSave(updatedUser: any) {
     this.user = updatedUser;
     this.isEditing = false;

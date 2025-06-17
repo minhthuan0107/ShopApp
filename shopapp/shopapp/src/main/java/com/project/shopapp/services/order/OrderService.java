@@ -165,6 +165,8 @@ public class OrderService implements IOrderService {
         Order existingorder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException(
                         localizationUtils.getLocalizedMessage(MessageKeys.ORDER_NOT_FOUND, orderId)));
+        modelMapper.typeMap(Order.class, OrderResponse.class)
+                .addMappings(mapper -> mapper.map(src -> src.getUser().getId(), OrderResponse::setUserId));
         OrderResponse orderResponse = modelMapper.map(existingorder, OrderResponse.class);
         //Tìm kiếm payment theo orderId
         Optional<Payment> payment = paymentRepository.findByOrderId(orderId);

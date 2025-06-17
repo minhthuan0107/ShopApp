@@ -3,6 +3,7 @@ import { PaymentResponse } from "./payment.response";
 
 export interface OrderResponse {
     order_id: number;
+    user_id:number;
     full_name: string;
     email: string;
     phone_number: string;

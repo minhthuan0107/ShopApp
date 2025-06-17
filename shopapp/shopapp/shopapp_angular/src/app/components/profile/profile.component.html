@@ -20,15 +20,17 @@
         </div>
         <div class="profile-actions">
             <button class="edit-button" (click)="isEditing = true">✏️ Chỉnh sửa</button>
-            <button class="password-button" (click)="isChangingPassword= true">🔐 Đổi mật khẩu</button>
+            <button class="password-button" *ngIf="user && +user.google_account_id === 0" (click)="isChangingPassword = true">
+                🔐 Đổi mật khẩu
+            </button>
         </div>
     </div>
 
     <app-edit-profile *ngIf="isEditing" [user]="user" (onCancel)="isEditing = false" (onSave)="handleSave($event)">
     </app-edit-profile>
 
-    <app-change-password *ngIf="isChangingPassword" (onCancel)="isChangingPassword = false"
-        (onPasswordChanged)="handlePasswordChanged()">
+    <app-change-password *ngIf="isChangingPassword && user && +user.google_account_id === 0"
+        (onCancel)="isChangingPassword = false" (onPasswordChanged)="handlePasswordChanged()">
     </app-change-password>
 
 </div>

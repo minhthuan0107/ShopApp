@@ -4,15 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { finalize, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-auth-callback',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './auth-callback.component.html',
   styleUrl: './auth-callback.component.scss'
 })
 export class AuthCallbackComponent {
+  isLoading = true; // ban đầu là true
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -46,6 +48,9 @@ export class AuthCallbackComponent {
         this.tokenService.setAccessToken(response.access_token);
         this.tokenService.setRefreshToken(response.refresh_token);
         return this.userService.fetchUserInfo();
+      }),
+      finalize(() => {
+        this.isLoading = false;
       })
     ).subscribe({
       next: (user) => {
@@ -54,9 +59,8 @@ export class AuthCallbackComponent {
       },
       error: (err) => {
         console.error('Lỗi xác thực hoặc lấy user:', err);
-        // Bạn có thể hiện thông báo lỗi thay vì navigate
+        // Có thể điều hướng về /login hoặc hiển thị lỗi tại chỗ
       }
     });
-
   }
 }

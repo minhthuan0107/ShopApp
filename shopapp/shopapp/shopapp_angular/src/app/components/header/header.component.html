@@ -44,8 +44,8 @@
             <ul class="suggestions-list" *ngIf="suggestedProducts.length > 0 && searchInput.value.trim() !== '' ">
               <li *ngFor="let product of suggestedProducts" (click)="onSelectSuggestion(product.id)">
                 <img [src]="product.url_image" alt="Ảnh" width="40" height="40">
-                <span>{{ product.name }}</span> -
-                <strong>{{ product.price | currency:'VND':'symbol' }}</strong>
+                <span>{{ product.name }}</span> 
+               <strong>{{ product.price | number:'1.0-0' }}₫</strong>
               </li>
             </ul>
           </li>

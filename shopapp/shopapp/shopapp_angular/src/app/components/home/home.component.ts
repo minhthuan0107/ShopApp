@@ -24,6 +24,8 @@ import { FavoriteResponse } from '../../responses/favorite.response';
 export class HomeComponent implements OnInit {
   userId: number | null = null;
   products: Product[] = [];
+  topSellingProducts: Product[] = [];
+  topRatedProducts:Product[] =[];
   currentPage: number = 1;
   itemsPerPage: number = 12;
   pages: number[] = [];
@@ -45,6 +47,30 @@ export class HomeComponent implements OnInit {
     infinite: true,       // Cho phép lướt vô hạn
     arrows: true          // Hiển thị nút điều hướng (next/prev)
   };
+  slides2 = [
+    { id: 1, url: 'assets/banner/banner10.png' },
+    { id: 2, url: 'assets/banner/banner12.png' },
+    { id: 3, url: 'assets/banner/banner13.png' },
+    { id: 4, url: 'assets/banner/banner14.png' }
+  ];
+  slideConfig2 = {
+    slidesToShow: 2,      // Hiển thị 1 hình ảnh
+    slidesToScroll: 1,    // Lướt 1 hình ảnh tại một thời điểm
+    autoplay: true,       // Tự động lướt
+    autoplaySpeed: 2000,  // Thời gian giữa các lần lướt (2 giây)
+    dots: true,           // Hiển thị dấu chấm điều hướng
+    infinite: true,       // Cho phép lướt vô hạn
+    arrows: true          // Hiển thị nút điều hướng (next/prev)
+  };
+  topSellerSlideConfig = {
+  slidesToShow: 6,
+  slidesToScroll: 1,
+  dots: false,
+  infinite: true, // Bật true để nó cuộn vòng lặp
+  arrows: true,
+  autoplay: true,       // Tự động lướt
+  autoplaySpeed: 2000,// Thời gian giữa các lần lướt (2 giây)
+  };
 
   constructor(private productService: ProductService,
     private router: Router,
@@ -62,7 +88,8 @@ export class HomeComponent implements OnInit {
         this.getFavoriteProductsByUserId();
       }
     });
-
+    this.getTopSellingProducts();
+    this.getTopMostHighlyRatedProducts();
   }
   getProducts(page: number, limit: number) {
     this.productService.getProducts(page, limit).subscribe({
@@ -79,6 +106,23 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  //Hàm lấy sản phẩm bán chạy nhất
+  getTopSellingProducts(){
+    this.productService.getTop14BestSellingProducts().subscribe({
+     next: (response: any) => {
+       this.topSellingProducts = response.data;
+      }
+    });
+  }
+  //Hàm lấy sản phẩm nổi bật nhất
+  getTopMostHighlyRatedProducts(){
+    this.productService.getTop14MostHighlyRatedProducts().subscribe({
+     next: (response: any) => {
+       this.topRatedProducts = response.data;
+      }
+    });
+  }
+
   onPageChange(page: number) {
     if (page < 1 || page > this.totalPages) return; // Kiểm tra hợp lệ
     this.currentPage = page;

@@ -217,4 +217,24 @@ public class ProductController {
                             MessageKeys.PRODUCT_SUGGESTIONS_GET_SUCCESSFULLY, keyword))
                     .build());
     }
+    @GetMapping("/seller")
+    public ResponseEntity<ResponseObject> getTop14BestSellingProducts(){
+        List<ProductResponse> productResponses = productService.getTop14BestSellingProducts();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .data(productResponses)
+                .message(localizationUtils.getLocalizedMessage(
+                        MessageKeys.PRODUCT_TOP_SELLER_FETCH_SUCCESSFULLY))
+                .build());
+    }
+    @GetMapping("/top-rated")
+    public ResponseEntity<ResponseObject> getTop14MostHighlyRatedProducts(){
+        List<ProductResponse> productResponses = productService.getTop14MostHighlyRatedProducts();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .data(productResponses)
+                .message(localizationUtils.getLocalizedMessage(
+                        MessageKeys.PRODUCT_TOP_RATED_FETCH_SUCCESSFULLY))
+                .build());
+    }
 }

@@ -87,6 +87,14 @@ export class ProductService {
     return this.http.get<ApiResponse<any>> (`${this.apiGetProducts}/price-range`) 
   }
 
+  getTop14BestSellingProducts(){
+    return this.http.get<ApiResponse<Product>> (`${this.apiGetProducts}/seller`) 
+  }
+
+  getTop14MostHighlyRatedProducts(){
+    return this.http.get<ApiResponse<Product>> (`${this.apiGetProducts}/top-rated`) 
+  }
+
   getProductSuggestions(keyword: string): Observable<ApiResponse<ProductResponse[]>> {
     return this.http.get<ApiResponse<ProductResponse[]>>(`${this.apiSuggestionProducts}`, {
       params: { keyword }
