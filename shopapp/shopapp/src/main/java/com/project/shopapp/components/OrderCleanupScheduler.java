@@ -1,6 +1,6 @@
 package com.project.shopapp.components;
 
-import com.project.shopapp.services.order.OrderService;
+import com.project.shopapp.services.customer.order.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

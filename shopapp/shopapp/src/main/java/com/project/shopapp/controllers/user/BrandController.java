@@ -1,10 +1,10 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.BrandDto;
+import com.project.shopapp.dtos.customer.brand.BrandDto;
 import com.project.shopapp.models.Brand;
 import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.services.brand.BrandService;
+import com.project.shopapp.services.customer.brand.BrandService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

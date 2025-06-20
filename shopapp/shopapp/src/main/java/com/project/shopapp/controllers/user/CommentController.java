@@ -2,12 +2,12 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
-import com.project.shopapp.dtos.comment.CommentDto;
-import com.project.shopapp.dtos.comment.ReplyCommentDto;
+import com.project.shopapp.dtos.customer.comment.CommentDto;
+import com.project.shopapp.dtos.customer.comment.ReplyCommentDto;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.comment.CommentReplyResponse;
 import com.project.shopapp.responses.comment.CommentResponse;
-import com.project.shopapp.services.comment.CommentServie;
+import com.project.shopapp.services.customer.comment.CommentServie;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

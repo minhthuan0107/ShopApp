@@ -1,0 +1,100 @@
+.admin-navbar {
+  background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); // Xanh tím than hiện đại
+  padding: 0.75rem 1.5rem;
+  color: #fff;
+  .admin-navbar__left {
+    margin-left: -9px;
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.25rem;
+      margin-right: 1rem;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #ffc107; // Vàng sáng khi hover
+      }
+    }
+
+    .admin-navbar__title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+  }
+
+  .admin-navbar__right {
+    .btn-icon {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.25rem;
+      position: relative;
+
+      .badge {
+        position: absolute;
+        top: 0;
+        right: -5px;
+        background-color: red;
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        border-radius: 50%;
+      }
+
+      &:hover {
+        color: #ffc107;
+      }
+    }
+
+    .btn-user {
+      background: none;
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+
+      .user-name {
+        margin-right: 0.5rem;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+      }
+
+      &:hover {
+        color: #ffc107;
+      }
+    }
+
+    .dropdown-menu {
+      min-width: 250px;
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.875rem;
+
+        i {
+          margin-right: 0.5rem;
+        }
+
+        .text-gray-500 {
+          font-size: 0.75rem;
+          color: #6c757d;
+        }
+      }
+
+      .dropdown-header {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #0d6efd;
+      }
+    }
+  }
+}

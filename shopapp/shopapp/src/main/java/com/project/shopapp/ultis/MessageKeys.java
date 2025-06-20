@@ -130,6 +130,15 @@ public class MessageKeys {
     public static final String PRODUCT_TOP_RATED_FETCH_SUCCESSFULLY = "product.top_rated_fetch_successfully";
 
 
+    public static final String ACCESS_DENIED = "access.denied";
+
+    public static final String STATISTICS_REVENUE_YEAR_SUCCESS = "statistics.revenue_year_successfully";
+    public static final String STATISTICS_REVENUE_MONTH_SUCCESS = "statistics.revenue_month_successfully";
+
+    public static final String STATISTICS_REVENUE_BY_YEAR_SUCCESS = "statistics.revenue_by_year_successfully";
+    public static final String STATISTICS_AVAILABLE_ORDER_YEARS_SUCCESS = "statistics.available_order_years_successfully";
+
+    public static final String STATISTICS_PENDING_ORDERS_COUNT_SUCCESS = "statistics.pending_orders_count_successfully";
 
 
 

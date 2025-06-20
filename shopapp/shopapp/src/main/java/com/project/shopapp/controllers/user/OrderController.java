@@ -1,10 +1,10 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.OrderDto;
+import com.project.shopapp.dtos.customer.order.OrderDto;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.order.OrderResponse;
-import com.project.shopapp.services.order.OrderService;
+import com.project.shopapp.services.customer.order.OrderService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

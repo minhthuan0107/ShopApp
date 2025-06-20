@@ -1,11 +1,11 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.payment.*;
+import com.project.shopapp.dtos.customer.payment.*;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.payment.PaymentResponse;
-import com.project.shopapp.services.payment.PaymentService;
-import com.project.shopapp.services.payment.VNPayService;
+import com.project.shopapp.services.customer.payment.PaymentService;
+import com.project.shopapp.services.customer.payment.VNPayService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

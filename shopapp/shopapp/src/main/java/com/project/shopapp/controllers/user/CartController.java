@@ -2,10 +2,10 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
-import com.project.shopapp.dtos.cartdetail.CartDetailDto;
+import com.project.shopapp.dtos.customer.cartdetail.CartDetailDto;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.cart.CartResponse;
-import com.project.shopapp.services.cart.CartService;
+import com.project.shopapp.services.customer.cart.CartService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

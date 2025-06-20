@@ -1,0 +1,64 @@
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%); // Đồng bộ header
+  color: white;
+  transition: all 0.3s ease-in-out;
+  .nav-link {
+    color: white;
+    padding: 12px 20px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s, padding-left 0.3s;
+
+    i {
+      margin-right: 12px;
+      font-size: 16px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 28px;
+      border-left: 4px solid #ffc107; // Vàng khi hover
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-left: 4px solid #ffc107; // Vàng nổi bật cho active
+    }
+  }
+
+  .sidebar-heading {
+    font-size: 13px;
+    padding: 12px 20px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: bold;
+  }
+
+  .sidebar-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0.75rem 1rem;
+  }
+
+  .sidebar-brand {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .sidebar-brand-icon {
+      margin-right: 10px;
+      font-size: 24px;
+      color: white;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

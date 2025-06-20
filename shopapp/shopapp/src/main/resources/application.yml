@@ -60,6 +60,7 @@ spring:
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
 api:
   prefix: /api/v1
+  admin-prefix: /api/v1/admin
 
 bezkoder:
   jwtSecret: ${JWT_SECRET}

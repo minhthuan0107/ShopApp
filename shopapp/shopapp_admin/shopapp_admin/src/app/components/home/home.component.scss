@@ -1,0 +1,73 @@
+/* Tổng layout */
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fc;
+}
+
+/* Sidebar giả định */
+.sidebar {
+  width: 250px;
+  background-color: #2e59d9;
+  color: white;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* Main content sẽ nằm cạnh sidebar */
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+
+/* Làm đẹp biểu đồ */
+#divChart {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  height: 420px;
+}
+
+/* Responsive chart canvas */
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+.revenue-filter {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.revenue-filter select {
+  padding: 6px 12px;
+  font-size: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  transition: border 0.3s;
+}
+
+.revenue-filter select:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.revenue-summary {
+  font-size: 16px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.revenue-amount {
+  color: #256fb1;
+  font-weight: bold;
+  margin-left: 4px;
+}

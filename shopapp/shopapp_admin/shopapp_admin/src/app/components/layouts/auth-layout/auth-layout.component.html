@@ -1,0 +1,56 @@
+<!-- admin-header.component.html -->
+<header class="admin-header">
+  <div class="container-fluid">
+    <div class="header-content">
+      <div class="logo-section">
+        <i class="fas fa-shield-alt"></i>
+        <div class="logo-text">
+          <h1>ThuanLe Shop</h1>
+          <span><h4>Hệ thống quản trị</h4></span>
+        </div>
+      </div>
+      <div class="header-info">
+        <div class="system-status">
+          <i class="fas fa-circle status-dot"></i>
+          <span>System Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+  <main class="auth-main">
+    <router-outlet></router-outlet>
+  </main>
+  <!-- admin-footer.component.html -->
+<footer class="admin-footer">
+  <div class="container-fluid">
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="copyright">
+          <i class="fas fa-copyright"></i>
+          <span>2025 Thuanminhle. All rights reserved.</span>
+        </div>
+        <div class="powered-by">
+          <span>Powered by Angular {{ angularVersion }}</span>
+        </div>
+      </div>
+      
+      <div class="footer-center">
+        <div class="security-badge">
+          <i class="fas fa-lock"></i>
+          <span>Secure Connection</span>
+        </div>
+      </div>
+      
+      <div class="footer-right">
+        <div class="version-info">
+          <span>Version 1.0.0</span>
+        </div>
+        <div class="last-updated">
+          <i class="fas fa-clock"></i>
+          <span>Updated: {{ currentDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
