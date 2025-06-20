@@ -17,4 +17,8 @@ public class Role {
     private Long id;
     @Column(name = "name", nullable = false)
     private String name;
+    //Hàm check role
+    public boolean isAdmin() {
+        return "ADMIN".equals(this.name);
+    }
 }

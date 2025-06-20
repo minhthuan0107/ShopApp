@@ -1,10 +1,10 @@
 package com.project.shopapp.controllers.admin;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.coupon.CouponDto;
+import com.project.shopapp.dtos.customer.coupon.CouponDto;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.coupon.CouponResponse;
-import com.project.shopapp.services.coupon.CouponService;
+import com.project.shopapp.services.customer.coupon.CouponService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

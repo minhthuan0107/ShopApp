@@ -1,17 +1,14 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.OrderDetailDto;
 import com.project.shopapp.responses.orderdetail.OrderDetailResponse;
 import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.services.orderdetail.OrderDetailService;
+import com.project.shopapp.services.customer.orderdetail.OrderDetailService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

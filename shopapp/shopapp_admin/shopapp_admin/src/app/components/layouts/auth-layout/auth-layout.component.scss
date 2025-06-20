@@ -1,0 +1,296 @@
+// admin-header.component.scss
+.admin-header {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(29, 78, 216, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.2rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      
+      i {
+        font-size: 2.5rem;
+        color: #fff;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+      
+      .logo-text {
+        h1 {
+          color: #fff;
+          font-size: 1.8rem;
+          font-weight: 700;
+          margin: 0;
+          letter-spacing: -0.5px;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        span {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 0.85rem;
+          font-weight: 400;
+          display: block;
+          margin-top: -2px;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+    
+    .header-info {
+      .system-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        .status-dot {
+          color: #10b981;
+          font-size: 0.8rem;
+          animation: pulse 2s infinite;
+        }
+        
+        span {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    padding: 1rem 0;
+    
+    .header-content {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+      
+      .logo-section {
+        flex-direction: column;
+        gap: 0.5rem;
+        
+        i {
+          font-size: 2rem;
+        }
+        
+        .logo-text {
+          h1 {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-content {
+      .logo-section {
+        .logo-text {
+          h1 {
+            font-size: 1.3rem;
+          }
+          
+          span {
+            font-size: 0.8rem;
+          }
+        }
+      }
+      
+      .header-info {
+        .system-status {
+          padding: 0.4rem 0.8rem;
+          
+          span {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// admin-footer.component.scss
+.admin-footer {
+  background: linear-gradient(135deg, rgba(0, 85, 170, 0.95) 0%, rgba(0, 51, 102, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 0;
+  margin-top: auto;
+  color: #e0f2fe; /* chữ màu xanh nhạt cho dễ nhìn trên nền xanh đậm */
+  text-align: center;
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      
+      .copyright {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        
+        i {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.8rem;
+        }
+      }
+      
+      .powered-by {
+        span {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.8rem;
+          font-style: italic;
+        }
+      }
+    }
+    
+    .footer-center {
+      .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(16, 185, 129, 0.1);
+        padding: 0.4rem 0.8rem;
+        border-radius: 15px;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        
+        i {
+          color: #10b981;
+          font-size: 0.9rem;
+        }
+        
+        span {
+          color: #10b981;
+          font-weight: 500;
+          font-size: 0.8rem;
+        }
+      }
+    }
+    
+    .footer-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      text-align: right;
+      
+      .version-info {
+        span {
+          color: rgba(255, 255, 255, 0.9);
+          font-weight: 600;
+          background: rgba(37, 99, 235, 0.2);
+          padding: 0.2rem 0.6rem;
+          border-radius: 10px;
+          font-size: 0.8rem;
+        }
+      }
+      
+      .last-updated {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        justify-content: flex-end;
+        
+        i {
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 0.75rem;
+        }
+        
+        span {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    padding: 1.2rem 0;
+    
+    .footer-content {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+      
+      .footer-left,
+      .footer-right {
+        text-align: center;
+      }
+      
+      .footer-right {
+        .last-updated {
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem 0;
+    
+    .footer-content {
+      gap: 0.8rem;
+      font-size: 0.8rem;
+      
+      .footer-center {
+        .security-badge {
+          padding: 0.3rem 0.6rem;
+          
+          span {
+            font-size: 0.75rem;
+          }
+        }
+      }
+      
+      .footer-left {
+        gap: 0.2rem;
+        
+        .powered-by span {
+          font-size: 0.75rem;
+        }
+      }
+      
+      .footer-right {
+        gap: 0.2rem;
+        
+        .version-info span {
+          font-size: 0.75rem;
+          padding: 0.15rem 0.5rem;
+        }
+        
+        .last-updated span {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}

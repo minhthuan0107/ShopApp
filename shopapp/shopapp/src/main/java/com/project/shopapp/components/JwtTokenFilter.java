@@ -30,6 +30,8 @@ import java.util.List;
 public class JwtTokenFilter extends OncePerRequestFilter {
     @Value("${api.prefix}")
     private String apiPrefix;
+    @Value("${api.admin-prefix}")
+    private String apiPrefixAdmin;
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
     @Autowired
@@ -109,6 +111,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/tokens/refresh-token", apiPrefix), "PATCH"),
                 Pair.of(String.format("%s/users/auth/social-login", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/auth/social/callback", apiPrefix), "GET"),
+                Pair.of(String.format("%s/auth/signin", apiPrefixAdmin), "POST"),
 
 
                 Pair.of("/ws/**", "GET"),

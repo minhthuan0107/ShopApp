@@ -1,18 +1,15 @@
 package com.project.shopapp.controllers.user;
-
-import com.project.shopapp.components.JwtTokenUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
-import com.project.shopapp.dtos.social.SocialLoginDto;
-import com.project.shopapp.dtos.user.*;
+import com.project.shopapp.dtos.customer.social.SocialLoginDto;
+import com.project.shopapp.dtos.customer.user.*;
 import com.project.shopapp.models.User;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.user.SigninResponse;
 import com.project.shopapp.responses.user.UserResponse;
-import com.project.shopapp.services.auth.AuthService;
-import com.project.shopapp.services.user.UserService;
+import com.project.shopapp.services.customer.auth.AuthService;
+import com.project.shopapp.services.customer.user.UserService;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.ultis.MessageKeys;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

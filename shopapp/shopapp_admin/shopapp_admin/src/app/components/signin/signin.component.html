@@ -1,0 +1,41 @@
+<div class="container">
+    <form #signinForm="ngForm">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="login-form mx-auto">
+                    <h2 class="login-header">Đăng nhập</h2>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone</label>
+                        <input type="text" class="form-control" [(ngModel)]="phoneNumber" name="phoneNumber"
+                            (focus)="signinForm.form.markAllAsTouched()" required id="phoneNumber">
+                        <div class="divider-nospace"></div>
+                    </div>
+                    <div class="mt-5"></div>
+                    <div class="form-group password-field">
+                        <label for="password">Mật khẩu</label>
+                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" required
+                            name="password" class="form-control" id="password">
+                        <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+                            (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
+                        <div class="divider-nospace"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check checkbox-text">
+                            <span style="display: flex;">
+                                <input type="checkbox" class="form-check-input" id="remember"
+                                    (click)="toggleRememberMe()" [checked]="rememberMe">
+                                <label class="form-check-label text-start" for="remember">
+                                    Ghi nhớ đăng nhập
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" (click)="signin(signinForm)" class="login-button">Đăng Nhập</button>
+                    </div>
+                    <div class="divider"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

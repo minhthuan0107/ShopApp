@@ -1,13 +1,13 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.ProductDto;
+import com.project.shopapp.dtos.customer.product.ProductDto;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.product.PriceRangeResponse;
 import com.project.shopapp.responses.product.ProductListResponse;
 import com.project.shopapp.responses.product.ProductResponse;
-import com.project.shopapp.services.product.ProductService;
+import com.project.shopapp.services.customer.product.ProductService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

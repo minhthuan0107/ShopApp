@@ -26,12 +26,15 @@ import java.util.List;
 public class WebSecurityConfig {
     @Value("${api.prefix}")
     private String apiPrefix;
+    @Value("${api.admin-prefix}")
+    private String apiPrefixAdmin;
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         String signinUrl = String.format("%s/users/signin", apiPrefix);
+        String signinAdminUrl = String.format("%s/auth/signin", apiPrefixAdmin);
         String signupUrl = String.format("%s/users/signup", apiPrefix);
         String socialLoginUrl = String.format("%s/users/auth/social-login", apiPrefix);
         String socialCallbackUrl = String.format("%s/users/auth/social/callback", apiPrefix);
@@ -53,7 +56,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests
                             // Các URL public
-                            .requestMatchers(signinUrl, signupUrl,tokenUrl,socialLoginUrl,socialCallbackUrl)
+                            .requestMatchers(signinUrl,signinAdminUrl, signupUrl,tokenUrl,socialLoginUrl,socialCallbackUrl)
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, categoryUrl, productUrl, brandUrl,
                                     productimageUrl, commentUrl, rateUrl)
@@ -104,7 +107,7 @@ public class WebSecurityConfig {
             @Override
             public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Chỉ cho phép Angular (hoặc dùng setAllowedOriginPatterns)
+                configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4300"));; // Chỉ cho phép Angular (hoặc dùng setAllowedOriginPatterns)
                 configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "CONNECT"));
                 configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token", "sec-websocket-key",
                         "sec-websocket-version", "sec-websocket-extensions", "upgrade", "connection"));
