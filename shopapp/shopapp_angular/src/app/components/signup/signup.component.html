@@ -46,7 +46,7 @@
               <label for="full-name">Họ và tên</label>
               <input type="text" class="form-control" formControlName="fullName" id="full-name">
               <p class="text-danger" *ngIf="signupForm.get('fullName')?.errors?.['required'] && signupForm.get('fullName')?.touched">
-                Số điện thoại không được để trống
+                Họ và tên không được để trống
               </p>
             </div>
   

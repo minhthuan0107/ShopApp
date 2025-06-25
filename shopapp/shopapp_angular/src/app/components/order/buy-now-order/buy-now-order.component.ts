@@ -61,7 +61,7 @@ export class BuyNowOrderComponent {
         if (user && user.id) {
           this.userId = user.id;
           this.buyNowOrderForm.patchValue({
-            fullname: user.fullname,
+            fullname: user.full_name,
             phone: user.phone_number,
             address: user.address
           });

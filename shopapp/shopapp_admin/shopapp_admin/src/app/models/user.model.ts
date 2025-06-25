@@ -1,6 +1,6 @@
 export class User {
     id: number;
-    fullname: string;
+    full_name: string;
     phone_number: string;
     address: string;
     is_active: boolean;
@@ -11,7 +11,7 @@ export class User {
   
     constructor(data: any) {
       this.id = data.id || 0;
-      this.fullname = data.fullname || '';
+      this.full_name = data.full_name || '';
       this.phone_number = data.phone_number || '';
       this.address = data.address || '';
       this.is_active = data.is_active || false;

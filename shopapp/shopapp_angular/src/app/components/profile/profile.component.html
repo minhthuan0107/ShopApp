@@ -4,7 +4,7 @@
     <div *ngIf="!isEditing && !isChangingPassword && user" class="profile-card">
         <div class="profile-item">
             <label>Họ và tên:</label>
-            <span>{{ user.fullname }}</span>
+            <span>{{ user.full_name }}</span>
         </div>
         <div class="profile-item">
             <label>Số điện thoại:</label>
@@ -20,7 +20,8 @@
         </div>
         <div class="profile-actions">
             <button class="edit-button" (click)="isEditing = true">✏️ Chỉnh sửa</button>
-            <button class="password-button" *ngIf="user && +user.google_account_id === 0" (click)="isChangingPassword = true">
+            <button class="password-button" *ngIf="isChangingPassword && user &&
+             (user.google_account_id === null)" (click)="isChangingPassword = true">
                 🔐 Đổi mật khẩu
             </button>
         </div>
@@ -29,7 +30,7 @@
     <app-edit-profile *ngIf="isEditing" [user]="user" (onCancel)="isEditing = false" (onSave)="handleSave($event)">
     </app-edit-profile>
 
-    <app-change-password *ngIf="isChangingPassword && user && +user.google_account_id === 0"
+    <app-change-password *ngIf="isChangingPassword && user && (user.google_account_id === null)"
         (onCancel)="isChangingPassword = false" (onPasswordChanged)="handlePasswordChanged()">
     </app-change-password>
 

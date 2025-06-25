@@ -1,0 +1,48 @@
+<div class="modal-header">
+        <h2 class="modal-title m-0">Cập nhật người dùng</h2>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="editForm" class="row" (ngSubmit)="updateUser()">
+            <!-- Cột bên trái bỏ trống hoặc dùng để hiển thị avatar nếu muốn -->
+            <!-- Cột bên phải -->
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="name">Họ và tên:</label>
+                    <input id="name" class="form-control" formControlName="name" type="text"
+                        [ngClass]="{'is-invalid': editForm.get('name')?.invalid && editForm.get('name')?.touched}" />
+                    <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched"
+                        class="error-message">
+                        <small class="text-danger">Họ và tên không được để trống</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ:</label>
+                    <input id="address" class="form-control"  formControlName="address" type="text"
+                        [ngClass]="{'is-invalid': editForm.get('address')?.invalid && editForm.get('address')?.touched}" />
+                    <div *ngIf="editForm.get('address')?.invalid && editForm.get('address')?.touched"
+                        class="error-message">
+                        <small class="text-danger">Địa chỉ không được để trống</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateOfBirth">Ngày tháng năm sinh:</label>
+                    <input id="dateOfBirth"class="form-control" formControlName="dateOfBirth" type="date"
+                        [ngClass]="{'is-invalid': editForm.get('dateOfBirth')?.invalid && editForm.get('dateOfBirth')?.touched}" />
+                    <div *ngIf="editForm.get('dateOfBirth')?.invalid && editForm.get('dateOfBirth')?.touched"
+                        class="error-message">
+                        <small class="text-danger">Ngày tháng năm sinh không hợp lệ</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút submit -->
+            <div class="col-12 d-flex justify-content-center" style="margin-top: 50px;">
+                <button mat-raised-button color="primary" [disabled]="editForm.invalid"
+                    [ngClass]="{ 'disabled-button': editForm.invalid }">
+                    <mat-icon class="mr-1">save</mat-icon>
+                    <span class="button-text">Lưu thay đổi</span>
+                </button>
+            </div>
+        </form>
+    </div>

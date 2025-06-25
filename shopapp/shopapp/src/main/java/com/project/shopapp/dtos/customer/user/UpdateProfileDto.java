@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateProfileDto {
-    @JsonProperty("fullname")
+    @JsonProperty("full_name")
     @NotBlank(message = "Họ và tên không được để trống")
     private String fullName;
 
