@@ -67,7 +67,7 @@
             <li class="nav-item dropdown">
               <span class="nav-link dropdown-toggle user-dropdown" id="userDropdown" role="button"
                 (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
-                Hi, {{ user.fullname }}
+                Hi, {{ user.full_name }}
               </span>
               <ul class="dropdown-menu user-menu" [class.show]="isDropdownVisible" (mouseenter)="toggleDropdown(true)"
                 (mouseleave)="toggleDropdown(false)">

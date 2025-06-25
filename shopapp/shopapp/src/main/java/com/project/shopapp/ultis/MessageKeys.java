@@ -21,6 +21,7 @@ public class MessageKeys {
     public static final String CANNOT_DELETE_CATEGORY_PRODUCT = "category.cannot_delete_category_product";
     public static final String CATEGORY_DELETE_SUCCESSFULLY = "category.delete_successfully";
     public static final String USER_NOT_FOUND = "user.not_found";
+    public static final String  USER_ACCOUNT_LOCKED = "user.account_locked";
     public static final String USER_FOUND_SUCCESS = "user.found_successfully";
     public static final String USER_UPDATE_PROFILE_SUCCESSFULLY = "user.update_profile_successfully";
 

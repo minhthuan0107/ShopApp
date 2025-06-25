@@ -1,0 +1,82 @@
+.title-shift-up {
+  font-size: 28px; // Tăng kích cỡ chữ
+  font-weight: 700; // Chữ đậm hơn
+  color: #343a40; // Màu chữ xám đậm (Bootstrap text-dark)
+  margin-top: -30px; // Nhích lên 10px
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+* {
+  text-decoration: none !important;
+  caret-color: transparent;
+}
+
+.customer-table-container {
+  padding: 20px;
+
+  .search-wrapper {
+    mat-form-field {
+      background: #fff;
+      border-radius: 6px;
+
+      input {
+        padding-left: 8px;
+      }
+
+      mat-icon {
+        color: #888;
+      }
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+
+    table.custom-table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+
+      th {
+        background-color: #f8f9fc;
+        color: #4e73df;
+        font-weight: 600;
+        border-bottom: 2px solid #e3e6f0;
+        text-align: left;
+      }
+
+      td {
+        vertical-align: middle;
+        border-bottom: 1px solid #dee2e6;
+        transition: background-color 0.2s;
+      }
+
+      tr:hover td {
+        background-color: #f1f5ff;
+      }
+    }
+
+    .avatar {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 2px solid #e3e6f0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+::ng-deep td.mat-column-actions {
+  white-space: nowrap; /* Không cho xuống dòng */
+  transform: translateX(-10px);
+}
+::ng-deep .custom-modal-md .modal-dialog {
+  max-width: 900px; // 👈 nhỏ hơn 'xl' (1140px)
+  width: 90%;
+}
+
+::ng-deep .custom-modal-md .modal-content {
+  border-radius: 8px;
+}

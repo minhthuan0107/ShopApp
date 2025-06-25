@@ -1,8 +1,6 @@
 package com.project.shopapp.services.admin.statistics;
 
-import com.project.shopapp.dtos.admin.statistics.MonthlyRevenueDto;
 import com.project.shopapp.responses.admin.statistics.MonthlyRevenueResponse;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;

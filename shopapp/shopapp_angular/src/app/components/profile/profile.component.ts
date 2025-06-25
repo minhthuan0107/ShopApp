@@ -30,8 +30,6 @@ ngOnInit(): void {
       takeUntil(this.destroy$)
     )
     .subscribe(user => {
-      console.log("User data nhận được:", user);
-      console.log('google_account_id:', user.google_account_id, typeof user.google_account_id);
       this.user = user;
     });
 }

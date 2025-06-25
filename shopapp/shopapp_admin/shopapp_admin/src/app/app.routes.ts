@@ -5,6 +5,7 @@ import { MainLayoutComponent } from './components/layouts/main-layout/main-layou
 import { HomeComponent } from './components/home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { CustomerComponent } from './components/customer/customer.component';
 
 export const routes: Routes = [
   // 👉 Redirect từ path rỗng sang signin
@@ -18,7 +19,6 @@ export const routes: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
-    canActivate: [authGuard],
     children: [
       { path: 'signin', component: SigninComponent }
     ]
@@ -26,18 +26,13 @@ export const routes: Routes = [
 
   // 👉 Main layout cho các trang đã đăng nhập
   {
-    path: '',
+    path: 'admin',
     component: MainLayoutComponent,
+     canActivate: [authGuard],
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'sidebar', component: SidebarComponent }
+      { path: 'customer', component: CustomerComponent }
       // Có thể thêm các route khác như: profile, dashboard, ...
     ]
   },
-
-  // 👉 Wildcard route: nếu route không đúng, về lại signin
-  {
-    path: '**',
-    redirectTo: 'signin'
-  }
 ];

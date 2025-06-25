@@ -71,6 +71,9 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException(
                     localizationUtils.getLocalizedMessage(MessageKeys.PASSWORD_NOT_MATCH));
         }
+        //Chuyển hóa fbId và ggId về null
+        String fbId = normalize(userDto.getFacebookAccountId());
+        String ggId = normalize(userDto.getGoogleAccountId());
         //convert userDto => user
         User newUser = User.builder().
                 fullname(userDto.getFullName())
@@ -78,19 +81,22 @@ public class UserService implements IUserService {
                 .password(userDto.getPassword())
                 .address(userDto.getAddress())
                 .dateOfBirth(userDto.getDateOfBirth())
-                .facebookAccountId(userDto.getFacebookAccountId())
-                .googleAccountId(userDto.getGoogleAccountId())
+                .facebookAccountId(fbId)
+                .googleAccountId(ggId)
                 .isActive(true)
                 .build();
         Role role = roleRepository.findByName("USER")
                 .orElseThrow(() -> new DataNotFoundException("Role not found"));
         newUser.setRole(role);
-        if (userDto.getFacebookAccountId() == null && userDto.getGoogleAccountId() == null) {
+        if ((fbId == null) && (ggId == null)) {
             String password = userDto.getPassword();
             String encodePassword = passwordEncoder.encode(password);
             newUser.setPassword(encodePassword);
         }
         return userRepository.save(newUser);
+    }
+    private String normalize(String input) {
+        return (input == null || input.isBlank() || input.equals("0")) ? null : input;
     }
 
     @Override
@@ -105,6 +111,10 @@ public class UserService implements IUserService {
         if (isLinkedWithSocialAccount(existingUser) && !passwordEncoder.matches(password, existingUser.getPassword())) {
             throw new BadCredentialsException(
                     localizationUtils.getLocalizedMessage(MessageKeys.WRONG_PASSWORD));
+        }
+        if(!existingUser.isActive()){
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.USER_ACCOUNT_LOCKED));
         }
         // Tạo authenticationToken với tên đăng nhập và mật khẩu
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phoneNumber, password);

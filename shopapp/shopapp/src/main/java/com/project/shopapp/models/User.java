@@ -26,7 +26,7 @@ public class User extends BaseEntity  {
     private String address;
     @Column(name = "password",length = 200)
     private String password;
-    @Column(name = "is_active",insertable = false)
+    @Column(name = "is_active")
     private boolean isActive;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;

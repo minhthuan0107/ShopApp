@@ -69,14 +69,14 @@ export class SignupComponent {
       return;
     }
     const signupDto: SignupDto = {
-      fullname: this.signupForm.value.fullName,
+      full_name: this.signupForm.value.fullName,
       phone_number: this.signupForm.value.phone,
       address: this.signupForm.value.address,
       password: this.signupForm.value.password,
       retype_password: this.signupForm.value.retypePassword,
       date_of_birth: this.signupForm.value.dateOfBirth,
-      facebook_account_id: 0,
-      google_account_id: 0,
+      facebook_account_id: '',
+      google_account_id: '',
     };
     this.userService.signup(signupDto).subscribe({
       next: () => {

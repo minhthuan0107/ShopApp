@@ -1,0 +1,92 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h2 class="modal-title m-0">Thêm người dùng</h2>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="postForm" class="row" (ngSubmit)="createNew()">
+            <!-- Cột bên trái -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="phone" id="phone">
+                    <p class="text-danger"
+                        *ngIf="postForm.get('phone')?.errors?.['required'] && postForm.get('phone')?.touched">
+                        Số điện thoại không được để trống
+                    </p>
+                    <p class="text-danger" *ngIf="postForm.get('phone')?.errors?.['minlength'] && !postForm.get('phone')?.errors?.['required'] 
+        && postForm.get('phone')?.touched">
+                        Số điện thoại phải có ít nhất 9 ký tự
+                    </p>
+                    <p class="text-danger" *ngIf="postForm.get('phone')?.errors?.['pattern'] && !postForm.get('phone')?.errors?.['required'] 
+        && !postForm.get('phone')?.errors?.['minlength'] && postForm.get('phone')?.touched">
+                        Số điện thoại không đúng định dạng
+                    </p>
+                </div>
+
+                <div class="form-group position-relative">
+                    <label for="password">Mật khẩu</label>
+                    <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-lg"
+                        formControlName="password" id="password">
+                    <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+                        (click)="togglePasswordVisibility()"></i>
+                    <p class="text-danger"
+                        *ngIf="postForm.get('password')?.invalid && postForm.get('password')?.touched">
+                        Mật khẩu phải có ít nhất 6 kí tự
+                    </p>
+                </div>
+
+                <div class="form-group position-relative">
+                    <label for="retype-password">Nhập lại mật khẩu</label>
+                    <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-lg"
+                        formControlName="retypePassword" id="retype-password">
+                    <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+                        (click)="togglePasswordVisibility()"></i>
+                    <p class="text-danger"
+                        *ngIf="postForm.hasError('passwordMisMatch') && postForm.get('retypePassword')?.touched">
+                        Mật khẩu không khớp
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cột bên phải -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="full-name">Họ và tên</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="fullName" id="full-name">
+                    <p class="text-danger"
+                        *ngIf="postForm.get('fullName')?.errors?.['required'] && postForm.get('fullName')?.touched">
+                        Họ và tên không được để trống
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="date-of-birth">Ngày sinh</label>
+                    <input type="date" class="form-control form-control-lg" formControlName="dateOfBirth"
+                        id="date-of-birth">
+                    <p class="text-danger"
+                        *ngIf="postForm.get('dateOfBirth')?.hasError('invalidAge') && postForm.get('dateOfBirth')?.touched">
+                        Bạn chưa đủ 18 tuổi
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <input type="text" class="form-control form-control-lg" formControlName="address" id="address">
+                </div>
+            </div>
+
+            <!-- Nút thêm -->
+            <div class="col-12 d-flex justify-content-center" style="margin-top: 50px;">
+                <button mat-raised-button color="primary" [disabled]="postForm.invalid"
+                [ngClass]="{ 'disabled-button': postForm.invalid }">
+                    <mat-icon class="mr-1">add</mat-icon>
+                    <span class="button-text">Thêm</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<button mat-raised-button color="primary" (click)="open(content)">
+    <mat-icon class="mr-1">add</mat-icon>
+    <span class="button-text">Thêm khách hàng</span>
+</button>

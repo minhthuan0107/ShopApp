@@ -1,0 +1,97 @@
+<div class="container-fluid customer-table-container">
+  <!-- Tiêu đề -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 title-shift-up">📋 Danh sách khách hàng</h1>
+    <div class="d-flex justify-content-end mb-3">
+      <app-add-customer (userAdded)="onUserAdded()"></app-add-customer>
+    </div>
+  </div>
+
+  <!-- Tìm kiếm -->
+  <div class="search-wrapper mb-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Tìm kiếm khách hàng</mat-label>
+      <input matInput [(ngModel)]="keyword" placeholder="Nhập tên,số điện thoại..." (keyup)="applyFilter()">
+      <button mat-icon-button matSuffix disabled>
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <!-- Bảng dữ liệu -->
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+
+      <!-- Họ tên -->
+      <ng-container matColumnDef="full_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Họ tên</th>
+        <td mat-cell *matCellDef="let row">{{ row.full_name }}</td>
+      </ng-container>
+      <!-- SĐT -->
+      <ng-container matColumnDef="phone_number">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>SĐT</th>
+        <td mat-cell *matCellDef="let row">{{ row.phone_number }}</td>
+      </ng-container>
+      <!-- Địa chỉ -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Địa chỉ</th>
+        <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+      </ng-container>
+      <!-- Ngày sinh nhật -->
+      <ng-container matColumnDef="date_of_birth">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày sinh</th>
+        <td mat-cell *matCellDef="let row">{{ row.date_of_birth | date: 'dd-MM-yyyy' }}</td>
+      </ng-container>
+      <!-- Ngày đăng ký -->
+      <ng-container matColumnDef="create_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày đăng ký</th>
+        <td mat-cell *matCellDef="let row">{{ row.create_at | date: 'dd-MM-yyyy' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="is_active">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngClass]="row.is_active ? 'text-success' : 'text-danger'">
+            {{ row.is_active ? 'Hoạt động' : 'Bị khóa' }}
+          </span>
+        </td>
+      </ng-container>
+      <!-- Cột Hành động -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Hành động</th>
+        <td mat-cell *matCellDef="let row">
+          <!-- Nút sửa -->
+          <button mat-icon-button color="accent" (click)="editUser(row)" matTooltip="Chỉnh sửa">
+            <mat-icon>edit_note</mat-icon>
+          </button>
+          <!-- Nút Khóa/Mở khóa -->
+          <button mat-icon-button [color]="row.is_active ? 'warn' : 'primary'" (click)="toggleActive(row)"
+            [matTooltip]="row.is_active ? 'Khóa tài khoản' : 'Mở khóa tài khoản'">
+            <mat-icon>{{ row.is_active ? 'lock_person' : 'lock_open_right' }}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Header và row -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Phân trang -->
+    <mat-paginator [length]="totalItems" [pageSize]="6" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+      (page)="onPageChange($event)"> <!-- 👈 Gắn sự kiện ở đây -->
+    </mat-paginator>
+  </div>
+</div>
+<!-- ✅ Ngay dưới đây bạn đặt ng-template -->
+
+<!-- Trong CustomerComponent -->
+<ng-template #editModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <!-- ✅ Đây là nơi bạn nhúng component vào -->
+    <app-edit-customer [user]="selectedUser" (userUpdated)="onUserUpdated(); c()"></app-edit-customer>
+  </div>
+</ng-template>

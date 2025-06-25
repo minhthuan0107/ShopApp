@@ -70,7 +70,7 @@ export class SigninComponent {
           timer: 800,
           customClass: { popup: 'custom-swal' }
         }).finally(() => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/admin/home']);
         });
       },
       error: (error: HttpErrorResponse) => {

@@ -56,7 +56,7 @@ export class OrderComponent {
         this.userId = user.id;
         this.getCartDetailsByUserId();
         this.orderForm.patchValue({
-          fullname: user.fullname,
+          fullname: user.full_name,
           phone: user.phone_number,
           address: user.address
         });

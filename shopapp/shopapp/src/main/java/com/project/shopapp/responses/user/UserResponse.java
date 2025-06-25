@@ -5,6 +5,7 @@ import com.project.shopapp.models.User;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 public class UserResponse {
     @JsonProperty("id")
     private Long id;
-    @JsonProperty("fullname")
+    @JsonProperty("full_name")
     private String fullName;
     @JsonProperty("phone_number")
     private String phoneNumber;
@@ -24,6 +25,8 @@ public class UserResponse {
     private boolean active;
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
+    @JsonProperty("create_at")
+    private LocalDateTime createAt;
     @JsonProperty("facebook_account_id")
     private String facebookAccountId;
     @JsonProperty("google_account_id")
@@ -38,6 +41,7 @@ public class UserResponse {
                 .address(user.getAddress())
                 .active(user.isActive())
                 .dateOfBirth(user.getDateOfBirth())
+                .createAt(user.getCreateAt())
                 .facebookAccountId(user.getFacebookAccountId())
                 .googleAccountId(user.getGoogleAccountId())
                 .role(user.getRole())

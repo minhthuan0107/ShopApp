@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    @JsonProperty("fullname")
+    @JsonProperty("full_name")
     private String fullName;
     @JsonProperty("phone_number")
     @NotBlank(message = "Số điện thoại không được để trống")

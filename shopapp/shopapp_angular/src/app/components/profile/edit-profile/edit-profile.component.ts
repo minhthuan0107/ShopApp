@@ -25,7 +25,7 @@ export class EditProfileComponent {
   ngOnInit(): void {
     // Khởi tạo form và gán giá trị cho form nếu user có dữ liệu
     this.profileForm = this.fb.group({
-      name: [this.user?.fullname || '', Validators.required],
+      name: [this.user?.full_name || '', Validators.required],
       address: [this.user?.address || '', Validators.required],
       dateOfBirth: [this.formatDate(this.user?.date_of_birth) || '', [
         Validators.required,
@@ -54,7 +54,7 @@ export class EditProfileComponent {
       return;
     }
     const updateProfile: UpdateProfileDto = {
-      fullname: this.profileForm.value.name,
+      full_name: this.profileForm.value.name,
       address: this.profileForm.value.address,
       date_of_birth: this.profileForm.value.dateOfBirth,
 

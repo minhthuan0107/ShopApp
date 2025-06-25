@@ -1,5 +1,6 @@
 package com.project.shopapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Role {
     @Column(name = "name", nullable = false)
     private String name;
     //Hàm check role
+    @JsonIgnore
     public boolean isAdmin() {
         return "ADMIN".equals(this.name);
     }
