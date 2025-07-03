@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/product-images")
@@ -114,30 +115,33 @@ public class ProductImageController {
                 return ResponseEntity.badRequest().body(
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_ERROR_MAX_5_IMAGES));
             }
-            List<ProductImage> productImages = new ArrayList<>();
-            for (MultipartFile file : files) {
-                if (file.getSize() == 0) continue;
-                if (file.getSize() > 10 * 1024 * 1024) {
-                    return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                            .body(localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_ERROR_FILE_LARGE));
-                }
-                String contentType = file.getContentType();
-                if (contentType == null || !contentType.startsWith("image/")) {
-                    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                            .body(localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_ERROR_FILE_MUST_BE_IMAGE));
-                }
-                // Upload file lên Cloudinary
-                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-                // Lấy URL của ảnh từ Cloudinary
-                String imageUrl = (String) uploadResult.get("secure_url");
-                // Lưu URL vào database
-                ProductImage productImage = productImageService.createProductImage(
-                        existingProduct.getId(),
-                        ProductImageDto.builder()
-                                .imageUrl(imageUrl)
-                                .build());
-                productImages.add(productImage);
-            }
+            List<ProductImage> productImages = files.parallelStream()
+                    .filter(file -> file.getSize() > 0)
+                    .map(file -> {
+                        try {
+                            if (file.getSize() > 10 * 1024 * 1024) {
+                                throw new RuntimeException(localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_ERROR_FILE_LARGE));
+                            }
+                            String contentType = file.getContentType();
+                            if (contentType == null || !contentType.startsWith("image/")) {
+                                throw new RuntimeException(localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_ERROR_FILE_MUST_BE_IMAGE));
+                            }
+                            // Upload lên Cloudinary
+                            Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+                            String imageUrl = (String) uploadResult.get("secure_url");
+                            // Lưu vào DB
+                            return productImageService.createProductImage(
+                                    existingProduct.getId(),
+                                    ProductImageDto.builder()
+                                            .imageUrl(imageUrl)
+                                            .build());
+                        } catch (Exception e) {
+                            // Dừng ngay nếu có lỗi trong upload (bạn có thể log hoặc xử lý riêng)
+                            throw new RuntimeException(localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_ERROR_UPLOAD_FAIL), e);
+
+                        }
+                    })
+                    .collect(Collectors.toList());
             // Cập nhật trường image của product với URL của ảnh đầu tiên
             if (!productImages.isEmpty()) {
                 String firstImageUrl = productImages.get(0).getImageUrl(); // Lấy URL của ảnh đầu tiên

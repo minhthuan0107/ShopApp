@@ -1,0 +1,30 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  display: flex;
+  flex-grow: 1;
+  min-height: 0; // tránh bị auto overflow
+}
+
+.sidebar {
+  width: 250px;
+  background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  flex-shrink: 0;
+  /* 👇 Quan trọng: giãn theo nội dung */
+  height: auto;
+  min-height: 100%;
+}
+
+.flex-grow-1 {
+  min-height: 100%;
+}

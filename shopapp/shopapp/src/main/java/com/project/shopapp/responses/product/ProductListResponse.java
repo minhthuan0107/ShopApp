@@ -13,4 +13,5 @@ public class ProductListResponse {
     private List<ProductResponse> productResponses;
     private int totalPages;
     private long totalItems;
+    private int currentPage;
 }

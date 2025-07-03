@@ -2,7 +2,10 @@ package com.project.shopapp.repositories;
 
 import com.project.shopapp.dtos.admin.statistics.MonthlyRevenueDto;
 import com.project.shopapp.models.Order;
+import com.project.shopapp.models.User;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +18,15 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUserId(Long userId);
+
+    Page<Order> findAll(Pageable pageable);
+
+    @Query("SELECT o FROM Order o WHERE " +
+            "LOWER(o.phoneNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(o.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(o.email) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(o.trackingNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Order> searchOrdersByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     //Xóa order và payment giá trị pending tránh spam order
     @Modifying
@@ -35,14 +47,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "JOIN payments p ON o.id = p.order_id " +
             "WHERE YEAR(o.order_date) = YEAR(NOW()) " +
             "AND p.status='SUCCESS' " +
-            "AND o.status IN ('PENDING', 'SHIPPING', 'SUCCESS')",nativeQuery = true)
+            "AND o.status IN ('PENDING', 'PROCESSING','SHIPPING', 'COMPLETED')",nativeQuery = true)
     BigDecimal getTotalRevenueOfCurrentYear();
 
     @Query(value = "SELECT SUM(o.total_price) FROM orders o " +
             "JOIN payments p ON o.id = p.order_id " +
             "WHERE MONTH(o.order_date) = MONTH(NOW()) " +
             "AND p.status='SUCCESS' " +
-            "AND o.status IN ('PENDING', 'SHIPPING', 'SUCCESS')",nativeQuery = true)
+            "AND o.status IN ('PENDING','PROCESSING','SHIPPING', 'COMPLETED')",nativeQuery = true)
     BigDecimal getTotalRevenueOfCurrentMonth();
 
     @Query(value = "SELECT MONTH(o.order_date) as month ," +
@@ -51,7 +63,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "JOIN payments p ON o.id = p.order_id " +
             "WHERE YEAR(o.order_date) = :year " +
             "AND p.status = 'SUCCESS' " +
-            "AND o.status IN ('PENDING','SHIPPING','SUCCESS') " +
+            "AND o.status IN ('PENDING','PROCESSING','SHIPPING','COMPLETED') " +
             "GROUP BY MONTH(o.order_date) " +
             "ORDER BY MONTH(o.order_date) ", nativeQuery = true)
     List<MonthlyRevenueDto> getMonthlyRevenueByYear(@Param("year") int year);
@@ -60,7 +72,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "FROM orders o " +
             "JOIN payments p ON o.id = p.order_id " +
             "WHERE p.status = 'SUCCESS' " +
-            "AND o.status IN ('PENDING','SHIPPING','SUCCESS') " +
+            "AND o.status IN ('PENDING','PROCESSING','SHIPPING','COMPLETED') " +
             "ORDER BY YEAR(o.order_date) DESC " ,nativeQuery = true)
     List<Integer> getAvailableOrderYears();
 

@@ -1,17 +1,18 @@
-<!-- Header luôn nằm trên cùng -->
-<app-header (toggleSidebar)="toggleSidebar()"></app-header>
+<div class="page-wrapper d-flex flex-column min-vh-100">
+  <!-- ✅ Header có sự kiện toggle sidebar -->
+  <app-header (toggleSidebar)="toggleSidebar()"></app-header>
 
+  <!-- ✅ Layout chia 2 cột: Sidebar + Nội dung -->
+  <div class="main-layout d-flex flex-grow-1">
+    <!-- Sidebar (ẩn/hiện theo biến isSidebarVisible) -->
+    <app-sidebar *ngIf="isSidebarVisible" class="sidebar"></app-sidebar>
 
-<!-- Dùng flex để chia layout -->
-<div class="d-flex" style="min-height: calc(100vh - 56px - 40px);">
-  <!-- Sidebar chiếm bên trái -->
-  <app-sidebar *ngIf="isSidebarVisible"></app-sidebar>
-
-  <!-- Nội dung chính -->
-  <div class="flex-grow-1 p-4">
-    <router-outlet></router-outlet>
+    <!-- Nội dung chính -->
+    <div class="flex-grow-1 p-4">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-</div>
 
-<!-- Footer luôn nằm dưới cùng -->
-<app-footer></app-footer>
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>

@@ -4,6 +4,9 @@
   min-height: 100vh;
   background-color: #f8f9fc;
 }
+.container-fluid{
+  margin-top: 80px;
+}
 
 /* Sidebar giả định */
 .sidebar {
@@ -70,4 +73,8 @@ canvas {
   color: #256fb1;
   font-weight: bold;
   margin-left: 4px;
+}
+.card:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
 }

@@ -1,21 +1,38 @@
 .title-shift-up {
-  font-size: 28px; // Tăng kích cỡ chữ
-  font-weight: 700; // Chữ đậm hơn
-  color: #343a40; // Màu chữ xám đậm (Bootstrap text-dark)
+  font-size: 28px;
+  font-weight: 700;
+  color: #343a40;
   margin-top: 60px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.add-customer-wrapper {
-  margin-top: 80px; // 👈 tuỳ chỉnh số pixel đẩy xuống
+
+.add-product-wrapper {
+  margin-top: 80px;
 }
+
 * {
   text-decoration: none !important;
   caret-color: transparent;
 }
 
-.customer-table-container {
+.description-cell {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; // 👈 Giới hạn 3 dòng
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  line-height: 1.4rem; // 👈 Đảm bảo khoảng cách dòng đều
+  max-height: calc(1.4rem * 3); // 👈 Tối đa chiều cao 3 dòng
+}
+
+.text-right-8 {
+  padding-left: 23px;
+}
+
+.product-table-container {
   padding: 20px;
 
   .search-wrapper {
@@ -70,18 +87,21 @@
     }
   }
 }
+
 ::ng-deep td.mat-column-actions {
-  white-space: nowrap; /* Không cho xuống dòng */
+  white-space: nowrap;
   transform: translateX(-10px);
 }
+
 ::ng-deep .custom-modal-md .modal-dialog {
-  max-width: 900px; // 👈 nhỏ hơn 'xl' (1140px)
+  max-width: 900px;
   width: 90%;
 }
 
 ::ng-deep .custom-modal-md .modal-content {
   border-radius: 8px;
 }
+
 .no-records-message {
   text-align: center;
   margin: 20px 0;

@@ -50,6 +50,7 @@ public class WebSecurityConfig {
         String rateUrl = String.format("%s/rates/**", apiPrefix);
         String brandUrl = String.format("%s/brands/**", apiPrefix);
         String tokenUrl = String.format("%s/tokens/**", apiPrefix);
+        String provinceUrl = String.format("%s/provinces/**", apiPrefix);
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
@@ -59,7 +60,7 @@ public class WebSecurityConfig {
                             .requestMatchers(signinUrl,signinAdminUrl, signupUrl,tokenUrl,socialLoginUrl,socialCallbackUrl)
                             .permitAll()
                             .requestMatchers(HttpMethod.GET, categoryUrl, productUrl, brandUrl,
-                                    productimageUrl, commentUrl, rateUrl)
+                                    productimageUrl, commentUrl, rateUrl,provinceUrl)
                             .permitAll()
                             //Phân quyền cho websocket
                             .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
