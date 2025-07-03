@@ -1,0 +1,115 @@
+<div class="container-fluid product-table-container">
+  <!-- Tiêu đề -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 title-shift-up">📦 Danh sách sản phẩm</h1>
+  </div>
+
+  <!-- Tìm kiếm -->
+  <div class="search-wrapper mb-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Tìm kiếm sản phẩm</mat-label>
+      <input matInput [(ngModel)]="keyword" placeholder="Nhập tên sản phẩm, mô tả..." (keyup)="applyFilter()">
+      <button mat-icon-button matSuffix disabled>
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!-- Bảng dữ liệu -->
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+      <!-- Tên sản phẩm -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên sản phẩm</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+      <!-- Hình ảnh -->
+      <ng-container matColumnDef="url_image">
+        <th mat-header-cell *matHeaderCellDef class="image-cell">Hình ảnh</th>
+        <td mat-cell *matCellDef="let row">
+          <img [src]="row.url_image" alt="Hình ảnh sản phẩm" width="90" height="90"
+            style="object-fit: cover; border-radius: 4px;">
+        </td>
+      </ng-container>
+      <!-- Giá -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá</th>
+        <td mat-cell *matCellDef="let row">{{ row.price | number:'1.0-0' }}₫</td>
+      </ng-container>
+
+      <!-- Danh mục -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Danh mục</th>
+        <td mat-cell *matCellDef="let row">{{ row.category?.name }}</td>
+      </ng-container>
+
+      <!-- Thương hiệu -->
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef>Thương hiệu</th>
+        <td mat-cell *matCellDef="let row">{{ row.brand?.name }}</td>
+      </ng-container>
+
+      <!-- Mô tả -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Mô tả</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="description-cell" [matTooltip]="row.description">
+            {{ row.description }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Số lượng -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+        <td mat-cell *matCellDef="let row" class="text-right-8">{{ row.quantity }}</td>
+      </ng-container>
+
+      <!-- Đã bán -->
+      <ng-container matColumnDef="sold">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Đã bán</th>
+        <td mat-cell *matCellDef="let row" class="text-right-8">{{ row.sold }}</td>
+      </ng-container>
+
+      <!-- Trạng thái -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Trạng thái</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngClass]="row.status ? 'text-success' : 'text-danger'">
+            {{ row.status ? 'Còn hàng' : 'Hết hàng' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Hành động -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Hành động</th>
+        <td mat-cell *matCellDef="let row">
+          <!-- Sửa -->
+          <button mat-icon-button color="accent" (click)="editProduct(row)" matTooltip="Chỉnh sửa">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Header & Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Phân trang -->
+    <mat-paginator [length]="totalItems" [pageSize]="4" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+
+  <!-- Không tìm thấy -->
+  <div *ngIf="dataSource.data.length === 0" class="no-records-message mt-4 text-center">
+    ❌ Không tìm thấy sản phẩm nào phù hợp với từ khóa "<strong>{{ keyword }}</strong>"
+  </div>
+</div>

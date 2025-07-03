@@ -6,6 +6,8 @@ import { HomeComponent } from './components/home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CustomerComponent } from './components/customer/customer.component';
+import { OrderComponent } from './components/order/order.component';
+import { ProductComponent } from './components/product/product.component';
 
 export const routes: Routes = [
   // 👉 Redirect từ path rỗng sang signin
@@ -31,7 +33,9 @@ export const routes: Routes = [
      canActivate: [authGuard],
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'customer', component: CustomerComponent }
+      { path: 'customer', component: CustomerComponent },
+      { path: 'order', component: OrderComponent },
+      { path: 'product', component: ProductComponent}
       // Có thể thêm các route khác như: profile, dashboard, ...
     ]
   },

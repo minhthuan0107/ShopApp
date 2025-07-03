@@ -2,7 +2,7 @@
   <!-- Tiêu đề -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800 title-shift-up">📋 Danh sách khách hàng</h1>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end mb-3 add-customer-wrapper">
       <app-add-customer (userAdded)="onUserAdded()"></app-add-customer>
     </div>
   </div>
@@ -85,6 +85,9 @@
       (page)="onPageChange($event)"> <!-- 👈 Gắn sự kiện ở đây -->
     </mat-paginator>
   </div>
+  <div *ngIf="dataSource.data.length === 0" class="no-records-message">
+        ❌ Không tìm thấy khách hàng nào phù hợp với từ khóa "{{ keyword }}"
+    </div>
 </div>
 <!-- ✅ Ngay dưới đây bạn đặt ng-template -->
 

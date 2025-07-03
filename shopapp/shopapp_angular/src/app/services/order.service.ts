@@ -25,6 +25,6 @@ export class OrderService {
     return this.http.get<ApiResponse<OrderResponse[]>>(`${this.apiOrder}/user/${userId}`)
   }
   cancelOrder(orderId: number): Observable<ApiResponse<any>> {
-    return this.http.delete<ApiResponse<any>>(`${this.apiOrder}/cancel/${orderId}`);
+    return this.http.patch<ApiResponse<any>>(`${this.apiOrder}/cancel/${orderId}`,{});
   }
 }

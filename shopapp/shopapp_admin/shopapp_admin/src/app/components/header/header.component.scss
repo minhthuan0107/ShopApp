@@ -1,9 +1,23 @@
 .admin-navbar {
-  background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); // Xanh tím than hiện đại
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 76px;
+  width: 100%;
+  z-index: 1000;
+  background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
   padding: 0.75rem 1.5rem;
   color: #fff;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   .admin-navbar__left {
-    margin-left: -9px;
+    margin-left: -10px;
+    display: flex;
+    align-items: center;
 
     .toggle-btn {
       background: none;
@@ -14,7 +28,7 @@
       transition: color 0.3s;
 
       &:hover {
-        color: #ffc107; // Vàng sáng khi hover
+        color: #a99f7f;
       }
     }
 
@@ -26,12 +40,16 @@
   }
 
   .admin-navbar__right {
+    display: flex;
+    align-items: center;
+
     .btn-icon {
       background: none;
       border: none;
       color: #fff;
       font-size: 1.25rem;
       position: relative;
+      margin-left: 10px;
 
       .badge {
         position: absolute;
@@ -54,6 +72,7 @@
       color: #fff;
       display: flex;
       align-items: center;
+      margin-left: 10px;
 
       .user-name {
         margin-right: 0.5rem;

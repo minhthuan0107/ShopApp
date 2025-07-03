@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { CartService } from '../../services/cart.service';
 import { PaymentService } from '../../services/payment.service';
 import { CouponService } from '../../services/coupon.service';
+import { LocationService } from '../../services/location.service';
 
 
 @Component({
@@ -31,6 +32,19 @@ export class OrderComponent {
   tempCouponCode: string = '';
   couponValue: number = 0;
   totalPrice: number = 0;
+  // Đầu class
+  provinces: any[] = [];
+  districts: any[] = [];
+  wards: any[] = [];
+
+  selectedProvinceCode = '';
+  selectedDistrictCode = '';
+  selectedWardCode = '';
+
+  selectedProvinceName = '';
+  selectedDistrictName = '';
+  selectedWardName = '';
+  addressDetail = '';
 
   constructor(private cartDetailService: CartDetailService,
     private userService: UserService,
@@ -40,12 +54,16 @@ export class OrderComponent {
     private router: Router,
     private cartService: CartService,
     private paymentService: PaymentService,
-    private couponService: CouponService) {
+    private couponService: CouponService,
+    private locationService: LocationService) {
     this.orderForm = this.fb.group({
       fullname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.minLength(9)]],
-      address: ['', Validators.required],
+      provinceCode: ['', Validators.required],
+      districtCode: ['', Validators.required],
+      wardCode: ['', Validators.required],
+      addressDetail: ['', Validators.required],
       note: ['']
     });
   }
@@ -58,8 +76,12 @@ export class OrderComponent {
         this.orderForm.patchValue({
           fullname: user.full_name,
           phone: user.phone_number,
-          address: user.address
         });
+      }
+    });
+    this.locationService.getProvinces().subscribe({
+      next: (data) => {
+        this.provinces = data || [];
       }
     });
   }
@@ -91,11 +113,29 @@ export class OrderComponent {
       this.toastr.error('Vui lòng nhập đầy đủ thông tin.', 'Lỗi', { timeOut: 1500 });
       return;
     }
+    // Ép kiểu giá trị mã tỉnh/thành, quận/huyện, phường/xã từ form thành số (vì có thể đang là string)
+    const provinceCode = +this.orderForm.value.provinceCode;
+    const districtCode = +this.orderForm.value.districtCode;
+    const wardCode = +this.orderForm.value.wardCode;
+    // Tìm tên tỉnh/thành theo mã (code), nếu không tìm thấy thì trả về chuỗi rỗng
+    const selectedProvinceName = this.provinces.find(p => +p.code === provinceCode)?.name || '';
+    // Tìm tên quận/huyện theo mã, nếu không tìm thấy thì trả về chuỗi rỗng
+    const selectedDistrictName = this.districts.find(d => +d.code === districtCode)?.name || '';
+    // Tìm tên phường/xã theo mã, nếu không tìm thấy thì trả về chuỗi rỗng
+    const selectedWardName = this.wards.find(w => +w.code === wardCode)?.name || '';
+    // Gộp địa chỉ chi tiết và tên phường, quận, tỉnh thành thành một chuỗi đầy đủ
+    const fullAddress = [
+      this.orderForm.value.addressDetail?.trim(),  // Lấy địa chỉ chi tiết từ form và loại bỏ khoảng trắng đầu/cuối
+      selectedWardName,                            // Tên phường/xã
+      selectedDistrictName,                        // Tên quận/huyện
+      selectedProvinceName                         // Tên tỉnh/thành phố
+    ].filter(Boolean)                               // Loại bỏ các phần tử rỗng (null, undefined, '')
+      .join(', ');                                    // Nối các phần tử còn lại bằng dấu phẩy và khoảng trắng
     const orderDto: OrderDto = {
       full_name: this.orderForm.value.fullname,
       email: this.orderForm.value.email,
       phone_number: this.orderForm.value.phone,
-      address: this.orderForm.value.address,
+      address: fullAddress,
       note: this.orderForm.value.note || '',
       coupon_code: this.couponCode,
       order_details: this.cartDetails.map(item => ({
@@ -223,5 +263,43 @@ export class OrderComponent {
       }
     });
   }
+  onProvinceChange(): void {
+    const provinceCode = this.orderForm.get('provinceCode')?.value;
+    const selectedProvince = this.provinces.find(p => p.code === provinceCode);
+    this.selectedProvinceName = selectedProvince?.name || '';
+    // Reset các lựa chọn sau khi chọn tỉnh
+    this.districts = [];
+    this.wards = [];
+    this.orderForm.patchValue({
+      districtCode: '',
+      wardCode: ''
+    });
 
+    if (provinceCode) {
+      this.locationService.getDistrictsByProvince(provinceCode)
+        .subscribe(data => this.districts = data.districts || []);
+    }
+  }
+
+  onDistrictChange(): void {
+    const districtCode = this.orderForm.get('districtCode')?.value;
+    const selectedDistrict = this.districts.find(d => d.code === districtCode);
+    this.selectedDistrictName = selectedDistrict?.name || '';
+
+    this.wards = [];
+    this.orderForm.patchValue({
+      wardCode: ''
+    });
+
+    if (districtCode) {
+      this.locationService.getWardsByDistrict(districtCode)
+        .subscribe(data => this.wards = data.wards || []);
+    }
+  }
+
+  onWardChange(): void {
+    const wardCode = this.orderForm.get('wardCode')?.value;
+    const selectedWard = this.wards.find(w => w.code === wardCode);
+    this.selectedWardName = selectedWard?.name || '';
+  }
 }

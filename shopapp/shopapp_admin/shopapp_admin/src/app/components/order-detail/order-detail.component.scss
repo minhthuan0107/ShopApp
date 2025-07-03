@@ -1,0 +1,179 @@
+/* --- Modal Container --- */
+.modal-header {
+    background-color: #3f51b5;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    user-select: none;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.title-shift-up {
+    font-size: 28px; // Tăng kích cỡ chữ
+    font-weight: 700; // Chữ đậm hơn
+    color: #343a40; // Màu chữ xám đậm (Bootstrap text-dark)
+    margin-top: -30px; // Nhích lên 10px
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+* {
+    text-decoration: none !important;
+    caret-color: transparent;
+}
+
+.nowrap-column {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    /* hoặc 120px tùy chiều dài chữ */
+}
+
+.wide-column {
+    min-width: 200px;
+    /* có thể thử 250px hoặc lớn hơn nếu cần */
+    white-space: normal;
+    /* Cho phép xuống dòng nếu dài */
+    word-wrap: break-word;
+}
+
+.wide-column-name {
+    min-width: 100px;
+    /* có thể thử 250px hoặc lớn hơn nếu cần */
+    white-space: normal;
+    /* Cho phép xuống dòng nếu dài */
+    word-wrap: break-word;
+}
+
+.customer-table-container {
+    padding: 20px;
+
+    .search-wrapper {
+        mat-form-field {
+            background: #fff;
+            border-radius: 6px;
+
+            input {
+                padding-left: 8px;
+            }
+
+            mat-icon {
+                color: #888;
+            }
+        }
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+
+        table.custom-table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+
+            th {
+                background-color: #f8f9fc;
+                color: #4e73df;
+                font-weight: 600;
+                border-bottom: 2px solid #e3e6f0;
+                text-align: left;
+            }
+
+            td {
+                vertical-align: middle;
+                border-bottom: 1px solid #dee2e6;
+                transition: background-color 0.2s;
+            }
+
+            tr:hover td {
+                background-color: #f1f5ff;
+            }
+        }
+
+        .avatar {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border: 2px solid #e3e6f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+::ng-deep td.mat-column-actions {
+    white-space: nowrap;
+    /* Không cho xuống dòng */
+    transform: translateX(-10px);
+}
+
+::ng-deep .custom-modal-md .modal-dialog {
+    max-width: 900px; // 👈 nhỏ hơn 'xl' (1140px)
+    width: 90%;
+}
+
+::ng-deep .custom-modal-md .modal-content {
+    border-radius: 8px;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    display: inline-block;
+    min-width: 90px;
+    text-align: center;
+}
+
+.status-pending {
+    background-color: #ffc107;
+}
+
+.status-processing {
+    background-color: #007bff;
+}
+
+.status-shipping {
+    background-color: #fd7e14;
+}
+
+.status-completed {
+    background-color: #28a745;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+}
+
+.no-records-message {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 16px;
+    color: #888;
+}
+
+.custom-table th.text-center,
+.custom-table td.text-center {
+  min-width: 80px; /* hoặc 80px tùy bạn */
+  max-width: 120px;
+  text-align: left;
+  white-space: nowrap; /* Ngăn xuống dòng */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Nếu nội dung dài */
+}
+.image-cell {
+  text-align: left; /* Căn trái hình ảnh */
+  padding-left: 33px; /* Tuỳ chỉnh nếu muốn đẩy xa hơn */
+}

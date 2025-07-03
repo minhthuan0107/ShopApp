@@ -31,6 +31,7 @@ public class AdminUserController {
     private LocalizationUtils localizationUtils;
 
     @GetMapping("/get-all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserListResponse> getAllUsers(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size,
                                                         @RequestParam(required = false, defaultValue = "") String keyword) {
@@ -40,7 +41,6 @@ public class AdminUserController {
         int totalPages = userPage.getTotalPages();
         //Lấy tổng số khách hàng
         long totalItems = userPage.getTotalElements();
-        //Lấy
         List<UserResponse> userResponseList = userPage.getContent();
         return ResponseEntity.ok(UserListResponse.builder()
                 .userResponses(userResponseList)

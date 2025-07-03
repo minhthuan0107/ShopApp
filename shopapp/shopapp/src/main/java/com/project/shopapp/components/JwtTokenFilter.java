@@ -112,8 +112,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/users/auth/social-login", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/auth/social/callback", apiPrefix), "GET"),
                 Pair.of(String.format("%s/auth/signin", apiPrefixAdmin), "POST"),
-
-
+                Pair.of(String.format("%s/provinces/**", apiPrefix), "GET"),
                 Pair.of("/ws/**", "GET"),
                 Pair.of("/topic/**", "GET"),
                 Pair.of("/app/**", "GET")

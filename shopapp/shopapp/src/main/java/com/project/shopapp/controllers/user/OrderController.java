@@ -124,8 +124,8 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("/cancel/{orderId}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PatchMapping("/cancel/{orderId}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> deleteOrder(@Valid @PathVariable("orderId") Long orderId) {
         try {
             //Xóa mềm cập nhật active = false

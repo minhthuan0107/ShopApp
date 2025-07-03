@@ -1,0 +1,118 @@
+<div class="container-fluid customer-table-container">
+    <!-- Tiêu đề -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 title-shift-up">📋 Danh sách đơn hàng</h1>
+    </div>
+
+    <!-- Tìm kiếm -->
+    <div class="search-wrapper mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Tìm kiếm đơn hàng</mat-label>
+            <input matInput [(ngModel)]="keyword" placeholder="Nhập tên,số điện thoại..." (keyup)="applyFilter()">
+            <button mat-icon-button matSuffix disabled>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <!-- Bảng dữ liệu -->
+    <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+            <!-- ID -->
+            <ng-container matColumnDef="order_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let row">{{ row.order_id }}</td>
+            </ng-container>
+
+            <!-- Họ tên -->
+            <ng-container matColumnDef="full_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="wide-column-name">Họ tên</th>
+                <td mat-cell *matCellDef="let row" class="wide-column-name">{{ row.full_name }}</td>
+            </ng-container>
+            <!-- SĐT -->
+            <ng-container matColumnDef="phone_number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>SĐT</th>
+                <td mat-cell *matCellDef="let row">{{ row.phone_number }}</td>
+            </ng-container>
+            <!-- Email -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+            </ng-container>
+            <!-- Ghi chú -->
+            <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="wide-column-note">Ghi chú</th>
+                <td mat-cell *matCellDef="let row" class="wide-column-note">{{ row.note}}</td>
+            </ng-container>
+            <!-- Ghi chú -->
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef mat-sort- class="wide-column">Địa chỉ</th>
+                <td mat-cell *matCellDef="let row" class="wide-column">{{ row.address}}</td>
+            </ng-container>
+            <!-- Ngày tạo đơn -->
+            <ng-container matColumnDef="order_date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="nowrap-column">Ngày tạo đơn</th>
+                <td mat-cell *matCellDef="let row" class="nowrap-column"> {{ row.order_date | date: 'dd-MM-yyyy' }}</td>
+            </ng-container>
+            <!-- Tổng tiền -->
+            <ng-container matColumnDef="total_price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="nowrap-column">Tổng tiền</th>
+                <td mat-cell *matCellDef="let row" class="nowrap-column">{{ row.total_price | number:'1.0-0' }} đ</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef class="nowrap-column">Trạng thái</th>
+                <td mat-cell *matCellDef="let row" class="nowrap-column">
+                    <span [ngClass]="getStatusClass(row.status)" class="status-badge" *ngIf="isFinalStatus(row.status)">
+                        {{ getStatusLabel(row.status) }}
+                    </span>
+
+                    <span [ngClass]="getStatusClass(row.status)" class="status-badge clickable"
+                        *ngIf="!isFinalStatus(row.status)" (click)="onStatusChange(row)">
+                        {{ getStatusLabel(row.status) }}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paymentStatus">
+                <th mat-header-cell *matHeaderCellDef class="nowrap-column-1">Thanh toán</th>
+                <td mat-cell *matCellDef="let row" class="nowrap-column-1">
+                    <span [ngClass]="getPaymentStatusClass(row.payment.status)" class="status-badge">
+                        {{ getPaymentStatusLabel(row.payment.status) }}
+                    </span>
+                </td>
+            </ng-container>
+            <!-- Cột Hành động -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Hành động</th>
+                <td mat-cell *matCellDef="let row">
+                    <!-- Xem chi tieets don hang -->
+                    <button mat-icon-button (click)="viewOrderDetail(row)" matTooltip="Xem chi tiết đơn hàng">
+                        <mat-icon style="color: #2196f3;"> visibility</mat-icon>
+                    </button>
+                    <!-- Hủy đơn hàng -->
+                    <button *ngIf="row.status !== 'CANCELLED' && row.status !== 'COMPLETED'" mat-icon-button
+                        (click)="cancelOrder(row)" matTooltip="Hủy đơn hàng">
+                        <mat-icon style="color: #f44336;">cancel</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Header và row -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- Phân trang -->
+        <mat-paginator [length]="totalItems" [pageSize]="6" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            (page)="onPageChange($event)"> <!-- 👈 Gắn sự kiện ở đây -->
+        </mat-paginator>
+    </div>
+    <div *ngIf="dataSource.data.length === 0" class="no-records-message">
+        ❌ Không tìm thấy đơn hàng nào phù hợp với từ khóa "{{ keyword }}"
+    </div>
+</div>
+<!-- ✅ Ngay dưới đây bạn đặt ng-template -->
+<ng-template #viewDetailModal let-c="close">
+    <div class="modal-body">
+        <app-order-detail [order]="selectedOrder"></app-order-detail>
+    </div>
+</ng-template>
