@@ -2,6 +2,9 @@
   <!-- Tiêu đề -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800 title-shift-up">📦 Danh sách sản phẩm</h1>
+    <div class="d-flex justify-content-end mb-3 add-product-wrapper">
+      <app-add-product (productAdded)="onProductAdded()"></app-add-product>
+    </div>
   </div>
 
   <!-- Tìm kiếm -->
@@ -26,11 +29,15 @@
       <!-- Tên sản phẩm -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên sản phẩm</th>
-        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        <td mat-cell *matCellDef="let row">
+          <span class="product-name" matTooltip="{{ row.name }}" matTooltipPosition="above">
+            {{ row.name }}
+          </span>
+        </td>
       </ng-container>
       <!-- Hình ảnh -->
       <ng-container matColumnDef="url_image">
-        <th mat-header-cell *matHeaderCellDef class="image-cell">Hình ảnh</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="image-header-cell">Hình ảnh</th>
         <td mat-cell *matCellDef="let row">
           <img [src]="row.url_image" alt="Hình ảnh sản phẩm" width="90" height="90"
             style="object-fit: cover; border-radius: 4px;">
@@ -94,6 +101,11 @@
           <button mat-icon-button color="accent" (click)="editProduct(row)" matTooltip="Chỉnh sửa">
             <mat-icon>edit</mat-icon>
           </button>
+
+          <!-- Xóa -->
+          <button mat-icon-button color="warn" (click)="confirmDelete(row)" matTooltip="Xóa">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 
@@ -103,7 +115,7 @@
     </table>
 
     <!-- Phân trang -->
-    <mat-paginator [length]="totalItems" [pageSize]="4" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+    <mat-paginator [length]="totalItems" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
       (page)="onPageChange($event)">
     </mat-paginator>
   </div>
@@ -113,3 +125,9 @@
     ❌ Không tìm thấy sản phẩm nào phù hợp với từ khóa "<strong>{{ keyword }}</strong>"
   </div>
 </div>
+<ng-template #editProductModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <!-- ✅ Đây là nơi bạn nhúng component vào -->
+    <app-edit-product [product]="selectedProduct" (productUpdated)="onProductUpdated(); c()"></app-edit-product>
+  </div>
+</ng-template>

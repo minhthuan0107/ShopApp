@@ -21,7 +21,7 @@ public class CartDetailResponse extends BaseEntity {
     @JsonProperty("product_image")
     private String productImage;
     @JsonProperty("product_quantity")
-    private int productQuantity;
+    private long productQuantity;
     private int quantity;
     @JsonProperty("unit_price")
     private BigDecimal unitPrice;

@@ -12,7 +12,6 @@ import java.util.List;
 
 
 public interface IProductService {
-    Product createProduct(ProductDto productDto) throws DataNotFoundException;
     ProductResponse getProductbyId (Long productId) throws Exception;
     Page<ProductResponse> getProductbyCategoryId(
             Long categoryId,
@@ -30,8 +29,6 @@ public interface IProductService {
     );
     List<ProductResponse>  getProductSuggestions (String keyword);
     Page<ProductResponse> getAllProducts(PageRequest pageRequest);
-    Product updateProduct (Long id, ProductDto productDto) throws Exception;
-    void deleteProduct (Long id);
     boolean existsByName (String name);
     PriceRangeResponse getPriceRange ();
     List<ProductResponse>  getTop14BestSellingProducts();

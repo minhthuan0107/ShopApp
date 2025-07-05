@@ -96,6 +96,7 @@ public class MessageKeys {
     public static final String BRAND_CREATED_SUCCESSFULLY = "brand.create_successfully";
     public static final String BRAND_FETCHED_BY_CATEGORY_SUCCESSFULLY = "brand.fetched_by_category_successfully";
     public static final String BRAND_NOT_FOUND = "brand.not_found";
+    public static final String BRAND_GET_LIST_BRANDS_SUCCESSFULLY = "brand.get-list-brands-successfully";
 
     public static final String VALUE_MIN_MAX_SUCCESSFULLY = "value.min.max.successfully";
 

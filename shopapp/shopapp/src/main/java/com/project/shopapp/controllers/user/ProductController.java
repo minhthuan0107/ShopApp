@@ -114,59 +114,6 @@ public class ProductController {
                     .build());
         }
     }
-    @PostMapping(value = "")
-    public ResponseEntity<?> createProduct(
-            @Valid @RequestBody ProductDto productDto,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList();
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .message(errorMessages.toString())
-                    .build());
-        }
-        try {
-            Product newProduct = productService.createProduct(productDto);
-            return ResponseEntity.status(HttpStatus.CREATED).
-                    body(ResponseObject.builder()
-                            .status(HttpStatus.CREATED)
-                            .data(ProductResponse.fromProduct(newProduct))
-                            .message(localizationUtils.getLocalizedMessage(
-                                    MessageKeys.PRODUCT_CREATED_SUCCESSFULLY, newProduct.getId()))
-                            .build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .message(e.getMessage())
-                    .build());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id,
-                                           ProductDto productDto) {
-        try {
-            Product updateProduct = productService.updateProduct(id, productDto);
-            return ResponseEntity.ok(ProductResponse.fromProduct(updateProduct));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok(ResponseObject.builder()
-                .status(HttpStatus.OK)
-                .message(localizationUtils.getLocalizedMessage(
-                        MessageKeys.PRODUCT_DELETE_SUCCESSFULLY, id))
-                .build());
-    }
 
     @GetMapping("/price-range")
     public ResponseEntity<ResponseObject> getPriceRange() {

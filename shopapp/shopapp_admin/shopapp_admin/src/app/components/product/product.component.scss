@@ -17,6 +17,19 @@
   caret-color: transparent;
 }
 
+.product-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  /* Chỉ hiển thị tối đa 4 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.2rem; // Giữ dòng gọn lại
+  max-height: 4.8rem; // 4 dòng * 1.2rem
+  cursor: pointer;
+}
+
 .description-cell {
   display: -webkit-box;
   -webkit-line-clamp: 3; // 👈 Giới hạn 3 dòng
@@ -107,4 +120,8 @@
   margin: 20px 0;
   font-size: 16px;
   color: #888;
+}
+
+.image-header-cell {
+  padding-left: 30px !important;
 }

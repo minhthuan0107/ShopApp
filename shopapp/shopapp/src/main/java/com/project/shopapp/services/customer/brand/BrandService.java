@@ -36,4 +36,8 @@ public class BrandService implements IBrandService {
         return brandRepository.findDistinctByCategory(categoryId);
     }
 
+    @Override
+    public List<Brand> getAllBrands() {
+        return brandRepository.findAll();
+    }
 }

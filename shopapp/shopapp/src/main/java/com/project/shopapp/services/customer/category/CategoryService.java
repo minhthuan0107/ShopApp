@@ -2,6 +2,7 @@ package com.project.shopapp.services.customer.category;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.category.CategoryDto;
+import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.repositories.CategoryRepository;
@@ -50,9 +51,9 @@ public class CategoryService implements ICategoryService {
     @Override
     public Category deleteCategoryById(long id) throws Exception {
         Category existingCategory = getCategoryById(id);
-        List<Product> products = productRepository.findByCategory(existingCategory);
+        List<Product> products = productRepository.findByCategoryAndIsDeletedFalse(existingCategory);
         if (!products.isEmpty()) {
-            throw new RuntimeException(
+            throw new DataNotFoundException(
                     localizationUtils.getLocalizedMessage(MessageKeys.CANNOT_DELETE_CATEGORY_PRODUCT));
         } else {
             categoryRepository.deleteById(id);

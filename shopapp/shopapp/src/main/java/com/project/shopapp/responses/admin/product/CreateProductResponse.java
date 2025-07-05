@@ -1,10 +1,11 @@
-package com.project.shopapp.responses.product;
+package com.project.shopapp.responses.admin.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.shopapp.models.Brand;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.responses.BaseResponseEntity;
+import com.project.shopapp.responses.product.ProductResponse;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductResponse extends BaseResponseEntity {
+public class CreateProductResponse  extends BaseResponseEntity {
     private Long id;
     private String name;
     private BigDecimal price;
@@ -25,12 +26,8 @@ public class ProductResponse extends BaseResponseEntity {
     private int sold;
     private Category category;
     private Brand brand;
-    @JsonProperty("total_reviews")
-    private Long totalReviews;
-    @JsonProperty("average_rating")
-    private Double averageRating;
-    public static  ProductResponse fromProduct (Product  product){
-        ProductResponse productResponse = ProductResponse.builder()
+    public static CreateProductResponse fromProduct (Product product){
+        CreateProductResponse productResponse = CreateProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())

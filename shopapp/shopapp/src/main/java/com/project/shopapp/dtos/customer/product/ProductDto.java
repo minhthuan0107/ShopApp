@@ -18,19 +18,23 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProductDto {
-    @NotBlank(message = "Titlle is required")
-    @Size(min = 3, max =200,message = "Tittle must be between 3 and 200 characters")
+    @NotBlank(message = "Tên sản phẩm không được để trống")
     private String name;
-    @Min(value = 0,message = "Price must be greater than or equal to 0")
-    @Max(value = 100000000, message = "Price must be less than or equal to 10,000,000")
+
+    @Min(value = 0, message = "Giá phải lớn hơn hoặc bằng 0")
     private BigDecimal price;
-    @Min(value = 0,message = "Quantity must be greater than or equal to 0")
-    private int quantity;
+
+    @Min(value = 0, message = "Số lượng phải lớn hơn hoặc bằng 0")
+    private Long quantity;
+
     @JsonProperty("url_image")
     private String urlImage;
+
     private String description;
+
     @JsonProperty("category_id")
     private Long categoryId;
+
     @JsonProperty("brand_id")
     private Long brandId;
 }

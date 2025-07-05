@@ -31,7 +31,6 @@ export class EditCustomerComponent {
   ) { }
 
   ngOnInit(): void {
-    console.log('User nhận được:', this.user);
     this.editForm = this.fb.group({
       name: [this.user?.full_name || '', Validators.required],
       address: [this.user?.address || '', Validators.required],

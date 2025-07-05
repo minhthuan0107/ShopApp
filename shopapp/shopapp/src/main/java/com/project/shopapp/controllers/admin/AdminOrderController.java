@@ -3,9 +3,7 @@ package com.project.shopapp.controllers.admin;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.responses.admin.order.OrderListResponse;
-import com.project.shopapp.responses.admin.user.UserListResponse;
 import com.project.shopapp.responses.order.OrderResponse;
-import com.project.shopapp.responses.user.UserResponse;
 import com.project.shopapp.services.admin.order.OrderAdminService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +16,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("${api.admin-prefix}/orders")
-public class OrderAdminController {
+public class AdminOrderController {
     @Autowired
     private OrderAdminService orderAdminService;
     @Autowired

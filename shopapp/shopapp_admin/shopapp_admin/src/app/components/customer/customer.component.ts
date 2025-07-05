@@ -74,8 +74,8 @@ export class CustomerComponent implements OnInit {
         this.paginator.length = res.totalItems; // Tổng số mục để phân trang đúng
       },
       error: (err) => {
-        console.error(err);
-      }
+            console.error('❌ Lỗi:', err?.error?.message || 'Lỗi khi lấy danh sách khách hàng');
+          }
     });
   }
   onUserAdded() {

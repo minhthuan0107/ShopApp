@@ -35,37 +35,7 @@ public class ProductService implements IProductService {
     @Autowired
     private LocalizationUtils localizationUtils;
     @Autowired
-    private BrandRepository brandRepository;
-    @Autowired
     private RateRepository rateRepository;
-
-    @Override
-    @Transactional
-    public Product createProduct(ProductDto productDto) throws DataNotFoundException {
-        Category existingCategory = categoryRepository.findById(productDto.getCategoryId())
-                .orElseThrow(() ->
-                        new DataNotFoundException(
-                                localizationUtils.getLocalizedMessage(
-                                        MessageKeys.CATEGORY_NOT_FOUND, productDto.getCategoryId())
-                        ));
-        Brand existingBrand = brandRepository.findById(productDto.getBrandId())
-                .orElseThrow(() ->
-                        new DataNotFoundException(
-                                localizationUtils.getLocalizedMessage(
-                                        MessageKeys.BRAND_NOT_FOUND, productDto.getBrandId())
-                        ));
-        Product newProduct = Product.builder()
-                .name(productDto.getName())
-                .price(productDto.getPrice())
-                .urlImage(productDto.getUrlImage())
-                .quantity(productDto.getQuantity())
-                .description(productDto.getDescription())
-                .category(existingCategory)
-                .brand(existingBrand)
-                .build();
-        return productRepository.save(newProduct);
-    }
-
     @Override
     public ProductResponse getProductbyId(Long productId) throws Exception {
         Product product = productRepository.findById(productId)
@@ -251,7 +221,6 @@ public class ProductService implements IProductService {
             if (stat != null) {
                 Long count = ((Number) stat[1]).longValue();         // ép kiểu COUNT
                 Double avg = ((Number) stat[2]).doubleValue();       // ép kiểu AVG
-
                 response.setTotalReviews(count);
                 response.setAverageRating(avg);
             } else {
@@ -297,39 +266,6 @@ public class ProductService implements IProductService {
         }).collect(Collectors.toList());
         return productResponses;
     }
-
-
-
-    @Override
-    @Transactional
-    public Product updateProduct(
-            Long id,
-            ProductDto productDto) throws Exception {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND, id)));
-        if (existingProduct != null) {
-            //Copy thuoc tinh Dto -> Product
-            existingProduct.setName(productDto.getName());
-            Category existingCategory = categoryRepository.findById(productDto.getCategoryId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            localizationUtils.getLocalizedMessage(MessageKeys.CATEGORY_NOT_FOUND, productDto.getCategoryId())));
-            existingProduct.setCategory(existingCategory);
-            existingProduct.setPrice(productDto.getPrice());
-            existingProduct.setDescription(productDto.getDescription());
-            existingProduct.setUrlImage(productDto.getUrlImage());
-            return productRepository.save(existingProduct);
-        }
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public void deleteProduct(Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        optionalProduct.ifPresent(product -> productRepository.delete(product));
-    }
-
     @Override
     public boolean existsByName(String name) {
         return productRepository.existsByName(name);

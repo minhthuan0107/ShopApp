@@ -1,0 +1,82 @@
+<div class="modal-header">
+    <h2 class="modal-title m-0">Cập nhật sản phẩm</h2>
+</div>
+<div class="modal-body p-4">
+    <form [formGroup]="editForm" class="row" (ngSubmit)="updateProduct()">
+        <div class="col-md-12">
+            <!-- Tên sản phẩm -->
+            <div class="form-group">
+                <label for="name">Tên sản phẩm:</label>
+                <input id="name" class="form-control" formControlName="name" type="text"
+                    [ngClass]="{'is-invalid': editForm.get('name')?.invalid && editForm.get('name')?.touched}" />
+                <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="error-message">
+                    <small class="text-danger">Tên sản phẩm không được để trống</small>
+                </div>
+            </div>
+
+            <!-- Giá -->
+            <!-- Giá -->
+            <div class="form-group">
+                <label for="price">Giá:</label>
+                <input id="price" class="form-control" type="text" formControlName="price" mask="separator.0"
+                    thousandSeparator=","
+                    [ngClass]="{'is-invalid': editForm.get('price')?.invalid && editForm.get('price')?.touched}" />
+                <div *ngIf="editForm.get('price')?.invalid && editForm.get('price')?.touched" class="error-message">
+                    <small class="text-danger">Giá phải lớn hơn hoặc bằng 0</small>
+                </div>
+            </div>
+
+            <!-- Số lượng -->
+            <div class="form-group">
+                <label for="quantity">Số lượng:</label>
+                <input id="quantity" class="form-control" formControlName="quantity" type="number" min="0"
+                    [ngClass]="{'is-invalid': editForm.get('quantity')?.invalid && editForm.get('quantity')?.touched}" />
+                <div *ngIf="editForm.get('quantity')?.invalid && editForm.get('quantity')?.touched"
+                    class="error-message">
+                    <small class="text-danger">Số lượng phải lớn hơn hoặc bằng 0</small>
+                </div>
+            </div>
+
+            <!-- Hình ảnh -->
+            <div class="form-group">
+                <label for="urlImage">Hình ảnh (URL):</label>
+                <input id="urlImage" class="form-control" formControlName="urlImage" type="text" />
+            </div>
+
+            <!-- Mô tả -->
+            <div class="form-group">
+                <label for="description">Mô tả:</label>
+                <textarea id="description" class="form-control" formControlName="description" rows="3"></textarea>
+            </div>
+
+            <!-- Danh mục -->
+            <div class="form-group">
+                <label for="categoryId">Danh mục:</label>
+                <select id="categoryId" class="form-control" formControlName="categoryId">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                        {{ category.name }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Thương hiệu -->
+            <div class="form-group">
+                <label for="brandId">Thương hiệu:</label>
+                <select id="brandId" class="form-control" formControlName="brandId">
+                    <option *ngFor="let brand of brands" [value]="brand.id">
+                        {{ brand.name }}
+                    </option>
+                </select>
+            </div>
+
+        </div>
+        <!-- Nút Lưu -->
+        <div class="col-12 d-flex justify-content-center mt-4">
+            <button mat-raised-button color="primary" [disabled]="editForm.invalid"
+                [ngClass]="{ 'disabled-button': editForm.invalid }">
+                <mat-icon class="mr-1">save</mat-icon>
+                <span class="button-text">Lưu thay đổi</span>
+            </button>
+        </div>
+    </form>
+</div>
