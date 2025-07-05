@@ -46,7 +46,7 @@ public class CategoryController {
                         .build());
     }
 
-    @GetMapping("")
+    @GetMapping("/get-all")
     public ResponseEntity<ResponseObject> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(ResponseObject.builder()

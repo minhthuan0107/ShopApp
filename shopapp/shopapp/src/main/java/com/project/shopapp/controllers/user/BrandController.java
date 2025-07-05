@@ -3,6 +3,7 @@ package com.project.shopapp.controllers.user;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.brand.BrandDto;
 import com.project.shopapp.models.Brand;
+import com.project.shopapp.models.Category;
 import com.project.shopapp.responses.ResponseObject;
 import com.project.shopapp.services.customer.brand.BrandService;
 import com.project.shopapp.ultis.MessageKeys;
@@ -47,6 +48,16 @@ public class BrandController {
                                 MessageKeys.BRAND_CREATED_SUCCESSFULLY, brand.getId()))
                         .build());
 
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<ResponseObject> getAllBrands() {
+        List<Brand> brandList = brandService.getAllBrands();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .data(brandList)
+                .message(localizationUtils.getLocalizedMessage(MessageKeys.BRAND_GET_LIST_BRANDS_SUCCESSFULLY))
+                .build());
     }
 
     @GetMapping("/{categoryId}")

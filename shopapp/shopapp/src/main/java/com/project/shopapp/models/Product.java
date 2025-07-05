@@ -24,7 +24,7 @@ public class Product extends BaseEntity {
     private String urlImage;
     @Column(name = "description")
     private String description;
-    private int quantity;
+    private long quantity;
     private int sold;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -32,6 +32,8 @@ public class Product extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 
 
 }

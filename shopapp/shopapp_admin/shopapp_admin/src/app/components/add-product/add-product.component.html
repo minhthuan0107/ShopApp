@@ -1,0 +1,87 @@
+<ng-template #addProductModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h2 class="modal-title m-0">Thêm sản phẩm</h2>
+    </div>
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div class="modal-body p-4">
+        <form [formGroup]="addProductForm" (ngSubmit)="createProduct()">
+            <!-- Tên sản phẩm -->
+            <div class="form-group">
+                <label for="name">Tên sản phẩm</label>
+                <input id="name" type="text" class="form-control" formControlName="name" />
+                <p class="text-danger"
+                    *ngIf="addProductForm.get('name')?.invalid && addProductForm.get('name')?.touched">
+                    Tên sản phẩm không được để trống
+                </p>
+            </div>
+
+            <!-- Giá -->
+            <div class="form-group">
+                <label for="price">Giá:</label>
+                <input id="price" class="form-control" type="text" formControlName="price" mask="separator.0"
+                    thousandSeparator=","
+                    [ngClass]="{'is-invalid': addProductForm.get('price')?.invalid && addProductForm.get('price')?.touched}" />
+                <div *ngIf="addProductForm.get('price')?.invalid && addProductForm.get('price')?.touched"
+                    class="error-message">
+                    <small class="text-danger">Giá phải lớn hơn hoặc bằng 0</small>
+                </div>
+            </div>
+
+
+            <!-- Số lượng -->
+            <div class="form-group">
+                <label for="quantity">Số lượng</label>
+                <input id="quantity" type="number" class="form-control" formControlName="quantity" min="0" />
+                <p class="text-danger"
+                    *ngIf="addProductForm.get('quantity')?.invalid && addProductForm.get('quantity')?.touched">
+                    Số lượng phải lớn hơn hoặc bằng 0
+                </p>
+            </div>
+
+            <!-- Ảnh -->
+            <div class="form-group">
+                <label for="images">Chọn ảnh</label>
+                <input id="images" type="file" (change)="onFileSelected($event)" class="form-control" multiple />
+            </div>
+
+            <!-- Mô tả -->
+            <div class="form-group">
+                <label for="description">Mô tả</label>
+                <textarea id="description" class="form-control" rows="4" formControlName="description"></textarea>
+            </div>
+
+            <!-- Danh mục -->
+            <div class="form-group">
+                <label for="categoryId">Danh mục</label>
+                <select id="categoryId" class="form-control" formControlName="categoryId">
+                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                </select>
+            </div>
+
+            <!-- Thương hiệu -->
+            <div class="form-group">
+                <label for="brandId">Thương hiệu</label>
+                <select id="brandId" class="form-control" formControlName="brandId">
+                    <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+                </select>
+            </div>
+
+            <!-- Nút thêm -->
+            <div class="d-flex justify-content-center mt-4">
+                <button mat-raised-button color="primary" [disabled]="addProductForm.invalid"
+                    [ngClass]="{ 'disabled-button': addProductForm.invalid }">
+                    <mat-icon class="mr-1">add</mat-icon>
+                    <span class="button-text">Thêm sản phẩm</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- Nút mở modal -->
+<button mat-raised-button color="primary" (click)="open(addProductModal)">
+    <mat-icon class="mr-1">add</mat-icon>
+    <span class="button-text">Thêm sản phẩm</span>
+</button>

@@ -9,4 +9,6 @@ public interface IBrandService {
     Brand createBrand (BrandDto brandDto);
 
     List<Brand> getBrandsByCategory (Long categoryId) throws Exception;
+
+    List<Brand> getAllBrands();
 }

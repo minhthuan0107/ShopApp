@@ -1,0 +1,115 @@
+/* --- Modal Header --- */
+.modal-header {
+  background-color: #3f51b5;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* --- Modal Body --- */
+.modal-body {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* --- Form --- */
+form {
+  width: 100%;
+  user-select: none;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 15px;
+  color: #333;
+}
+
+/* --- Input Fields --- */
+input[type="text"],
+input[type="date"] {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: all 0.2s ease-in-out;
+  caret-color: #000; /* ✅ thêm dòng này */
+
+  &:focus {
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.15);
+    outline: none;
+  }
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+/* --- Error Text --- */
+.error-message {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #dc3545;
+}
+
+/* --- Submit Button --- */
+button[mat-raised-button] {
+  font-weight: 600;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  mat-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  &:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4);
+  }
+
+  &.disabled-button {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 576px) {
+  .modal-body {
+    padding: 1rem;
+  }
+
+  button[mat-raised-button] {
+    width: 100%;
+    justify-content: center;
+  }
+}
