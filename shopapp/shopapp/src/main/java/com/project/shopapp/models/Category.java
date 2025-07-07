@@ -17,4 +17,6 @@ public class Category {
     private Long id;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 }

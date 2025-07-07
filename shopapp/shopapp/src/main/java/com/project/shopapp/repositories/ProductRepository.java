@@ -69,6 +69,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT p FROM Product p WHERE p.isDeleted = false AND (" +
             "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(p.category.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(p.brand.name) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+            "OR LOWER(p.brand.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR str(p.id) LIKE CONCAT('%', :keyword, '%'))")
     Page<Product> searchProductsByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }

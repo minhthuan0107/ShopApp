@@ -8,7 +8,7 @@ import { Category } from '../models/category.model';
   providedIn: 'root',
 })
 export class CategoryService {
-  private apiCategories = `${environment.apiBaseUrl}/categories`;
+  private apiCategories = `${environment.apiBaseUrl}/categories/get-all`;
   constructor(private http: HttpClient) {}
   //Api lấy danh sách tất cả danh mục
   getAllCategories(): Observable<Category[]> {

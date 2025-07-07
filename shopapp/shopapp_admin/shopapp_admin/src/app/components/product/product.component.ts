@@ -52,7 +52,9 @@ export class ProductComponent {
   ngOnInit(): void {
     this.getAllProducts(0, 5, this.keyword);
   }
-
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
   getAllProducts(page: number, size: number, keyword: string = '') {
     this.productService.getAllProducts(page, size, keyword).subscribe({
       next: (res) => {

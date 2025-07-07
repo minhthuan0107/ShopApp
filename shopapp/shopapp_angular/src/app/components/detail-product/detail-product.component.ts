@@ -38,7 +38,7 @@ export class DetailProductComponent implements OnInit {
   private newRatingSubscription?: Subscription;
   userId!: number;
   isUserLoggedIn: boolean = false; // Kiểm tra người dùng có đăng nhập hay không
-  product!: Product;
+  product?: Product;
   productImages: ProductImage[] = [];
   productId!: number;
   comments: Comment[] = [];

@@ -91,7 +91,7 @@
                     <!-- Hủy đơn hàng -->
                     <button *ngIf="row.status !== 'CANCELLED' && row.status !== 'COMPLETED'" mat-icon-button
                         (click)="cancelOrder(row)" matTooltip="Hủy đơn hàng">
-                        <mat-icon style="color: #f44336;">cancel</mat-icon>
+                        <mat-icon style="color: #f44336;">delete</mat-icon>
                     </button>
                 </td>
             </ng-container>

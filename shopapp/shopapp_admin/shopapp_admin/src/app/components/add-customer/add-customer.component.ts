@@ -31,7 +31,6 @@ export class AddCustomerComponent {
 
   constructor( private fb: FormBuilder,
     private userService: UserService,
-    private router: Router,
     private toastr: ToastrService,
   private modalService: NgbModal){ 
       this.postForm = this.fb.group({
