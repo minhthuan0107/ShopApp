@@ -12,4 +12,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     @Query(value = "SELECT * FROM comments c WHERE c.product_id = :productId AND c.parent_id IS NULL ORDER BY c.create_at DESC",nativeQuery = true)
     List<Comment> findByProductIdAndParentCommentIsNull(Long productId);
 
+
+
 }

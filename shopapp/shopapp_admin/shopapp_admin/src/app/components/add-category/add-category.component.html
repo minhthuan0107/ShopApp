@@ -1,0 +1,20 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h2 class="modal-title m-0">Thêm danh mục sản phẩm</h2>
+    </div>
+    <form [formGroup]="categoryForm" (ngSubmit)="submitCategory()">
+        <div class="form-group">
+            <label for="name">Tên danh mục</label>
+            <input id="name" type="text" formControlName="name" class="form-control">
+            <p class="text-danger" *ngIf="categoryForm.get('name')?.touched && categoryForm.get('name')?.invalid">
+                Tên danh mục là bắt buộc
+            </p>
+        </div>
+
+        <button type="submit" [disabled]="categoryForm.invalid" class="btn btn-primary">Thêm</button>
+    </form>
+</ng-template>
+<button mat-raised-button color="primary" (click)="open(content)">
+    <mat-icon class="mr-1">add</mat-icon>
+    <span class="button-text">Thêm danh mục sản phẩm</span>
+</button>

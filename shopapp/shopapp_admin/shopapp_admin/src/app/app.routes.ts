@@ -8,6 +8,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { OrderComponent } from './components/order/order.component';
 import { ProductComponent } from './components/product/product.component';
+import { CategoryComponent } from './components/category/category.component';
 
 export const routes: Routes = [
   // 👉 Redirect từ path rỗng sang signin
@@ -30,12 +31,14 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: MainLayoutComponent,
-     canActivate: [authGuard],
+    canActivate: [authGuard],
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'customer', component: CustomerComponent },
       { path: 'order', component: OrderComponent },
-      { path: 'product', component: ProductComponent}
+      { path: 'product', component: ProductComponent },
+      { path: 'category', component: CategoryComponent },
+
       // Có thể thêm các route khác như: profile, dashboard, ...
     ]
   },

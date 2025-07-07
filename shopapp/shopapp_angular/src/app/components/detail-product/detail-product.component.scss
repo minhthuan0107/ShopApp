@@ -18,17 +18,20 @@
     height: auto;
     padding: 38px;
     border-radius: 10px;
-   
+
 
 }
+
 .name-up {
     margin-top: -1px !important;
 }
 
 .product-actions button {
     transition: background-color 0.3s, transform 0.3s;
-    padding: 12px 18px; /* Padding cho nút */
-    font-size: 16px; /* Kích thước font */
+    padding: 12px 18px;
+    /* Padding cho nút */
+    font-size: 16px;
+    /* Kích thước font */
 }
 
 .product-actions button:hover {
@@ -42,8 +45,10 @@ h4.text-muted {
 }
 
 .product-image {
-    max-width: 35vw;
-    height: auto;
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
 }
 
 .product-description {
@@ -77,6 +82,7 @@ h4.text-muted {
     margin-bottom: 1.5vw;
     padding-left: 2vw;
 }
+
 .reply {
     background: white;
     padding: 1vw;
@@ -91,6 +97,7 @@ h4.text-muted {
     gap: 0.1vw;
     /* Tạo khoảng cách đều giữa các phần tử */
 }
+
 .reply-date {
     font-size: 13px;
     /* Thay đổi từ 0.9vw sang 14px */
@@ -104,22 +111,27 @@ h4.text-muted {
 
 .comment-form {
     max-width: 100%;
-    display: flex; /* Thay đổi thành flex để kiểm soát sắp xếp */
+    display: flex;
+    /* Thay đổi thành flex để kiểm soát sắp xếp */
     flex-direction: column;
     justify-content: flex-start;
-    gap: 10px; /* Giữ khoảng cách giữa các phần tử */
+    gap: 10px;
+    /* Giữ khoảng cách giữa các phần tử */
 }
 
 .input-container {
     display: flex;
-    width: calc(100% - 15px); /* Giảm chiều rộng đi 10px */
+    width: calc(100% - 15px);
+    /* Giảm chiều rộng đi 10px */
     gap: 10px;
     flex-wrap: nowrap;
     margin-bottom: 15px;
 }
+
 .input-container1 {
     display: flex;
-    width: calc(100% - 1px); /* Giảm chiều rộng đi 10px */
+    width: calc(100% - 1px);
+    /* Giảm chiều rộng đi 10px */
     gap: 10px;
     flex-wrap: nowrap;
     margin-bottom: 15px;
@@ -157,9 +169,12 @@ h4.text-muted {
         height: 40px !important;
         font-size: 12px !important;
     }
+
     .product-actions button {
-        padding: 7px 20px; /* Padding nhỏ hơn cho nút trên màn hình nhỏ */
-        font-size: 13px; /* Kích thước font nhỏ hơn cho nút */
+        padding: 7px 20px;
+        /* Padding nhỏ hơn cho nút trên màn hình nhỏ */
+        font-size: 13px;
+        /* Kích thước font nhỏ hơn cho nút */
     }
 }
 
@@ -195,18 +210,28 @@ h4.text-muted {
 }
 
 .comment {
-    max-width: 100%; /* Đảm bảo chiều rộng không vượt quá 100% */
-    width: calc(100% - 16px); /* Giảm bớt chiều rộng để tạo khoảng cách, 2vw ~ 16px */
+    max-width: 100%;
+    /* Đảm bảo chiều rộng không vượt quá 100% */
+    width: calc(100% - 16px);
+    /* Giảm bớt chiều rộng để tạo khoảng cách, 2vw ~ 16px */
     background: white;
-    padding: 16px; /* Padding cho nội dung */
-    border-radius: 8px; /* Bo tròn góc */
-    margin: 8px 0; /* Tạo khoảng cách trên và dưới */
-    border: 1px solid #ddd; /* Đường viền */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng để tạo chiều sâu */
-   
-    flex-direction: column; /* Căn chỉnh theo chiều dọc */
-    gap: 0px; /* Khoảng cách giữa các phần tử bên trong */
+    padding: 16px;
+    /* Padding cho nội dung */
+    border-radius: 8px;
+    /* Bo tròn góc */
+    margin: 8px 0;
+    /* Tạo khoảng cách trên và dưới */
+    border: 1px solid #ddd;
+    /* Đường viền */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Thêm bóng để tạo chiều sâu */
+
+    flex-direction: column;
+    /* Căn chỉnh theo chiều dọc */
+    gap: 0px;
+    /* Khoảng cách giữa các phần tử bên trong */
 }
+
 .comment-author,
 .reply-author {
     font-weight: bold;
@@ -221,7 +246,8 @@ h4.text-muted {
     /* Thay đổi từ 0.9vw sang 14px */
     color: gray;
 }
-.starComment{
+
+.starComment {
     margin-top: -15px;
     font-size: 20px;
     /* Kích thước cho sao */
@@ -229,6 +255,7 @@ h4.text-muted {
     gap: 5px;
     /* Khoảng cách giữa các sao */
 }
+
 .starComment span {
     color: lightgray;
     /* Màu mặc định cho sao */
@@ -257,13 +284,17 @@ h4.text-muted {
     gap: 10px;
     /* Khoảng cách giữa nhãn và sao */
 }
+
 .rating-title {
-    font-size: 30px; /* Có thể điều chỉnh kích thước font nếu cần */
-    font-weight: bold; /* Tùy chọn: có thể làm cho chữ đậm */
+    font-size: 30px;
+    /* Có thể điều chỉnh kích thước font nếu cần */
+    font-weight: bold;
+    /* Tùy chọn: có thể làm cho chữ đậm */
     margin-bottom: 20px;
 }
+
 .stars {
-    
+
     font-size: 20px;
     /* Kích thước cho sao */
     cursor: pointer;
@@ -285,10 +316,10 @@ h4.text-muted {
     color: gold;
     /* Màu sắc cho sao đã được chọn */
 }
-
-
-
-
+.rating-spacing {
+  margin-left: 10px;
+  margin-top: 8px;
+}
 
 .btn-link {
     cursor: pointer;
@@ -333,13 +364,73 @@ h4.text-muted {
 }
 
 .thumbnail-image {
-    width: 6vw;
-    height: auto;
-    border: 0.2vw solid transparent;
-    border-radius: 0.5vw;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    border-radius: 8px;
     transition: border-color 0.3s;
 }
 
 .thumbnail-item:hover .thumbnail-image {
     border-color: #007bff;
+}
+@media (max-width: 768px) {
+  .intro-section h2 {
+    font-size: 24px;
+  }
+
+  .product-image {
+    height: 250px;
+  }
+
+  .product-description {
+    text-align: left;
+  }
+
+  .product-name,
+  .product-price {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 20px;
+  }
+
+  .product-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-actions button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .thumbnail-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .comments-section {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .rating-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .send-btn {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .reply {
+    margin-left: 0;
+  }
+
+  .comment-reply-form {
+    padding-left: 0;
+  }
 }

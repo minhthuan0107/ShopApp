@@ -1,145 +1,155 @@
 <div class="container my-5">
-    <div class="intro-section text-center mb-4">
-        <h2 class="display-4">Chi Tiết Sản Phẩm</h2>
+  <div class="intro-section text-center mb-4">
+    <h2 class="display-4">Chi Tiết Sản Phẩm</h2>
+  </div>
+
+  <div *ngIf="product" class="row gy-4">
+    <!-- Hình ảnh sản phẩm -->
+    <div class="col-12 col-md-6 text-center">
+      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div *ngFor="let img of productImages; let i = index"
+               [ngClass]="{'carousel-item': true, 'active': i === 0}">
+            <img [src]="img" alt="Product Image" class="product-image d-block mx-auto">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Ảnh Thumbnail -->
+      <div class="thumbnail-container d-flex flex-wrap justify-content-center mt-3">
+        <div *ngFor="let img of productImages; let i = index"
+             class="thumbnail-item mx-1"
+             (click)="setActiveSlide(i)">
+          <img [src]="img" alt="Thumbnail Image" class="thumbnail-image">
+        </div>
+      </div>
     </div>
-    <div class="row d-flex align-items-start">
-        <div class="col-md-6 text-center">
-            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div *ngFor="let img of productImages; let i = index" [class.active]="i === 0"
-                        class="carousel-item">
-                        <img [src]="img" alt="Product Image" class="product-image d-block mx-auto">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            <!-- Ảnh Thumbnail -->
-            <div class="thumbnail-container d-flex justify-content-center mt-3">
-                <div *ngFor="let img of productImages; let i = index" class="thumbnail-item mx-1"
-                    (click)="setActiveSlide(i)">
-                    <img [src]="img" alt="Thumbnail Image" class="thumbnail-image">
-                </div>
-            </div>
+
+    <!-- Chi tiết sản phẩm -->
+    <div class="col-12 col-md-6 d-flex flex-column align-items-start">
+      <div class="product-details w-100 p-3 shadow-sm rounded bg-white">
+        <h2 class="product-name mb-3 fw-bold text-primary name-up text-center text-md-start">
+          {{ product.name }}
+        </h2>
+
+        <div class="d-flex flex-column flex-md-row align-items-start gap-2 mb-2">
+          <h3 class="text-muted m-0">Mô tả sản phẩm</h3>
+          <div class="product-rating-simple rating-spacing" *ngIf="product.total_reviews > 0; else noReview">
+            <i class="fa-solid fa-star" style="color: gold;"></i>
+            {{ product.average_rating.toFixed(1) }} ({{ product.total_reviews }} lượt đánh giá)
+          </div>
         </div>
-        <div class="col-md-6 d-flex flex-column align-items-start">
-            <div class="product-details w-100 p-3 shadow-sm rounded bg-white">
-                <h2 class="product-name mb-3 fw-bold text-primary name-up">{{ product.name }}</h2>
 
-                <div class="d-flex align-items-center mb-2" style="justify-content: start; gap: 30px;">
-                    <h3 class="text-muted m-0">Mô tả sản phẩm</h3>
-                    <div class="product-rating-simple" *ngIf="product.total_reviews > 0; else noReview">
-                        <i class="fa-solid fa-star" style="color: gold;"></i>
-                        {{ product.average_rating.toFixed(1) }} ({{ product.total_reviews }} lượt đánh giá)
-                    </div>
-                </div>
-                <ng-template #noReview>
-                    <div class="product-rating-simple">
-                        (0 lượt đánh giá)
-                    </div>
-                </ng-template>
-                <p class="product-description text-secondary mb-4">{{ product.description }}</p>
+        <ng-template #noReview>
+          <div class="product-rating-simple rating-spacing">
+            (0 lượt đánh giá)
+          </div>
+        </ng-template>
 
-                <p class="product-price h4 fw-bold text-danger mb-4">
-                    Giá: {{ product.price | number: '1.0-0' }}đ
-                </p>
+        <p class="product-description text-secondary mb-4">{{ product.description }}</p>
 
-                <div class="product-actions d-flex gap-3">
-                    <button class="btn btn-primary d-flex align-items-center gap-2"
-                        (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
-                        <i class="fas fa-cart-plus"></i> <span>Thêm giỏ</span>
-                    </button>
+        <p class="product-price h4 fw-bold text-danger mb-4">
+          Giá: {{ product.price | number: '1.0-0' }}đ
+        </p>
 
-                    <button class="btn btn-success d-flex align-items-center gap-2"
-                        (click)="onBuyNow(product.id); $event.stopPropagation()" title="Mua ngay">
-                        <i class="fas fa-shopping-basket"></i> <span>Mua ngay</span>
-                    </button>
+        <div class="product-actions d-flex flex-column flex-sm-row justify-content-center align-items-stretch gap-2 gap-md-3">
+          <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                  (click)="addToCart(product.id); $event.stopPropagation()" title="Thêm vào giỏ hàng">
+            <i class="fas fa-cart-plus"></i> <span>Thêm giỏ</span>
+          </button>
 
-                    <button class="btn btn-outline-danger d-flex align-items-center gap-2" title="Yêu thích">
-                        <i class="fas fa-heart"></i> <span>Yêu thích</span>
-                    </button>
-                </div>
-            </div>
+          <button class="btn btn-success d-flex align-items-center justify-content-center gap-2"
+                  (click)="onBuyNow(product.id); $event.stopPropagation()" title="Mua ngay">
+            <i class="fas fa-shopping-basket"></i> <span>Mua ngay</span>
+          </button>
+
+          <button class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2" title="Yêu thích">
+            <i class="fas fa-heart"></i> <span>Yêu thích</span>
+          </button>
         </div>
-        <div class="comments-section bg-light p-3 mt-4 rounded shadow-sm">
-            <h3 class="rating-title">Đánh giá sản phẩm</h3>
-            <!-- Form nhập bình luận -->
-            <form *ngIf="isUserLoggedIn" (ngSubmit)="submitComment()" class="comment-form">
-                <!-- Chọn số sao nằm trên -->
-                <div class="rating-container" *ngIf="isRatingVisible && !isRated">
-                    <label>Đánh giá:</label>
-                    <div class="stars">
-                        <span *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)"
-                            (mouseover)="hoverRating(star)" (mouseleave)="resetHover()"
-                            [class.filled]="star <= (hoveredRating || selectedRating)">
-                            ★
-                        </span>
-                    </div>
-                </div>
-                <div class="input-container">
-                    <!-- Ô nhập bình luận nằm dưới -->
-                    <textarea [(ngModel)]="newComment.content" name="content" class="form-control textarea-comment"
-                        placeholder="Nhập bình luận..." required></textarea>
-                    <!-- Nút gửi -->
-                    <button type="submit" class="btn btn-primary send-btn"
-                        [disabled]="!newComment.content.trim() || (!isRated && selectedRating === 0)">
-                        Gửi bình luận
-                    </button>
-                </div>
-            </form>
-            <!-- Danh sách bình luận chính (hiển thị 2 bình luận đầu tiên hoặc tất cả nếu showAllComments là true) -->
-            <div class="comment" *ngFor="let comment of (showAllComments ? comments : comments | slice:0:2)">
-                <p class="comment-author"><strong>{{ comment.user_name }}</strong></p>
-                <div *ngIf="comment.rating !== undefined" class=" starComment">
-                    <!-- Sao vàng -->
-                    <span *ngFor="let star of  getArray(comment.rating); let i = index" class="star filled">★</span>
-                    <!-- Sao trắng -->
-                    <span *ngFor="let star of  getArray(5 - comment.rating); let i = index" class="star empty">☆</span>
-                </div>
-                <p class="comment-text">{{ comment.content }}</p>
-                <p class="comment-date text-muted">Ngày: {{ comment.createAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
-
-                <!-- Nút reply -->
-                <button *ngIf="isUserLoggedIn" class="btn btn-sm btn-link btn-reply mb-3"
-                    (click)="toggleReplyForm(comment.comment_id)">
-                    <i class="fas fa-reply"></i> Trả lời
-                </button>
-
-                <form *ngIf="replyingToCommentId === comment.comment_id" (ngSubmit)="submitReply(comment.comment_id)"
-                    class="comment-reply-form">
-                    <div class="input-container1">
-                        <textarea [(ngModel)]="replyContent[comment.comment_id]" name="replyContent"
-                            class="form-control textarea-comment" placeholder="Nhập phản hồi..." required>
-                        </textarea>
-                        <button type="submit" class="btn btn-success send-btn">Gửi phản hồi</button>
-                    </div>
-                </form>
-
-                <!-- Danh sách phản hồi (hiển thị 2 phản hồi đầu tiên) -->
-                <div class="reply mt-2"
-                    *ngFor="let reply of comment.replies | slice:0:visibleReplyCounts[comment.comment_id]">
-                    <p class="reply-author"><strong>{{ reply.user_name }}</strong></p>
-                    <p class="reply-text">{{ reply.content }}</p>
-                    <p class="reply-date text-muted">Ngày: {{ reply.createAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
-                </div>
-                <!-- Nút "Xem thêm" cho phản hồi -->
-                <button *ngIf="comment.replies && visibleReplyCounts[comment.comment_id] < comment.replies.length"
-                    (click)="showMoreReplies(comment.comment_id)" class="btn btn-link">
-                    Xem thêm {{ comment.replies.length - visibleReplyCounts[comment.comment_id] }} phản hồi
-                </button>
-            </div>
-            <!-- Nút "Xem thêm bình luận" nếu có nhiều hơn 2 bình luận -->
-            <button *ngIf="comments.length > 2 && !showAllComments" (click)="showMoreComments()" class="btn btn-link">
-                Xem thêm {{ comments.length - 2 }} bình luận
-            </button>
-        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Bình luận -->
+  <div class="comments-section bg-light p-3 mt-4 rounded shadow-sm">
+    <h3 class="rating-title">Đánh giá sản phẩm</h3>
+
+    <!-- Form gửi bình luận -->
+    <form *ngIf="isUserLoggedIn" (ngSubmit)="submitComment()" class="comment-form">
+      <div class="rating-container" *ngIf="isRatingVisible && !isRated">
+        <label>Đánh giá:</label>
+        <div class="stars">
+          <span *ngFor="let star of [1, 2, 3, 4, 5]"
+                (click)="setRating(star)"
+                (mouseover)="hoverRating(star)"
+                (mouseleave)="resetHover()"
+                [class.filled]="star <= (hoveredRating || selectedRating)">
+            ★
+          </span>
+        </div>
+      </div>
+      <div class="input-container">
+        <textarea [(ngModel)]="newComment.content" name="content" class="form-control textarea-comment"
+                  placeholder="Nhập bình luận..." required></textarea>
+        <button type="submit" class="btn btn-primary send-btn"
+                [disabled]="!newComment.content.trim() || (!isRated && selectedRating === 0)">
+          Gửi bình luận
+        </button>
+      </div>
+    </form>
+
+    <!-- Danh sách bình luận -->
+    <div class="comment" *ngFor="let comment of (showAllComments ? comments : comments | slice:0:2)">
+      <p class="comment-author"><strong>{{ comment.user_name }}</strong></p>
+
+      <div *ngIf="comment.rating !== undefined" class="starComment">
+        <span *ngFor="let star of getArray(comment.rating)" class="star filled">★</span>
+        <span *ngFor="let star of getArray(5 - comment.rating)" class="star empty">☆</span>
+      </div>
+
+      <p class="comment-text">{{ comment.content }}</p>
+      <p class="comment-date text-muted">Ngày: {{ comment.createAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+
+      <button *ngIf="isUserLoggedIn" class="btn btn-sm btn-link btn-reply mb-3"
+              (click)="toggleReplyForm(comment.comment_id)">
+        <i class="fas fa-reply"></i> Trả lời
+      </button>
+
+      <form *ngIf="replyingToCommentId === comment.comment_id"
+            (ngSubmit)="submitReply(comment.comment_id)"
+            class="comment-reply-form">
+        <div class="input-container1">
+          <textarea [(ngModel)]="replyContent[comment.comment_id]" name="replyContent"
+                    class="form-control textarea-comment" placeholder="Nhập phản hồi..." required></textarea>
+          <button type="submit" class="btn btn-success send-btn">Gửi phản hồi</button>
+        </div>
+      </form>
+
+      <div class="reply mt-2"
+           *ngFor="let reply of comment.replies | slice:0:visibleReplyCounts[comment.comment_id]">
+        <p class="reply-author"><strong>{{ reply.user_name }}</strong></p>
+        <p class="reply-text">{{ reply.content }}</p>
+        <p class="reply-date text-muted">Ngày: {{ reply.createAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+      </div>
+
+      <button *ngIf="comment.replies && visibleReplyCounts[comment.comment_id] < comment.replies.length"
+              (click)="showMoreReplies(comment.comment_id)" class="btn btn-link">
+        Xem thêm {{ comment.replies.length - visibleReplyCounts[comment.comment_id] }} phản hồi
+      </button>
+    </div>
+
+    <button *ngIf="comments.length > 2 && !showAllComments"
+            (click)="showMoreComments()" class="btn btn-link">
+      Xem thêm {{ comments.length - 2 }} bình luận
+    </button>
+  </div>
 </div>

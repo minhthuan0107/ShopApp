@@ -16,9 +16,8 @@ public class MessageKeys {
     public static final String CATEGORY_CREATED_SUCCESSFULLY = "category.created.successfully";
     public static final String CATEGORY_GET_LIST_CATEGORIES_SUCCESSFULLY = "category.get_list_categories_successfully";
     public static final String CATEGORY_GET_CATEGORY_SUCCESSFULLY = "category.get_category_successfully";
-    public static final String CATEGORY_UPDATE_SUCCESSFULLY = "category.update_category.update_successfully";
     public static final String CATEGORY_NOT_FOUND = "category.not_found";
-    public static final String CANNOT_DELETE_CATEGORY_PRODUCT = "category.cannot_delete_category_product";
+    public static final String CATEGORY_ALREADY_EXISTS = "category.already_exists";
     public static final String CATEGORY_DELETE_SUCCESSFULLY = "category.delete_successfully";
     public static final String USER_NOT_FOUND = "user.not_found";
     public static final String USER_ACCOUNT_LOCKED = "user.account_locked";
