@@ -90,7 +90,7 @@ export class CategoryComponent {
           next: () => {
             Swal.fire({
               title: 'Đã xóa!',
-              text: `Sản phẩm "${category.name}" đã được xóa thành công.`,
+              text: `Danh mục "${category.name}" đã được xóa thành công.`,
               icon: 'success',
               timer: 2000,
               showConfirmButton: false

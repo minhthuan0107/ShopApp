@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByIsDeletedFalse();
 
-    Optional<Category> findByIdAndIsDeletedFalse(Long id);
+    Optional<Category> findByIdAndIsDeletedFalse(Long categoryId);
 
     @Query(value = "SELECT * FROM categories " +
             "WHERE REPLACE(LOWER(name), ' ', '') = REPLACE(LOWER(:name), ' ', '') " +

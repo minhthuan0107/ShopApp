@@ -19,14 +19,6 @@ public class BrandService implements IBrandService {
     private final LocalizationUtils localizationUtils;
     private final CategoryRepository categoryRepository;
     @Override
-    public Brand createBrand(BrandDto brandDto) {
-        Brand newBrand = Brand.builder().
-                name(brandDto.getName()).
-                build();
-        return brandRepository.save(newBrand);
-    }
-
-    @Override
     public List<Brand> getBrandsByCategory(Long categoryId) throws Exception {
         boolean exists = categoryRepository.existsById(categoryId);
         if (!exists) {
@@ -38,6 +30,6 @@ public class BrandService implements IBrandService {
 
     @Override
     public List<Brand> getAllBrands() {
-        return brandRepository.findAll();
+        return brandRepository.findByIsDeletedFalse();
     }
 }

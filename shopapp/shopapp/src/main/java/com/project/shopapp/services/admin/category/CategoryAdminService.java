@@ -24,6 +24,7 @@ public class CategoryAdminService  implements ICategoryAdminService{
     @Autowired
     private ProductRepository productRepository;
     @Override
+    @Transactional
     public Category createCategory(CategoryDto categoryDto) throws Exception {
         String name = categoryDto.getName();
         // Kiểm tra nếu danh mục đã tồn tại và chưa bị xóa mềm → báo lỗi
@@ -51,7 +52,7 @@ public class CategoryAdminService  implements ICategoryAdminService{
     public void deleteCategoryById(long id) throws Exception {
         // Lấy category chưa bị xóa
         Category existingCategory = categoryRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.CATEGORY_NOT_FOUND, id)
                 ));
         // Xóa mềm danh mục
