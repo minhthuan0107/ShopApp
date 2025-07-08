@@ -1,5 +1,6 @@
 package com.project.shopapp.repositories;
 
+import com.project.shopapp.models.Brand;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Order;
 import com.project.shopapp.models.Product;
@@ -19,6 +20,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     boolean existsByName (String name);
     Page<Product> findAllByIsDeletedFalse(Pageable pageable);
     List<Product> findByCategoryAndIsDeletedFalse(Category category);
+    List<Product> findByBrandAndIsDeletedFalse(Brand brand);
     @Query("SELECT p FROM Product p " +
             "WHERE p.isDeleted = false " +  // ✅ Lọc sản phẩm chưa bị xóa mềm
             "AND p.category.id = :categoryId " +

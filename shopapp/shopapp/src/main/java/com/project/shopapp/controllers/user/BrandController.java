@@ -25,30 +25,7 @@ public class BrandController {
     private final LocalizationUtils localizationUtils;
     private final BrandService brandService;
 
-    @PostMapping("")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<ResponseObject> createBrand(@RequestBody @Valid BrandDto brandDto,
-                                                      BindingResult result) {
-        if (result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList();
-            return ResponseEntity.badRequest().body(ResponseObject.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .message(errorMessages.toString())
-                    .build());
-        }
-        Brand brand = brandService.createBrand(brandDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseObject.builder()
-                        .status(HttpStatus.CREATED)
-                        .data(brand)
-                        .message(localizationUtils.getLocalizedMessage(
-                                MessageKeys.BRAND_CREATED_SUCCESSFULLY, brand.getId()))
-                        .build());
 
-    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseObject> getAllBrands() {

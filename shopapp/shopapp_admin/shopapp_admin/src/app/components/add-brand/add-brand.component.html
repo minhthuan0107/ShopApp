@@ -1,0 +1,20 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h2 class="modal-title m-0">Thêm thương hiệu sản phẩm</h2>
+    </div>
+    <form [formGroup]="brandForm" (ngSubmit)="submitBrand()">
+        <div class="form-group">
+            <label for="name">Tên thương hiệu</label>
+            <input id="name" type="text" formControlName="name" class="form-control">
+            <p class="text-danger" *ngIf="brandForm.get('name')?.touched && brandForm.get('name')?.invalid">
+                Tên thương hiệu là bắt buộc
+            </p>
+        </div>
+
+        <button type="submit" [disabled]="brandForm.invalid" class="btn btn-primary">Thêm</button>
+    </form>
+</ng-template>
+<button mat-raised-button color="primary" (click)="open(content)">
+    <mat-icon class="mr-1">add</mat-icon>
+    <span class="button-text">Thêm thương hiệu sản phẩm</span>
+</button>
