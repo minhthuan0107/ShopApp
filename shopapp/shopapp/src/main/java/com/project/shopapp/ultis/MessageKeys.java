@@ -85,6 +85,7 @@ public class MessageKeys {
     public static final String COMMENT_CREATED_SUCCESSFULLY = "comment.created_successfully";
     public static final String COMMENT_NOT_FOUND = "comment.not_found";
     public static final String COMMENT_GET_LIST_SUCCESSFULLY = "comment.get_list_successfully";
+    public static final String COMMENT_DELETE_SUCCESSFULLY = "comment.delete_successfully";
 
     public static final String ERROR_COMMENT_ALREADY_RATED = "error.comment.already_rated";
 

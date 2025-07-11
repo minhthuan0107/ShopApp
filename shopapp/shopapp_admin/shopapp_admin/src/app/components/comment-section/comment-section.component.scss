@@ -1,0 +1,93 @@
+    .comment-table-container {
+        margin-top: 70px;
+        padding: 20px;
+
+        .mat-elevation-z2 {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table.custom-comment-table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+
+            th {
+                background-color: #f8f9fc;
+                color: #4e73df;
+                font-weight: 600;
+                border-bottom: 2px solid #e3e6f0;
+                text-align: left;
+                padding: 12px;
+            }
+
+            td {
+                vertical-align: middle;
+                border-bottom: 1px solid #dee2e6;
+                transition: background-color 0.2s;
+                padding: 12px;
+            }
+
+            tr:hover td {
+                background-color: #f1f5ff;
+            }
+        }
+
+        .reply-row {
+            background-color: #fefefe;
+
+            td {
+                padding: 16px;
+                background-color: #f9fbfc;
+            }
+
+            .reply-item {
+                padding: 8px 0;
+                border-bottom: 1px dashed #ccc;
+
+                strong {
+                    color: #343a40;
+                }
+
+                small {
+                    font-size: 12px;
+                    color: #888;
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        ::ng-deep td.mat-column-actions {
+            white-space: nowrap;
+            transform: translateX(-10px);
+        }
+    }
+
+    button[mat-button] {
+        font-size: 13px;
+        font-weight: 500;
+        padding: 2px 8px;
+    }
+
+    .mat-icon-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .is-reply-row td {
+        padding: 12px 16px;
+        padding-left: 60px;
+        /* 👈 Thụt sâu hơn comment cha */
+        background-color: #eef6ff;
+        /* 👈 Viền xanh dễ nhận biết */
+        font-style: normal;
+        color: #2c3e50;
+        position: relative;
+    }

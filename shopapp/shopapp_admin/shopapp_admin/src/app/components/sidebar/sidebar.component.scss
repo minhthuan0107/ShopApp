@@ -6,34 +6,39 @@
   color: white;
   transition: all 0.3s ease-in-out;
   .nav-link {
-    color: white;
-    padding: 12px 20px;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.2s, padding-left 0.3s;
-    cursor: pointer;
-    &:hover {
-    text-decoration: underline; // Tuỳ chọn: gạch dưới khi hover
-    user-select: none;
-  } 
+  color: white;
+  padding: 12px 20px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px; // 👉 dùng gap thay vì margin-right trong icon
+  transition: background-color 0.2s, padding-left 0.3s;
+  cursor: pointer;
 
-    i {
-      margin-right: 12px;
-      font-size: 16px;
-    }
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding-left: 28px;
-      border-left: 4px solid #ffc107; // Vàng khi hover
-    }
-
-    &.active {
-      background-color: rgba(255, 255, 255, 0.2);
-      border-left: 4px solid #ffc107; // Vàng nổi bật cho active
-    }
+  i {
+    font-size: 18px;
+    min-width: 20px; // 👉 đảm bảo icon có cùng chiều rộng
+    text-align: center;
   }
+
+  span {
+    flex: 1;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    user-select: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding-left: 28px;
+    border-left: 4px solid #ffc107;
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #ffc107;
+  }
+}
 
   .sidebar-heading {
     font-size: 13px;

@@ -10,6 +10,7 @@ import { OrderComponent } from './components/order/order.component';
 import { ProductComponent } from './components/product/product.component';
 import { CategoryComponent } from './components/category/category.component';
 import { BrandComponent } from './components/brand/brand.component';
+import { CommentSectionComponent } from './components/comment-section/comment-section.component';
 
 export const routes: Routes = [
   // 👉 Redirect từ path rỗng sang signin
@@ -40,6 +41,7 @@ export const routes: Routes = [
       { path: 'product', component: ProductComponent },
       { path: 'category', component: CategoryComponent },
       { path: 'brand', component: BrandComponent },
+      { path: 'comment', component: CommentSectionComponent },
       // Có thể thêm các route khác như: profile, dashboard, ...
     ]
   },

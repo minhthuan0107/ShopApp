@@ -34,6 +34,7 @@ public class AdminUserService implements IAdminUserService {
         return userPage.map(user -> UserResponse.fromUser(user));
     }
 
+
     @Transactional
     @Override
     public UserResponse updateProfileByAdmin(Long userId, UpdateProfileDto updateProfileDto) throws Exception {
