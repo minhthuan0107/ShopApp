@@ -1,0 +1,70 @@
+<div class="comment-table-container">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 title-shift-up">📦 Thương hiệu sản phẩm</h1>
+  </div>
+  <!-- Tìm kiếm -->
+  <div class="search-wrapper mb-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Tìm kiếm khách hàng</mat-label>
+      <input matInput [(ngModel)]="keyword" placeholder="Nhập họ tên..." (keyup)="applyFilter()">
+      <button mat-icon-button matSuffix disabled>
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2 custom-comment-table">
+    <!-- ID -->
+    <ng-container matColumnDef="comment_id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let row">{{ row.comment_id }}</td>
+    </ng-container>
+    <!-- Người dùng -->
+    <ng-container matColumnDef="user_name">
+      <th mat-header-cell *matHeaderCellDef>Người dùng</th>
+      <td mat-cell *matCellDef="let row">{{ row.user_name }}</td>
+    </ng-container>
+
+    <!-- Nội dung -->
+    <ng-container matColumnDef="content">
+      <th mat-header-cell *matHeaderCellDef>Bình luận</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.content }}
+        <ng-container *ngIf="row.replies && row.replies.length > 0">
+          <button mat-button color="primary" (click)="toggleReplies(row)">
+            {{ isExpanded(row) ? 'Ẩn phản hồi' : 'Xem phản hồi' }} ({{ row.replies.length }})
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <!-- Ngày bình luận -->
+    <ng-container matColumnDef="createAt">
+      <th mat-header-cell *matHeaderCellDef>Ngày</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.createAt | date: 'dd-MM-yyyy HH:mm' }}
+      </td>
+    </ng-container>
+
+    <!-- Hành động -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Hành động</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button matTooltip="Xóa" (click)="deleteComment(row.comment_id)">
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <!-- Header row -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- Dòng comment chính -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <!-- Dòng phản hồi -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; when: isReplyRow"  class="is-reply-row"></tr>
+  </table>
+  <mat-paginator [length]="totalItems" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+    (page)="onPageChange($event)"> <!-- 👈 Gắn sự kiện ở đây -->
+  </mat-paginator>
+  <div *ngIf="dataSource.data.length === 0" class="no-records-message">
+    ❌ Không tìm thấy khách hàng nào phù hợp với từ khóa "{{ keyword }}"
+  </div>
+</div>

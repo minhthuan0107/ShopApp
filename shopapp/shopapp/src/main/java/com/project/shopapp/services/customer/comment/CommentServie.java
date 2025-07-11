@@ -33,8 +33,6 @@ public class CommentServie implements ICommentService {
     private ProductRepository productRepository;
     @Autowired
     private CommentRepository commentRepository;
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
     @Override
     @Transactional
@@ -92,6 +90,7 @@ public class CommentServie implements ICommentService {
                 })
                 .collect(Collectors.toList());
     }
+
 
 
 }
