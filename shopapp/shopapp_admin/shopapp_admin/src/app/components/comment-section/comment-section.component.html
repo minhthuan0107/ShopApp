@@ -1,11 +1,11 @@
 <div class="comment-table-container">
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800 title-shift-up">📦 Thương hiệu sản phẩm</h1>
+    <h1 class="h3 mb-0 text-gray-800 title-shift-up"> 💬 Danh sách bình luận </h1>
   </div>
   <!-- Tìm kiếm -->
   <div class="search-wrapper mb-3">
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Tìm kiếm khách hàng</mat-label>
+      <mat-label>Tìm kiếm bình luận</mat-label>
       <input matInput [(ngModel)]="keyword" placeholder="Nhập họ tên..." (keyup)="applyFilter()">
       <button mat-icon-button matSuffix disabled>
         <mat-icon>search</mat-icon>
@@ -59,12 +59,12 @@
     <!-- Dòng comment chính -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     <!-- Dòng phản hồi -->
-    <tr mat-row *matRowDef="let row; columns: displayedColumns; when: isReplyRow"  class="is-reply-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; when: isReplyRow" class="is-reply-row"></tr>
   </table>
   <mat-paginator [length]="totalItems" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
     (page)="onPageChange($event)"> <!-- 👈 Gắn sự kiện ở đây -->
   </mat-paginator>
   <div *ngIf="dataSource.data.length === 0" class="no-records-message">
-    ❌ Không tìm thấy khách hàng nào phù hợp với từ khóa "{{ keyword }}"
+    ❌ Không tìm thấy bình luận nào phù hợp với từ khóa "{{ keyword }}"
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CommentResponse } from '../../responses/comment.response';
+import { CommentResponse } from '../../responses/comment/comment.response';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -56,8 +56,8 @@ export class CommentSectionComponent {
   loadComments(page: number, size: number, keyword: string = '') {
     this.commentService.getAllComments(page, size, keyword).subscribe({
       next: (response) => {
-        this.comments = response.commentResponses; //Lưu lại danh sách comment cha (có chứa replies bên trong)
-        this.paginator.length = response.totalItems;
+        this.comments = response.data.commentResponses; //Lưu lại danh sách comment cha (có chứa replies bên trong)
+        this.paginator.length = response.data.totalItems;
         this.buildFlatData(); // Build dữ liệu hiển thị cho table
       },
       error: (err) => {
@@ -95,12 +95,6 @@ export class CommentSectionComponent {
 
     this.buildFlatData(); // 👈 rebuild lại bảng mỗi lần toggle
   }
-  
-  // Dùng trong template để xác định dòng nào là dòng chi tiết (replies)
-  isExpansionDetailRow = (index: number, row: any): boolean => {
-    return row.isDetail === true;
-  };
-
   //isExpanded(row) dùng để kiểm tra xem comment đó đang mở hay không
   isExpanded(row: CommentResponse): boolean {
     return this.expandedComments.has(row.comment_id);

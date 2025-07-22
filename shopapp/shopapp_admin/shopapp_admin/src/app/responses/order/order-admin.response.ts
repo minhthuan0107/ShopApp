@@ -1,4 +1,4 @@
-import { PaymentAdminResponse } from "../payment.admin.response";
+import { PaymentAdminResponse } from "../payment/payment.admin.response";
 import { OrderDetailAdminResponse } from './order-detail-admin.response';
 
 export interface OrderAdminResponse {

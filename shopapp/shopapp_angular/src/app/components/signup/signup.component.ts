@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { UserService } from './../../services/user.service';
 import { SignupDto } from './../../dtos/signup.dto';
 import { CommonModule } from '@angular/common';
+import moment from 'moment';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class SignupComponent {
     private toastr: ToastrService
   ) {
     this.signupForm = this.fb.group({
-      phone: ['', [Validators.required,Validators.minLength(9), Validators.pattern('^[0-9]*$')]],
+      phone: ['', [Validators.required, Validators.minLength(9), Validators.pattern('^[0-9]*$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       retypePassword: ['', Validators.required],
       fullName: ['', Validators.required],
@@ -46,13 +47,9 @@ export class SignupComponent {
   // Kiểm tra tuổi có đủ 18 không
   validateAge(control: any) {
     if (!control.value) return null;
-    const birthDate = new Date(control.value);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
+    const birthDate = moment(control.value);
+    const today = moment();
+    const age = today.diff(birthDate, 'years');
     return age >= 18 ? null : { invalidAge: true };
   }
 

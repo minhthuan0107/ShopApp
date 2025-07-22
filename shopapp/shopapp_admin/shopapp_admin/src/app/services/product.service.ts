@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
-import { ProductListAdminResponse } from '../responses/product-list-admin.response';
+import { ProductListAdminResponse } from '../responses/product/product-list-admin.response';
 import { UpdateProductDto } from '../dtos/update.product.dto';
 import { ApiResponse } from '../responses/api.response';
 
@@ -16,10 +16,11 @@ export class ProductService {
   private apiCreateNew = `${environment.apiBaseAdminUrl}/products/create-new`;
   private apiUpload = `${environment.apiBaseAdminUrl}/product-images/uploads-cloudinary`;
   private apiDeleteProduct = `${environment.apiBaseAdminUrl}/products`;
+  private apiGetBestSelling = `${environment.apiBaseAdminUrl}/products/seller`;
   constructor(private http: HttpClient) { }
 
-  getAllProducts(page: number, size: number, keyword: string = ''): Observable<ProductListAdminResponse> {
-    return this.http.get<ProductListAdminResponse>(this.apiGetProducts, {
+  getAllProducts(page: number, size: number, keyword: string = ''): Observable<ApiResponse<ProductListAdminResponse>> {
+    return this.http.get<ApiResponse<ProductListAdminResponse>>(this.apiGetProducts, {
       params: {
         page: page.toString(),
         size: size.toString(),
@@ -42,5 +43,9 @@ export class ProductService {
   //Api xóa mềm sản phẩm
     deleteProductById(productId: number): Observable<ApiResponse<any>> {
     return this.http.delete<ApiResponse<any>>(`${this.apiDeleteProduct}/${productId}`);
+  }
+  //Api lấy 10 sản phẩm bán chạy nhất
+  getTop10BestSellingProducts(): Observable<ApiResponse<Product[]>> {
+    return this.http.get<ApiResponse<Product[]>>(this.apiGetBestSelling);
   }
 }

@@ -3,8 +3,8 @@ package com.project.shopapp.controllers.user;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.responses.coupon.CouponResponse;
-import com.project.shopapp.services.customer.coupon.CouponService;
+import com.project.shopapp.responses.admin.coupon.CouponResponse;
+import com.project.shopapp.services.admin.coupon.CouponAdminService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${api.prefix}/coupons")
 public class CouponController {
     @Autowired
-    private CouponService couponService;
+    private CouponAdminService couponService;
     @Autowired
     private LocalizationUtils localizationUtils;
 

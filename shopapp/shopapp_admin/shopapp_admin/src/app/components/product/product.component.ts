@@ -58,8 +58,8 @@ export class ProductComponent {
   getAllProducts(page: number, size: number, keyword: string = '') {
     this.productService.getAllProducts(page, size, keyword).subscribe({
       next: (res) => {
-        this.dataSource.data = res.productResponses;
-        this.paginator.length = res.totalItems; // Tổng số mục để phân trang đúng
+        this.dataSource.data = res.data.productResponses;
+        this.paginator.length = res.data.totalItems; // Tổng số mục để phân trang đúng
       },
       error: (err) => {
         console.error('❌ Lỗi khi lấy danh sách sản phẩm:', err);

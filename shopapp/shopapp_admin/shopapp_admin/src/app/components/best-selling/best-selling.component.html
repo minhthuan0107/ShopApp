@@ -1,0 +1,47 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Top 10 sản phẩm bán chạy nhất</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-6">
+            <table mat-table [dataSource]="listData" matSort class="mat-elevation-z8">
+                <ng-container matColumnDef="url_image">
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"></th>
+                    <td mat-cell *matCellDef="let row">
+                        <img [src]="row.url_image" width="60px" class="p-1">
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%">Mã sản phẩm</th>
+                    <td mat-cell *matCellDef="let row">{{row.id}}</td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;">Tên sản phẩm</th>
+                    <td mat-cell *matCellDef="let row">{{row.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="sold">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;">SỐ lượng bán được</th>
+                    <td mat-cell *matCellDef="let row">{{row.sold}}</td>
+                </ng-container>
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 14%;">Nhãn hàng</th>
+                    <td mat-cell *matCellDef="let row">{{row.category.name}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+            </table>
+            <mat-paginator [length]="productsLength" showFirstLastButtons [pageSize]="10"
+                [pageSizeOptions]="[10, 25, 50, 100]">
+            </mat-paginator>
+        </div>
+        <div class="col-md-6"> <!-- col-6 -> col-12 để biểu đồ rộng toàn dòng -->
+            <div id="divChart" style="width: 100%; height: 600px;">
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

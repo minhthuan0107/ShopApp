@@ -28,6 +28,8 @@ public class Coupon extends BaseEntity {
     private BigDecimal minOrderValue;
     @Column(name = "expiry_date")
     private LocalDate expiryDate;
+    @Column(name= "quantity")
+    private int quantity;
     @Column(name = "is_active")
     private boolean isActive;
 }

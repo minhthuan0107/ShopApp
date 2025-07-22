@@ -3,5 +3,6 @@ export interface CouponResponse {
     code: string;
     type: string;
     value : number;
+    quantity: number;
     status : string;
    }

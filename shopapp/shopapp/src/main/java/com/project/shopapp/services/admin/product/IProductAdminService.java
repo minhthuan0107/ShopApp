@@ -7,6 +7,8 @@ import com.project.shopapp.responses.product.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 public interface IProductAdminService {
     Page<ProductResponse> getAllProducts  (PageRequest pageRequest, String keyword);
 
@@ -15,4 +17,6 @@ public interface IProductAdminService {
     Product createProduct(ProductDto productDto) throws DataNotFoundException;
 
     void deleteProductById (Long productId) throws Exception;
+
+    List<ProductResponse> getTop10BestSellingProducts();
 }

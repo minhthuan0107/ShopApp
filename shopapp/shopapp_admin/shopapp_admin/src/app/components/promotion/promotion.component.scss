@@ -1,0 +1,88 @@
+.title-shift-up {
+  font-size: 28px;
+  font-weight: 700;
+  color: #343a40;
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-coupon-wrapper {
+  margin-top: 80px; // Đẩy nút "Thêm mã" xuống dưới cho cân đối
+}
+
+* {
+  text-decoration: none !important;
+  caret-color: transparent;
+}
+
+.coupon-table-container {
+  padding: 20px;
+
+  .search-wrapper {
+    mat-form-field {
+      background: #fff;
+      border-radius: 6px;
+
+      input {
+        padding-left: 8px;
+      }
+
+      mat-icon {
+        color: #888;
+      }
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+
+    table.custom-table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+
+      th {
+        background-color: #f8f9fc;
+        color: #4e73df;
+        font-weight: 600;
+        border-bottom: 2px solid #e3e6f0;
+        text-align: left;
+        padding: 12px;
+      }
+
+      td {
+        vertical-align: middle;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 12px;
+        transition: background-color 0.2s;
+      }
+
+      tr:hover td {
+        background-color: #f1f5ff;
+      }
+    }
+  }
+}
+
+::ng-deep td.mat-column-actions {
+  white-space: nowrap;
+  transform: translateX(-10px);
+}
+
+::ng-deep .custom-modal-md .modal-dialog {
+  max-width: 900px;
+  width: 90%;
+}
+
+::ng-deep .custom-modal-md .modal-content {
+  border-radius: 8px;
+}
+
+.no-records-message {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 16px;
+  color: #888;
+}

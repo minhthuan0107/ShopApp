@@ -1,0 +1,108 @@
+<div class="container-fluid coupon-table-container">
+  <!-- Tiêu đề -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 title-shift-up">🏷️ Danh sách mã giảm giá</h1>
+    <div class="d-flex justify-content-end mb-3 add-coupon-wrapper">
+      <app-add-coupon (couponAdded)="onCouponAdded()"></app-add-coupon>
+    </div>
+  </div>
+
+  <!-- Tìm kiếm -->
+  <div class="search-wrapper mb-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Tìm kiếm mã giảm giá</mat-label>
+      <input matInput [(ngModel)]="keyword" placeholder="Nhập mã, loại, giá trị..." (keyup)="applyFilter()">
+      <button mat-icon-button matSuffix disabled>
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!-- Bảng dữ liệu -->
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 custom-table">
+
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+
+      <!-- Mã -->
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã</th>
+        <td mat-cell *matCellDef="let row">{{ row.code }}</td>
+      </ng-container>
+
+      <!-- Loại -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Loại</th>
+        <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá trị</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="row.type === 'fixed'; else percent">
+            {{ row.value | number:'1.0-0' }} ₫
+          </ng-container>
+          <ng-template #percent>
+            {{ row.value }}%
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Giá trị đơn tối thiểu -->
+      <ng-container matColumnDef="min_order_value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Giá trị tối thiểu</th>
+        <td mat-cell *matCellDef="let row"> {{ row.min_order_value | number:'1.0-0' }} ₫</td>
+      </ng-container>
+
+      <!-- Số lượng -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Số lượng</th>
+        <td mat-cell *matCellDef="let row">{{ row.quantity }}</td>
+      </ng-container>
+
+      <!-- Ngày hết hạn -->
+      <ng-container matColumnDef="expiry_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày hết hạn</th>
+        <td mat-cell *matCellDef="let row">{{ row.expiry_date | date: 'dd-MM-yyyy' }}</td>
+      </ng-container>
+
+      <!-- Trạng thái -->
+      <ng-container matColumnDef="is_active">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngClass]="row.is_active ? 'text-success' : 'text-danger'">
+            {{ row.is_active ? 'Hoạt động' : 'Hết hạn / Tắt' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Hành động (nếu có thể thêm cuối) -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Hành động</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button [color]="row.is_active ? 'warn' : 'primary'" (click)="toggleCouponStatus(row)"
+            [matTooltip]="row.is_active ? 'Tắt mã' : 'Bật mã'">
+            <mat-icon>{{ row.is_active ? 'toggle_off' : 'toggle_on' }}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Header và Row -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Phân trang -->
+    <mat-paginator [length]="totalItems" [pageSize]="6" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+
+  <div *ngIf="dataSource.data.length === 0" class="no-records-message">
+    ❌ Không tìm thấy mã giảm giá nào phù hợp với từ khóa "{{ keyword }}"
+  </div>
+</div>

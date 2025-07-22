@@ -27,21 +27,26 @@ public class AdminOrderController {
 
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OrderListResponse> getAllOrders(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size,
-                                                          @RequestParam(required = false, defaultValue = "") String keyword) {
+    public ResponseEntity<ResponseObject> getAllOrders(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size,
+                                                       @RequestParam(required = false, defaultValue = "") String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("orderDate").descending());
         Page<OrderResponse> orderPage = orderAdminService.getAllOrders(pageRequest, keyword);
         //Lấy tổng số trang
         int totalPages = orderPage.getTotalPages();
-        //Lấy tổng số khách hàng
+        //Lấy tổng số đơn hàng
         long totalItems = orderPage.getTotalElements();
         List<OrderResponse> orderResponseList = orderPage.getContent();
-        return ResponseEntity.ok(OrderListResponse.builder()
+        OrderListResponse orderListResponse = OrderListResponse.builder()
                 .orderResponses(orderResponseList)
                 .totalPages(totalPages)
                 .totalItems(totalItems)
                 .currentPage(page + 1)
+                .build();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .message(localizationUtils.getLocalizedMessage(MessageKeys.ORDER_GET_ALL_SUCCESSFULLY))
+                .data(orderListResponse)
                 .build());
     }
 
