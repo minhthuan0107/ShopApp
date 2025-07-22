@@ -27,7 +27,7 @@ public class AdminCommentController {
 
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CommentListResponse> getAllComments(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<ResponseObject> getAllComments(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size,
                                                               @RequestParam(required = false, defaultValue = "") String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createAt").descending());
@@ -37,13 +37,19 @@ public class AdminCommentController {
         //Lấy tổng số bình luận
         long totalItems = commentPage.getTotalElements();
         List<CommentResponse> commentResponseList = commentPage.getContent();
-        return ResponseEntity.ok(CommentListResponse.builder()
+        CommentListResponse commentListResponse = CommentListResponse.builder()
                 .commentResponses(commentResponseList)
                 .totalPages(totalPages)
                 .totalItems(totalItems)
                 .currentPage(page + 1)
+                .build();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .message(localizationUtils.getLocalizedMessage(MessageKeys.COMMENT_GET_ALL_SUCCESSFULLY))
+                .data(commentListResponse)
                 .build());
     }
+
 
     @DeleteMapping("delete/{commentId}")
     @PreAuthorize("hasRole('ADMIN')")

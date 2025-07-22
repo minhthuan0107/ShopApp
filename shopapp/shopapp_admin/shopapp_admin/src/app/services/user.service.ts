@@ -5,6 +5,7 @@ import { environment } from '../environments/environment';
 import { CreateUserDto } from '../dtos/create.user.dto';
 import { ApiResponse } from '../responses/api.response';
 import { UpdateUserDto } from '../dtos/update.user.dto';
+import { UserListAdminResponse } from '../responses/user/user-list-admin.response';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
   //Api lấy danh sách tất cả khách hàng
-  getAllUsers(page: number, size: number,keyword: string = ''): Observable<any> {
-    return this.http.get<any>(this.apiGetAllUSers, {
+  getAllUsers(page: number, size: number,keyword: string = ''): Observable<ApiResponse<UserListAdminResponse>> {
+    return this.http.get<ApiResponse<UserListAdminResponse>>(this.apiGetAllUSers, {
       params: {
         page: page.toString(),
         size: size.toString(),

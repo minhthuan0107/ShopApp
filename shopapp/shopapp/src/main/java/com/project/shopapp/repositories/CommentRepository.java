@@ -27,6 +27,17 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
             "AND (:keyword IS NULL OR LOWER(c.user.fullname) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
             "ORDER BY c.createAt DESC")
     Page<Comment> searchParentCommentsByUserFullName(@Param("keyword") String keyword, Pageable pageable);
+    @Query("SELECT c FROM Comment c " +
+            "WHERE c.parentComment IS NULL " +
+            "AND c.id IN (SELECT r.comment.id FROM Rate r) " +
+            "ORDER BY c.createAt DESC")
+    Page<Comment> findAllRatedParentComments(Pageable pageable);
+    @Query("SELECT c FROM Comment c " +
+            "WHERE c.parentComment IS NULL " +
+            "AND c.id IN (SELECT r.comment.id FROM Rate r) " +
+            "AND (:keyword IS NULL OR LOWER(c.user.fullname) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY c.createAt DESC")
+    Page<Comment> searchRatedParentCommentsByUserFullName(@Param("keyword") String keyword, Pageable pageable);
 
 
 

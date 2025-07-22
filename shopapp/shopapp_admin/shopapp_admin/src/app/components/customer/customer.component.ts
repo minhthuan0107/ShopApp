@@ -39,7 +39,7 @@ export class CustomerComponent implements OnInit {
   displayedColumns: string[] = ['id', 'full_name', 'phone_number', 'address', 'date_of_birth', 'create_at', 'is_active', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
-  // 👇 Dùng ViewChild để lấy đối tượng MatPaginator từ template
+  // Dùng ViewChild để lấy đối tượng MatPaginator từ template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('editModal') editModal!: TemplateRef<any>;
@@ -70,8 +70,8 @@ export class CustomerComponent implements OnInit {
   getAllUsers(page: number, size: number, keyword: string = '') {
     this.userService.getAllUsers(page, size, keyword).subscribe({
       next: (res) => {
-        this.dataSource.data = res.userResponses;
-        this.paginator.length = res.totalItems; // Tổng số mục để phân trang đúng
+        this.dataSource.data = res.data.userResponses;
+        this.paginator.length = res.data.totalItems; // Tổng số mục để phân trang đúng
       },
       error: (err) => {
             console.error('❌ Lỗi:', err?.error?.message || 'Lỗi khi lấy danh sách khách hàng');

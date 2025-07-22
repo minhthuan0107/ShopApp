@@ -1,0 +1,72 @@
+.container-fluid {
+  padding: 20px;
+
+  h1.h3 {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 16px;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .col-6 {
+    flex: 0 0 48%;
+    max-width: 48%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background-color: #f8f9fc;
+      color: #4e73df;
+      font-weight: 600;
+      padding: 12px;
+      text-align: left;
+      border-bottom: 2px solid #e3e6f0;
+    }
+
+    td {
+      padding: 10px;
+      vertical-align: middle;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    tr:hover td {
+      background-color: #f1f5ff;
+    }
+
+    img {
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+  }
+
+  ::ng-deep .mat-paginator {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  // Biểu đồ
+  #divChart {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 400px;
+    }
+  }
+}

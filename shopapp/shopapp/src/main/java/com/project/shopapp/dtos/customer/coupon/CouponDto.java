@@ -24,16 +24,19 @@ public class CouponDto {
 
     @NotNull(message = "Giá trị giảm không được để trống")
     @DecimalMin(value = "0.0", inclusive = false, message = "Giá trị giảm phải lớn hơn 0")
-    private BigDecimal value; // Giá trị giảm: 50000 hoặc 10 (%)
+    private BigDecimal value;
 
-    @NotNull(message = "Giá trị đơn hàng tối thiểu không được để trống")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Đơn hàng tối thiểu phải lớn hơn 0")
-    @JsonProperty(value = "min_order_value")
-    private BigDecimal minOrderValue; // Đơn hàng tối thiểu để áp dụng coupon
+    @DecimalMin(value = "0.0", inclusive = true, message = "Giá trị đơn hàng tối thiểu phải lớn hơn hoặc bằng 0")
+    @JsonProperty("min_order_value")
+    private BigDecimal minOrderValue = BigDecimal.ZERO;
+
+    @Min(value = 1, message = "Số lượng mã giảm giá phải lớn hơn hoặc bằng 1")
+    @NotNull(message = "Số lượng mã giảm giá không được để trống")
+    private Integer quantity;
 
     @NotNull(message = "Ngày hết hạn không được để trống")
     @Future(message = "Ngày hết hạn phải là một thời điểm trong tương lai")
-    @JsonProperty(value = "expiry_date")
+    @JsonProperty("expiry_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 

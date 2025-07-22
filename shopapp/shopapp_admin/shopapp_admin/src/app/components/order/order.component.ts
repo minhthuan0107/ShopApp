@@ -71,11 +71,11 @@ export class OrderComponent {
   getAllOrders(page: number, size: number, keyword: string = '') {
     this.orderService.getAllOrders(page, size, keyword).subscribe({
       next: (res) => {
-        this.dataSource.data = res.orderResponses;
-        this.paginator.length = res.totalItems; // Tổng số mục để phân trang đúng
+        this.dataSource.data = res.data.orderResponses;
+        this.paginator.length = res.data.totalItems; // Tổng số mục để phân trang đúng
       },
       error: (err) => {
-        console.error(err);
+        console.error('❌ Lỗi khi lấy danh sách đơn hàng:', err);
       }
     });
   }

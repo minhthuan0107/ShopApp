@@ -1,0 +1,86 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h2 class="modal-title m-0">Thêm mã giảm giá</h2>
+  </div>
+  <div class="modal-body p-4" [formGroup]="couponForm">
+
+    <!-- Cột trái -->
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="code">Mã giảm giá</label>
+        <input type="text" class="form-control form-control-lg" formControlName="code" id="code">
+        <p class="text-danger" *ngIf="couponForm.get('code')?.hasError('required') && couponForm.get('code')?.touched">
+          Mã không được để trống
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Loại</label>
+        <select class="form-control form-control-lg" formControlName="type" id="type">
+          <option value="fixed">Giảm giá cố định (VNĐ)</option>
+          <option value="percent">Giảm theo phần trăm (%)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="value">Giá trị</label>
+        <input id="value" class="form-control form-control-lg" type="text" formControlName="value" mask="separator.0"
+          thousandSeparator="," />
+        <p class="text-danger"
+          *ngIf="couponForm.get('value')?.hasError('required') && couponForm.get('value')?.touched">
+          Giá trị không được để trống
+        </p>
+      </div>
+    </div>
+
+    <!-- Cột phải -->
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="minOrderValue">Giá trị đơn tối thiểu</label>
+        <input id="minOrderValue" class="form-control form-control-lg" type="text" formControlName="minOrderValue"
+          mask="separator.0" thousandSeparator="," />
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Số lượng</label>
+        <input type="number" class="form-control form-control-lg" formControlName="quantity" id="quantity" min="1">
+        <p class="text-danger"
+          *ngIf="couponForm.get('quantity')?.hasError('min') && couponForm.get('quantity')?.touched">
+          Số lượng phải lớn hơn hoặc bằng 1
+        </p>
+        <p class="text-danger"
+          *ngIf="couponForm.get('quantity')?.hasError('required') && couponForm.get('quantity')?.touched">
+          Số lượng không được để trống
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="expiryDate">Ngày hết hạn</label>
+        <input type="date" class="form-control form-control-lg" formControlName="expiryDate" id="expiryDate">
+        <p class="text-danger"
+          *ngIf="couponForm.get('expiryDate')?.hasError('required') && couponForm.get('expiryDate')?.touched">
+          Ngày hết hạn không được để trống
+        </p>
+        <p class="text-danger"
+          *ngIf="couponForm.get('expiryDate')?.hasError('futureDate') && couponForm.get('expiryDate')?.touched">
+          Ngày hết hạn phải là một ngày trong tương lai
+        </p>
+      </div>
+    </div>
+
+    <!-- Nút thêm -->
+    <div class="col-12 d-flex justify-content-center mt-4">
+      <button mat-raised-button color="primary" [disabled]="couponForm.invalid"
+        [ngClass]="{ 'disabled-button': couponForm.invalid }" (click)="submitCoupon(); c()">
+        <mat-icon class="mr-1">add</mat-icon>
+        <span class="button-text">Thêm mã</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Nút mở modal -->
+<button mat-raised-button color="primary" (click)="open(content)">
+  <mat-icon class="mr-1">add</mat-icon>
+  <span class="button-text">Thêm mã giảm giá</span>
+</button>

@@ -17,7 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductAdminService implements IProductAdminService{
@@ -118,5 +120,14 @@ public class ProductAdminService implements IProductAdminService{
                         localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_NOT_FOUND,productId)));
         product.setDeleted(true);
         productRepository.save(product);
+    }
+    @Override
+    public List<ProductResponse> getTop10BestSellingProducts() {
+        // Lấy danh sách productId từ 10 sản phẩm bán chạy
+        List<Product> products = productRepository.findTop10BestSellingProducts();
+        //Chuyển Product về productResponse
+        List<ProductResponse> productResponses = products.stream().map(
+                ProductResponse::fromProduct).collect(Collectors.toList());
+        return productResponses;
     }
 }

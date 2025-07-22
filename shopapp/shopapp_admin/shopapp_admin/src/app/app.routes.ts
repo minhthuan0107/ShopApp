@@ -11,6 +11,9 @@ import { ProductComponent } from './components/product/product.component';
 import { CategoryComponent } from './components/category/category.component';
 import { BrandComponent } from './components/brand/brand.component';
 import { CommentSectionComponent } from './components/comment-section/comment-section.component';
+import { ReviewSectionComponent } from './components/review-section/review-section.component';
+import { BestSellingComponent } from './components/best-selling/best-selling.component';
+import { PromotionComponent } from './components/promotion/promotion.component';
 
 export const routes: Routes = [
   // 👉 Redirect từ path rỗng sang signin
@@ -42,6 +45,9 @@ export const routes: Routes = [
       { path: 'category', component: CategoryComponent },
       { path: 'brand', component: BrandComponent },
       { path: 'comment', component: CommentSectionComponent },
+      { path: 'rate', component: ReviewSectionComponent },
+      { path: 'best-selling', component: BestSellingComponent },
+      { path: 'promotion', component: PromotionComponent }
       // Có thể thêm các route khác như: profile, dashboard, ...
     ]
   },

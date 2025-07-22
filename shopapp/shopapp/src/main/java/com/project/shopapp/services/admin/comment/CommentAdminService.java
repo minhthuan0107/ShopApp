@@ -1,13 +1,10 @@
 package com.project.shopapp.services.admin.comment;
-
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Comment;
-import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.CommentRepository;
 import com.project.shopapp.responses.comment.CommentReplyResponse;
 import com.project.shopapp.responses.comment.CommentResponse;
-import com.project.shopapp.responses.user.UserResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +30,6 @@ public class CommentAdminService implements ICommentAdminService {
         } else {
             commentPage = commentRepository.searchParentCommentsByUserFullName(keyword, pageRequest);
         }
-
         return commentPage.map(comment -> {
             List<CommentReplyResponse> replyResponses = comment.getReplies()
                     .stream()
@@ -43,6 +39,7 @@ public class CommentAdminService implements ICommentAdminService {
             return CommentResponse.fromComment(comment, replyResponses);
         });
     }
+
 
     @Override
     public void deleteCommentById(Long commentId) throws Exception {

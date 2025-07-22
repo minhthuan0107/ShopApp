@@ -6,7 +6,7 @@ import { SigninAdminDto } from '../../dtos/signin.admin.dto';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
-import { SigninAdminResponse } from '../../responses/signin-admin.response';
+import { SigninAdminResponse } from '../../responses/user/signin-admin.response';
 import { switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { TokenAdminService } from '../../services/token-admin.service';

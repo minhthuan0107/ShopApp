@@ -8,6 +8,7 @@ import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { UpdateUserDto } from '../../dtos/update.user.dto';
+import moment from 'moment';
 
 @Component({
   selector: 'app-edit-customer',
@@ -44,22 +45,19 @@ export class EditCustomerComponent {
     const date = new Date(dateString);
     return date.toISOString().substring(0, 10); // Trả về yyyy-MM-dd
   }
+  //hàm validate ngày tháng năm
   validateBirthDateNotInFuture(control: AbstractControl) {
     if (!control.value) return null;
-    const inputDate = new Date(control.value);
-    const today = new Date();
-    // So sánh ngày tháng, loại bỏ phần thời gian
-    inputDate.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-
-    return inputDate > today ? { futureDate: true } : null;
+    const inputDate = moment(control.value).startOf('day');
+    const today = moment().startOf('day');
+    return inputDate.isAfter(today) ? { futureDate: true } : null;
   }
   //Hàm cập nhật thông tin người dùng
   updateUser() {
-    if (this.editForm.invalid){
+    if (this.editForm.invalid) {
       this.editForm.markAllAsTouched();
       return;
-    } 
+    }
     const formValue = this.editForm.value;
     const updatedUser: UpdateUserDto = {
       full_name: formValue.name,
@@ -69,7 +67,7 @@ export class EditCustomerComponent {
     // Gọi API để cập nhật
     this.userService.updateUser(this.user.id, updatedUser).subscribe({
       next: (res) => {
-         console.log('✅ Server phản hồi:', res);
+        console.log('✅ Server phản hồi:', res);
         Swal.fire({
           icon: 'success',
           title: 'Cập nhật thông tin hồ sơ khách thành công',

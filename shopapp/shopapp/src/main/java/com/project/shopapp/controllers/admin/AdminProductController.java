@@ -1,4 +1,5 @@
 package com.project.shopapp.controllers.admin;
+
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.product.ProductDto;
 import com.project.shopapp.models.Product;
@@ -21,6 +22,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("${api.admin-prefix}/products")
 public class AdminProductController {
@@ -31,21 +33,25 @@ public class AdminProductController {
 
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductListResponse> getAllProducts(@RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size,
-                                                              @RequestParam(required = false, defaultValue = "") String keyword) {
+    public ResponseEntity<ResponseObject> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size,
+                                                         @RequestParam(required = false, defaultValue = "") String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createAt").descending());
         Page<ProductResponse> productPage = productAdminService.getAllProducts(pageRequest, keyword);
         //Lấy tổng số sản phẩm
         int totalPages = productPage.getTotalPages();
-        //Lấy tổng số khách hàng
         long totalItems = productPage.getTotalElements();
         List<ProductResponse> productResponseList = productPage.getContent();
-        return ResponseEntity.ok(ProductListResponse.builder()
+        ProductListResponse productListResponse = ProductListResponse.builder()
                 .productResponses(productResponseList)
                 .totalPages(totalPages)
                 .totalItems(totalItems)
                 .currentPage(page + 1)
+                .build();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .message(localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_GET_ALL_SUCCESSFULLY))
+                .data(productListResponse)
                 .build());
     }
 
@@ -116,12 +122,24 @@ public class AdminProductController {
                     .message(localizationUtils.getLocalizedMessage(
                             MessageKeys.PRODUCT_DELETE_SUCCESSFULLY, productId))
                     .build());
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
                     .status(HttpStatus.BAD_REQUEST)
                     .data(null)
                     .message(e.getMessage())
                     .build());
         }
+    }
+
+    @GetMapping("/seller")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ResponseObject> getTop10BestSellingProducts() {
+        List<ProductResponse> productResponses = productAdminService.getTop10BestSellingProducts();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .data(productResponses)
+                .message(localizationUtils.getLocalizedMessage(
+                        MessageKeys.PRODUCT_TOP_SELLER_FETCH_SUCCESSFULLY))
+                .build());
     }
 }

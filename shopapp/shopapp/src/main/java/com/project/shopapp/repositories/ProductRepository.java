@@ -49,10 +49,14 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
            "AND LOWER(p.name) LIKE LOWER(CONCAT('%', :likePattern, '%')) " +
            "LIMIT 3", nativeQuery = true)
    List<Product> getProductSuggestions(@Param("likePattern") String likePattern);
-
+    //Truy vấn 14 product được bán chạy nhất
     @Query(value = "SELECT * FROM products p WHERE p.is_deleted = false " +
             "ORDER BY sold DESC LIMIT 14",nativeQuery = true)
     List<Product> findTop14BestSellingProducts();
+    //Truy vấn 10 product được bán chạy nhất
+    @Query(value = "SELECT * FROM products p WHERE p.is_deleted = false " +
+            "ORDER BY sold DESC LIMIT 10",nativeQuery = true)
+    List<Product> findTop10BestSellingProducts();
     //Truy vấn 14 product đc đánh giá cao nhất
     @Query(value = "SELECT p.*, COUNT(r.id) AS total_reviews, AVG(r.rating) as avg_rating " +
             "FROM products p " +

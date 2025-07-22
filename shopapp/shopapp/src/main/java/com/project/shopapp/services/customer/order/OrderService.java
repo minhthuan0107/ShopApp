@@ -13,7 +13,7 @@ import com.project.shopapp.responses.order.OrderResponse;
 import com.project.shopapp.responses.orderdetail.OrderDetailResponse;
 import com.project.shopapp.responses.payment.PaymentResponse;
 import com.project.shopapp.services.customer.cart.CartService;
-import com.project.shopapp.services.customer.coupon.CouponService;
+import com.project.shopapp.services.admin.coupon.CouponAdminService;
 import com.project.shopapp.services.customer.email.OrderMailService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
@@ -45,7 +45,7 @@ public class OrderService implements IOrderService {
     private final OrderMailService orderMailService;
     private final UserCouponRepository userCouponRepository;
     private final CouponRepository couponRepository;
-    private final CouponService couponService;
+    private final CouponAdminService couponService;
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
 

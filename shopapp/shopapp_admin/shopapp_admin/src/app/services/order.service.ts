@@ -14,8 +14,8 @@ export class OrderService {
   private apiUpdateOrder = `${environment.apiBaseAdminUrl}/orders/status`;
   constructor(private http: HttpClient) { }
   //Api lấy danh sách tất cả đơn hàng
-  getAllOrders(page: number, size: number, keyword: string = ''): Observable<OrderListAdminResponse> {
-    return this.http.get<OrderListAdminResponse>(this.apiGetAllOrders, {
+  getAllOrders(page: number, size: number, keyword: string = ''): Observable<ApiResponse<OrderListAdminResponse>> {
+    return this.http.get<ApiResponse<OrderListAdminResponse>>(this.apiGetAllOrders, {
       params: {
         page: page.toString(),
         size: size.toString(),

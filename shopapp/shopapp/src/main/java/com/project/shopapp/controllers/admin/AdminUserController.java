@@ -32,7 +32,7 @@ public class AdminUserController {
 
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserListResponse> getAllUsers(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<ResponseObject> getAllUsers(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size,
                                                         @RequestParam(required = false, defaultValue = "") String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createAt").descending());
@@ -42,11 +42,16 @@ public class AdminUserController {
         //Lấy tổng số khách hàng
         long totalItems = userPage.getTotalElements();
         List<UserResponse> userResponseList = userPage.getContent();
-        return ResponseEntity.ok(UserListResponse.builder()
+        UserListResponse userListResponse = UserListResponse.builder()
                 .userResponses(userResponseList)
                 .totalPages(totalPages)
                 .totalItems(totalItems)
                 .currentPage(page + 1)
+                .build();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .status(HttpStatus.OK)
+                .message(localizationUtils.getLocalizedMessage(MessageKeys.USER_GET_ALL_SUCCESSFULLY))
+                .data(userListResponse)
                 .build());
     }
 
