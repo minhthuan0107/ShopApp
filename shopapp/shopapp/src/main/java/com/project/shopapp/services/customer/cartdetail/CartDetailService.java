@@ -7,7 +7,7 @@ import com.project.shopapp.models.Cart;
 import com.project.shopapp.models.CartDetail;
 import com.project.shopapp.repositories.CartDetailRepository;
 import com.project.shopapp.repositories.CartRepository;
-import com.project.shopapp.responses.cartdetail.CartDetailResponse;
+import com.project.shopapp.responses.customer.cartdetail.CartDetailResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

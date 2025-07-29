@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Chọn người nhận mã "{{ data.couponCode }}"</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Tìm kiếm người dùng</mat-label>
+    <input matInput [(ngModel)]="keyword" (keyup.enter)="getAllUsers()" placeholder="Nhập tên hoặc email...">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="users" class="mat-elevation-z8">
+
+    <!-- Chọn -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let user">
+        <mat-checkbox [checked]="isSelected(user.id)"
+                      (change)="toggleUserSelection(user.id, $event.checked)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Tên -->
+    <ng-container matColumnDef="full_name">
+      <th mat-header-cell *matHeaderCellDef>Họ tên</th>
+      <td mat-cell *matCellDef="let user">{{ user.full_name }}</td>
+    </ng-container>
+
+    <!-- Email -->
+    <ng-container matColumnDef="phone_number">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let user">{{ user.phone_number }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['select', 'full_name', 'phone_number']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['select', 'full_name', 'phone_number']"></tr>
+  </table>
+
+  <mat-paginator [length]="totalItems"
+                 [pageSize]="size"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Hủy</button>
+  <button mat-raised-button color="primary" (click)="confirm()">Gửi</button>
+</mat-dialog-actions>
+

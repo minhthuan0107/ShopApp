@@ -1,6 +1,6 @@
 package com.project.shopapp.services.customer.productimage;
 
-import com.project.shopapp.responses.productimages.ProductImagesResponse;
+import com.project.shopapp.responses.customer.productimages.ProductImagesResponse;
 
 import java.util.List;
 

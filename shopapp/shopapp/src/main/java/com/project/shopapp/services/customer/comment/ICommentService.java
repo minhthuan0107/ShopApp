@@ -2,8 +2,8 @@ package com.project.shopapp.services.customer.comment;
 
 import com.project.shopapp.dtos.customer.comment.CommentDto;
 import com.project.shopapp.dtos.customer.comment.ReplyCommentDto;
-import com.project.shopapp.responses.comment.CommentReplyResponse;
-import com.project.shopapp.responses.comment.CommentResponse;
+import com.project.shopapp.responses.customer.comment.CommentReplyResponse;
+import com.project.shopapp.responses.customer.comment.CommentResponse;
 
 import java.util.List;
 

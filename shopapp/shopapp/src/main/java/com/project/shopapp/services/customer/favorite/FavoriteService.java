@@ -9,7 +9,7 @@ import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.FavoriteRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.repositories.UserRepository;
-import com.project.shopapp.responses.favorite.FavoriteResponse;
+import com.project.shopapp.responses.customer.favorite.FavoriteResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class FavoriteService implements IFavoriteService {
     @Autowired
-     private FavoriteRepository favoriteRepository;
+    private FavoriteRepository favoriteRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -82,12 +82,9 @@ public class FavoriteService implements IFavoriteService {
         if (!userRepository.existsById(userId)) {
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND));
         }
-        List<Favorite> favorites = favoriteRepository.findByUserId(userId);
-
-        List<FavoriteResponse> favoriteResponses = favorites.stream()
-                .map(favorite -> FavoriteResponse.fromFavorite(favorite))
+        return favoriteRepository.findByUserId(userId).stream()
+                .map(FavoriteResponse::fromFavorite)
                 .collect(Collectors.toList());
-        return favoriteResponses;
     }
 
     @Override

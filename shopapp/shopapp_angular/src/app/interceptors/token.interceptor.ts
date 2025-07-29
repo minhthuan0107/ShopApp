@@ -12,7 +12,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
   const router = inject(Router);
   const accessToken = tokenService.getAccessToken();
-
   if (accessToken) {
     req = req.clone({
       setHeaders: {
@@ -20,7 +19,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
       }
     });
   }
-
   return next(req).pipe(
     catchError((error) => {
       if (error.status === 401) {
@@ -30,11 +28,9 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
           tokenService.logout();
           return EMPTY;
         }
-
         if (!isRefreshing) {
           isRefreshing = true;
           refreshTokenSubject.next(null);
-
           return tokenService.generateNewAccessToken(refreshToken).pipe(
             switchMap((res) => {
               const newAccessToken = res.data.access_token;

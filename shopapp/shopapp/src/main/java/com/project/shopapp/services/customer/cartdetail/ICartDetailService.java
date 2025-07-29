@@ -1,7 +1,7 @@
 package com.project.shopapp.services.customer.cartdetail;
 
 import com.project.shopapp.dtos.customer.cartdetail.CartDetailsUpdateDto;
-import com.project.shopapp.responses.cartdetail.CartDetailResponse;
+import com.project.shopapp.responses.customer.cartdetail.CartDetailResponse;
 
 import java.util.List;
 

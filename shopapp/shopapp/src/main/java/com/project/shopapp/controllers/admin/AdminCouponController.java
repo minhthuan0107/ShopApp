@@ -1,8 +1,9 @@
 package com.project.shopapp.controllers.admin;
 
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.dtos.admin.coupon.SendCouponDto;
 import com.project.shopapp.dtos.customer.coupon.CouponDto;
-import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.Object.ResponseObject;
 import com.project.shopapp.responses.admin.coupon.CouponListResponse;
 import com.project.shopapp.responses.admin.coupon.CouponResponse;
 import com.project.shopapp.services.admin.coupon.CouponAdminService;
@@ -101,5 +102,26 @@ public class AdminCouponController {
                     .message(e.getMessage())
                     .build());
         }
+    }
+    @PostMapping("/send-to-users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ResponseObject>  sendCouponToUsers (@Valid @RequestBody SendCouponDto sendCouponDto,
+                                                              BindingResult result){
+        if (result.hasErrors()) {
+            List<String> errorMessages = result.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .toList();
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(errorMessages.toString())
+                    .build());
+        }
+        couponService.sendCouponToUsers(sendCouponDto);
+        return ResponseEntity.status(HttpStatus.OK).
+                body(ResponseObject.builder()
+                        .status(HttpStatus.OK)
+                        .message(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_SENT_SUCCESSFULLY))
+                        .build());
     }
 }

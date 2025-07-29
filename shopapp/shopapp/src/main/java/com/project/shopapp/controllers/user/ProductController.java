@@ -1,23 +1,18 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.customer.product.ProductDto;
-import com.project.shopapp.models.Product;
-import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.responses.product.PriceRangeResponse;
-import com.project.shopapp.responses.product.ProductListResponse;
-import com.project.shopapp.responses.product.ProductResponse;
+import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.customer.product.PriceRangeResponse;
+import com.project.shopapp.responses.customer.product.ProductListResponse;
+import com.project.shopapp.responses.customer.product.ProductResponse;
 import com.project.shopapp.services.customer.product.ProductService;
 import com.project.shopapp.ultis.MessageKeys;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;

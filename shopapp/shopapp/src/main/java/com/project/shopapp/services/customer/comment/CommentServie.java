@@ -10,12 +10,11 @@ import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.CommentRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.repositories.UserRepository;
-import com.project.shopapp.responses.comment.CommentReplyResponse;
-import com.project.shopapp.responses.comment.CommentResponse;
+import com.project.shopapp.responses.customer.comment.CommentReplyResponse;
+import com.project.shopapp.responses.customer.comment.CommentResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.project.shopapp.controllers.user.websocket;
-import com.project.shopapp.responses.comment.CommentReplyResponse;
-import com.project.shopapp.responses.comment.CommentResponse;
-import com.project.shopapp.responses.rate.RatingResponse;
+import com.project.shopapp.responses.customer.comment.CommentReplyResponse;
+import com.project.shopapp.responses.customer.comment.CommentResponse;
+import com.project.shopapp.responses.customer.rate.RatingResponse;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;

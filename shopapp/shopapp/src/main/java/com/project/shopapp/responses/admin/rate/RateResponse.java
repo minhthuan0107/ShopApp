@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.shopapp.models.BaseEntity;
 import com.project.shopapp.models.Comment;
 import com.project.shopapp.models.Rate;
-import com.project.shopapp.responses.comment.CommentReplyResponse;
+import com.project.shopapp.responses.customer.comment.CommentReplyResponse;
 import lombok.Builder;
 import lombok.Data;
 

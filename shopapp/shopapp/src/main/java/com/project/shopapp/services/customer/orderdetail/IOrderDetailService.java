@@ -1,6 +1,6 @@
 package com.project.shopapp.services.customer.orderdetail;
 
-import com.project.shopapp.responses.orderdetail.OrderDetailResponse;
+import com.project.shopapp.responses.customer.orderdetail.OrderDetailResponse;
 
 import java.util.List;
 

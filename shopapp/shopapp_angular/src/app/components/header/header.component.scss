@@ -1,13 +1,15 @@
-/* Header */
+ /* Header */
 :host {
-  position: sticky; /* hoặc fixed */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    /* hoặc fixed */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 header {
     background: linear-gradient(90deg, #7F44FF, #00C9FF);
     color: white;
@@ -18,8 +20,8 @@ header {
 .navbar {
     background-color: transparent !important;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
 }
 
 /* Logo */
@@ -37,7 +39,7 @@ header {
 }
 
 .navbar .navbar-nav .nav-item {
-    margin-right: 20px;
+    margin-right: 15px;
 }
 
 .navbar .navbar-nav .nav-link {
@@ -47,17 +49,25 @@ header {
     transition: background 0.3s, box-shadow 0.3s;
     text-decoration: none;
 }
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
 .navbar .navbar-nav .nav-link:hover {
     background: linear-gradient(90deg, #6933CC, #0099CC);
     /* Giống nút Danh mục */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
+
 .logo {
-    width: 80px; /* Điều chỉnh kích thước to hơn */
+    width: 80px;
+    /* Điều chỉnh kích thước to hơn */
     height: 80px;
-    border-radius: 50%; /* Bo tròn ảnh */
-    object-fit: cover; /* Giữ ảnh không bị méo */
+    border-radius: 50%;
+    /* Bo tròn ảnh */
+    object-fit: cover;
+    /* Giữ ảnh không bị méo */
 }
 
 .navbar .navbar-nav .nav-link:focus {
@@ -117,11 +127,14 @@ header {
 /* Gợi ý sản phẩm */
 .suggestions-list {
     position: absolute;
-    top: 100%; /* Đặt danh sách gợi ý bên dưới input */
+    top: 100%;
+    /* Đặt danh sách gợi ý bên dưới input */
     left: 0;
     width: 100%;
-    max-height: 250px; /* Giới hạn chiều cao danh sách */
-    overflow-y: auto; /* Hiển thị cuộn nếu danh sách quá dài */
+    max-height: 250px;
+    /* Giới hạn chiều cao danh sách */
+    overflow-y: auto;
+    /* Hiển thị cuộn nếu danh sách quá dài */
     background-color: white;
     border: 1px solid #ccc;
     border-top: none;
@@ -260,12 +273,13 @@ header {
 
 /* Định dạng dropdown người dùng */
 .user-dropdown {
-    max-width: 150px; /* Giới hạn chiều rộng tối đa */
+    max-width: 150px;
+    /* Giới hạn chiều rộng tối đa */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     display: inline-block;
-    vertical-align: middle;  
+    vertical-align: middle;
 
     &:hover {
         color: #007bff; // Màu xanh khi hover
@@ -308,7 +322,6 @@ header {
     gap: 8px; // Khoảng cách giữa icon và text
     transition: background 0.2s;
     cursor: pointer; // 👉 Hiển thị con trỏ khi hover
-
     &:hover {
         background: #f8f9fa;
     }
@@ -319,43 +332,255 @@ header {
     background: #ffe5e5;
     color: #dc3545;
 }
+
 .icon {
-    font-size: 24px; /* Điều chỉnh kích thước icon */
+    font-size: 24px;
+    /* Điều chỉnh kích thước icon */
     position: relative;
 }
-.cart-badge{
-    position: absolute;
-    top: 45%;
-    left: 22px; /* Dịch số sang trái */
-    transform: translateY(-50%);
-    background-color: red;
-    color: white;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 1.5px 3px;
-    border-radius: 50%;
-    min-width: 17px;
-    height: 17px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Tạo hiệu ứng đổ bóng nhẹ */
+
+.cart-badge,
+.favorite-badge,
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+  line-height: 1;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
-.favorite-badge{
-    position: absolute;
-    top: 45%;
-    left: 19px; /* Dịch số sang trái */
-    transform: translateY(-50%);
-    background-color: red;
-    color: white;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 1.5px 3px;
-    border-radius: 50%;
-    min-width: 17px;
-    height: 17px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Tạo hiệu ứng đổ bóng nhẹ */
+.notification-wrapper,
+.notification-wrapper * {
+  user-select: none; // Ngăn không cho chọn văn bản
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+
+    .bell-icon {
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+        position: relative;
+    }
+    .notification-panel {
+        position: absolute;
+        top: 38px;
+        right: 0;
+        width: 360px;
+        background: white;
+        color: black;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        z-index: 1050;
+        max-height: 500px;
+        overflow-y: auto;
+        animation: fadeIn 0.25s ease-in-out;
+
+        .notification-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-tabs {
+            display: flex;
+            padding: 0 16px 8px;
+
+            .tab {
+                margin-right: 10px;
+                font-size: 14px;
+                cursor: pointer;
+                padding: 4px 8px;
+                border-radius: 4px;
+                color: #333;
+                transition: background-color 0.2s ease-in-out;
+
+                &.active {
+                    background-color: #e7f3ff;
+                    color: #1877f2;
+                }
+
+                &:hover {
+                    background-color: #f1f1f1;
+                }
+            }
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+
+            &:hover {
+                background-color: #f8f8f8;
+            }
+
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 12px;
+                object-fit: cover;
+            }
+
+            .content {
+                flex-grow: 1;
+
+                .text {
+                    font-size: 14px;
+                    color: #333;
+                }
+
+                .time {
+                    font-size: 12px;
+                    color: #888;
+                    margin-top: 2px;
+                }
+            }
+        }
+
+        .no-notifications {
+            text-align: center;
+            padding: 16px;
+            font-size: 14px;
+            color: #888;
+        }
+    }
+}
+
+// Hiệu ứng mờ khi mở bảng
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notification-item {
+    position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    &.unread {
+        background-color: #e6f7ff;
+        font-weight: bold;
+    }
+    &.read {
+        background-color: #fff;
+        color: #888;
+    }
+
+    .content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .menu-toggle {
+        cursor: pointer;
+        padding: 0 8px;
+        user-select: none;
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        color: #606770;
+    }
+
+    .notification-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 4px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        min-width: 220px;
+        padding: 6px 0;
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px; // 👈 khoảng cách giữa icon và chữ
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 13.5px; // 👈 chữ nhỏ lại 1 xí
+            font-weight: 500;
+            color: #050505;
+            text-align: left;
+            transition: background-color 0.2s ease;
+
+            i {
+                font-size: 16px;
+                color: #606770;
+                width: 20px;
+                text-align: center;
+            }
+
+            &:hover {
+                background-color: #f0f2f5;
+            }
+        }
+    }
+}
+.see-more {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1877f2;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #f0f2f5;
+    text-decoration: underline;
+  }
+}
+.text {
+  display: flex;
+  flex-direction: column; // 👈 hiển thị theo cột: nội dung trên, thời gian dưới
+  font-size: 14px;
+
+  .time {
+    font-size: 12px;
+    color: #007bff;;
+    margin-top: 4px;
+    padding-left: 22px; // 👈 căn lề để khớp biểu tượng 🔔 phía trên
+  }
 }

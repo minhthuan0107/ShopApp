@@ -3,8 +3,8 @@ package com.project.shopapp.controllers.user;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.customer.favorite.FavoriteActionResult;
-import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.responses.favorite.FavoriteResponse;
+import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.customer.favorite.FavoriteResponse;
 import com.project.shopapp.services.customer.favorite.FavoriteService;
 import com.project.shopapp.ultis.MessageKeys;
 import lombok.AllArgsConstructor;
@@ -102,6 +102,7 @@ public class FavoriteController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ResponseObject> getFavoriteProductsByUserId(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Long userId = userDetails.getId();

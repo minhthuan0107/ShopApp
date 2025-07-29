@@ -11,6 +11,10 @@ import { provideRouter } from '@angular/router';
 import { AppComponent } from './app/app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MomentModule } from 'ngx-moment';
+import * as moment from 'moment';
+import 'moment/locale/vi';
+moment.locale('vi'); // 👈 Đặt locale mặc định
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(ToastrModule.forRoot()),
@@ -18,6 +22,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(HttpClientModule) ,
     importProvidersFrom(SlickCarouselModule) ,
     importProvidersFrom(ReactiveFormsModule),
+    importProvidersFrom(MomentModule),
     provideHttpClient(withInterceptors([tokenInterceptor,headerInterceptor])),
     [provideRouter(routes)] // Cung cấp router với các route đã định nghĩa     // Cấu hình Toastr tại đây
   ],

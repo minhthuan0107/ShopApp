@@ -1,31 +1,17 @@
 package com.project.shopapp.controllers.user;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.customer.productimage.ProductImageDto;
-import com.project.shopapp.models.ProductImage;
-import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.responses.product.ProductResponse;
-import com.project.shopapp.responses.productimages.ProductImagesResponse;
+import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.customer.productimages.ProductImagesResponse;
 import com.project.shopapp.services.customer.product.ProductService;
 import com.project.shopapp.services.customer.productimage.ProductImageService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/product-images")

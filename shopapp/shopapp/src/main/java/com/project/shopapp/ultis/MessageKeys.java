@@ -101,6 +101,8 @@ public class MessageKeys {
     public static final String RATING_FETCH_SUCCESSFULLY = "rating.fetch_successfully";
     public static final String RATING_GET_ALL_SUCCESSFULLY= "rating.get_all_successfully";
 
+    public static final String RATING_NOT_FOUND = "rating.not_found";
+    public static final String RATING_DELETE_SUCCESSFULLY = "rating.delete_successfully";
     public static final String BRAND_CREATED_SUCCESSFULLY = "brand.create_successfully";
     public static final String BRAND_FETCHED_BY_CATEGORY_SUCCESSFULLY = "brand.fetched_by_category_successfully";
     public static final String BRAND_NOT_FOUND = "brand.not_found";
@@ -133,6 +135,7 @@ public class MessageKeys {
     public static final String COUPON_ALREADY_USED = "coupon.already_used";
     public static final String COUPON_APPLIED_SUCCESSFULLY = "coupon.applied_successfully";
     public static final String COUPON_INVALID = "coupon.invalid";
+    public static final String COUPON_SENT_SUCCESSFULLY = "coupon.sent_successfully";
 
 
     public static final String USERCOUPON_NOT_FOUND = "usercoupon.not_found";
@@ -153,5 +156,13 @@ public class MessageKeys {
 
     public static final String STATISTICS_PENDING_ORDERS_COUNT_SUCCESS = "statistics.pending_orders_count_successfully";
 
+    public static final String NOTIFICATION_FETCHED_SUCCESSFULLY = "notification.fetched_successfully";
+    public static final String UNREAD_NOTIFICATION_FETCHED_SUCCESSFULLY = "notification.unread_fetched_successfully";
+    public static final String NOTIFICATION_ACCESS_DENIED = "notification.access_denied";
+
+    public static final String NOTIFICATION_DELETE_FORBIDDEN = "notification.delete_forbidden";
+    public static final String NOTIFICATION_NOT_FOUND = "notification.not_found";
+    public static final String NOTIFICATION_MARK_SUCCESS = "notification.mark_success";
+    public static final String NOTIFICATION_DELETE_SUCCESS = "notification.delete_success";
 
 }

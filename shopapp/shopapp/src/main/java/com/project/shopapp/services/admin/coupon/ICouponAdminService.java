@@ -1,5 +1,6 @@
 package com.project.shopapp.services.admin.coupon;
 
+import com.project.shopapp.dtos.admin.coupon.SendCouponDto;
 import com.project.shopapp.dtos.customer.coupon.CouponDto;
 import com.project.shopapp.responses.admin.coupon.CouponResponse;
 import org.springframework.data.domain.Page;
@@ -13,4 +14,6 @@ public interface ICouponAdminService {
     Page<CouponResponse> getAllCoupons (PageRequest pageRequest, String keyword);
 
     CouponResponse toggleCouponStatus(Long couponId) throws Exception;
+
+    void sendCouponToUsers(SendCouponDto sendCouponDto);
 }

@@ -14,6 +14,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Coupon } from '../../models/coupon.model';
 import { AddCouponComponent } from '../add-coupon/add-coupon.component';
 import Swal from 'sweetalert2';
+import { UserSelectDialogComponent } from '../user-select-dialog/user-select-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-promotion',
@@ -27,21 +31,24 @@ import Swal from 'sweetalert2';
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    AddCouponComponent],
+    AddCouponComponent,
+    MatSelectModule],
   templateUrl: './promotion.component.html',
   styleUrl: './promotion.component.scss'
 })
 export class PromotionComponent {
   totalItems: number = 0;
   keyword?: string = '';
-  displayedColumns: string[] = ['id', 'code', 'type', 'value', 'min_order_value', 'quantity', 'expiry_date', 'is_active', 'actions'];
+  displayedColumns: string[] = ['id', 'code', 'type', 'value', 'min_order_value', 'quantity', 'expiry_date', 'is_active', 'actions', 'send'];
   dataSource = new MatTableDataSource<any>();
 
   // Dùng ViewChild để lấy đối tượng MatPaginator từ template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   selectedCoupon!: Coupon;
-  constructor(private promotionService: PromotionService) { }
+  constructor(private promotionService: PromotionService,
+    private dialog: MatDialog,
+    private toastr: ToastrService) { }
   ngOnInit(): void {
     //Hiển thị danh sách người dùng
     this.getAllCoupons(0, 6, this.keyword);
@@ -108,5 +115,34 @@ export class PromotionComponent {
         });
       }
     });
+  }
+  sendToAllUsers(coupon: Coupon) {
+    this.promotionService.sendCouponToAllUsers(coupon.code).subscribe({
+      next: () => this.toastr.success('Đã gửi mã đến tất cả người dùng'),
+      error: () => this.toastr.error('Gửi thất bại'),
+    });
+  }
+
+  openUserSelectDialog(coupon: Coupon) {
+    const dialogRef = this.dialog.open(UserSelectDialogComponent, {
+      width: '600px',
+      data: { couponCode: coupon.code },
+    });
+    dialogRef.afterClosed().subscribe((selectedUserIds: number[]) => {
+      if (selectedUserIds?.length) {
+        this.promotionService.sendCouponToSelectedUsers(coupon.code, selectedUserIds).subscribe({
+          next: () => this.toastr.success('Đã gửi mã đến người dùng được chọn'),
+          error: () => this.toastr.error('Gửi thất bại'),
+        });
+      }
+    });
+  }
+  onSendOptionChange(event: Event, coupon: Coupon) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    if (selectedValue === 'all') {
+      this.sendToAllUsers(coupon);
+    } else if (selectedValue === 'select') {
+      this.openUserSelectDialog(coupon);
+    }
   }
 }

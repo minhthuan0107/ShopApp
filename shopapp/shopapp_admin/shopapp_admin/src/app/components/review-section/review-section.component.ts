@@ -11,6 +11,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RateService } from '../../services/rate.service';
 import { RateResponse } from '../../responses/rate/rate.response';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-review-section',
@@ -100,6 +101,29 @@ applyFilter() {
   isReplyRow = (index: number, row: any): boolean => {
     return row.isReply === true;
   };
+  //Hàm xóa rate dựa theo Id
+    deleteRate(rateId: number): void {
+      Swal.fire({
+        title: `Bạn có chắc muốn xóa đánh giá với ID: ${rateId}?`,
+        text: 'Hành động này không thể hoàn tác!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.rateService.deleteRateById(rateId).subscribe({
+            next: () => {
+              Swal.fire('Đã xóa!', `Đánh giá có ID ${rateId} đã được xóa.`, 'success');
+             this.loadRates(0, 5, this.keyword); // Gọi lại để load danh sách bình luận mới
+            },
+            error: (err) => {
+              console.error('Lỗi', err.error.message || 'Xóa comment thất bại');
+            }
+          });
+        }
+      });
+    }
 
 
 

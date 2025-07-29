@@ -8,7 +8,7 @@ import com.project.shopapp.models.Rate;
 import com.project.shopapp.repositories.CommentRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.repositories.RateRepository;
-import com.project.shopapp.responses.rate.RatingResponse;
+import com.project.shopapp.responses.customer.rate.RatingResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

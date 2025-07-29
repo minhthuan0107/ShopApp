@@ -14,6 +14,7 @@ export class PromotionService {
   private apiGetAllCoupons = `${environment.apiBaseAdminUrl}/coupons/get-all`;
   private apiCreateCoupon = `${environment.apiBaseAdminUrl}/coupons/create`;
   private apiToggleCoupon = `${environment.apiBaseAdminUrl}/coupons/toggle`;
+  private apiSendCoupon = `${environment.apiBaseAdminUrl}/coupons/send-to-users`;
   constructor(private http: HttpClient) { }
   //Api lấy danh sách comment cha và các replies của comment cha
   getAllCoupons(page: number, size: number, keyword: string = ''): Observable<ApiResponse<CouponListAdminResponse>> {
@@ -30,7 +31,14 @@ export class PromotionService {
     return this.http.post(this.apiCreateCoupon, createCouponDto)
   }
   //Api bật / tắt coupon
-  toggleCouponStatus(couponId :number): Observable<ApiResponse<CouponAdminResponse>>{
-    return this.http.patch<ApiResponse<CouponAdminResponse>>(`${this.apiToggleCoupon}/${couponId}`,{})
+  toggleCouponStatus(couponId: number): Observable<ApiResponse<CouponAdminResponse>> {
+    return this.http.patch<ApiResponse<CouponAdminResponse>>(`${this.apiToggleCoupon}/${couponId}`, {})
+  }
+  sendCouponToAllUsers(couponCode: string): Observable<any> {
+    return this.http.post(`${this.apiToggleCoupon}/coupons/send-to-all`, { couponCode });
+
+  }
+  sendCouponToSelectedUsers(couponCode: string, userIds: number[]): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiSendCoupon}`, { couponCode,userIds});
   }
 }
