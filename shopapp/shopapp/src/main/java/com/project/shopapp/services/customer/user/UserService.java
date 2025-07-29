@@ -15,7 +15,7 @@ import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.RoleRepository;
 import com.project.shopapp.repositories.TokenRepository;
 import com.project.shopapp.repositories.UserRepository;
-import com.project.shopapp.responses.user.UserResponse;
+import com.project.shopapp.responses.customer.user.UserResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

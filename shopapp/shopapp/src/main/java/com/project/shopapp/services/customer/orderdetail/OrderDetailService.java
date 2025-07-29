@@ -6,7 +6,7 @@ import com.project.shopapp.models.OrderDetail;
 import com.project.shopapp.repositories.OrderDetailRepository;
 import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.ProductRepository;
-import com.project.shopapp.responses.orderdetail.OrderDetailResponse;
+import com.project.shopapp.responses.customer.orderdetail.OrderDetailResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

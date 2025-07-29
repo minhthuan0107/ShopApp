@@ -1,7 +1,6 @@
 package com.project.shopapp.responses.admin.order;
 
-import com.project.shopapp.responses.order.OrderResponse;
-import com.project.shopapp.responses.user.UserResponse;
+import com.project.shopapp.responses.customer.order.OrderResponse;
 import lombok.Builder;
 import lombok.Data;
 

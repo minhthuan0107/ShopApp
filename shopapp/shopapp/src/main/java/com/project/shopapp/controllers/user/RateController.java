@@ -2,8 +2,8 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.rate.RatingDto;
-import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.responses.rate.RatingResponse;
+import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.customer.rate.RatingResponse;
 import com.project.shopapp.services.customer.rate.RatingService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;

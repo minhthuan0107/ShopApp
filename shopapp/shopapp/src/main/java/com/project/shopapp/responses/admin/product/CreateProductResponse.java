@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.shopapp.models.Brand;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
-import com.project.shopapp.responses.BaseResponseEntity;
-import com.project.shopapp.responses.product.ProductResponse;
+import com.project.shopapp.responses.Object.BaseResponseEntity;
 import lombok.*;
 
 import java.math.BigDecimal;

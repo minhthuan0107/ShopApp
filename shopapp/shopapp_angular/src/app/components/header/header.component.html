@@ -11,7 +11,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav align-items-center">
           <li class="nav-item">
-            <a class="nav-link active" href="#">Trang chủ</a>
+            <a class="nav-link active" [routerLink]="['/home']" routerLinkActive="active">Trang chủ</a>
           </li>
 
           <li class="nav-item search-box">
@@ -31,7 +31,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Liên hệ</a>
           </li>
-
           <li class="nav-item search-container position-relative">
             <div class="search-wrapper">
               <input #searchInput type="text" class="form-control search-input" placeholder="Tìm sản phẩm"
@@ -44,24 +43,77 @@
             <ul class="suggestions-list" *ngIf="suggestedProducts.length > 0 && searchInput.value.trim() !== '' ">
               <li *ngFor="let product of suggestedProducts" (click)="onSelectSuggestion(product.id)">
                 <img [src]="product.url_image" alt="Ảnh" width="40" height="40">
-                <span>{{ product.name }}</span> 
-               <strong>{{ product.price | number:'1.0-0' }}₫</strong>
+                <span>{{ product.name }}</span>
+                <strong>{{ product.price | number:'1.0-0' }}₫</strong>
               </li>
             </ul>
           </li>
-
           <ng-container *ngIf="user$ | async as user; else loginTemplate">
-            <li class="nav-item cart-item">
-              <a class="nav-link position-relative" title="Giỏ hàng" [routerLink]="['/cart']" routerLinkActive="active">
-                <i class="fas fa-shopping-cart icon"></i>
-                <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+            <li class="nav-item position-relative">
+              <a class="nav-link position-relative" title="Thông báo">
+                <div class="notification-wrapper">
+                  <i class="fas fa-bell bell-icon" (click)="toggleNotificationDropdown()"></i>
+                  <span class="notification-badge" *ngIf="getUnreadCount() > 0">
+                    {{ getUnreadCount() }}
+                  </span>
+                  <div class="notification-panel" *ngIf="isNotificationDropdownOpen">
+                    <div class="notification-header">
+                      Thông báo
+                      <div class="notification-tabs">
+                        <span class="tab" [ngClass]="{ 'active': selectedTab === 'all' }"
+                          (click)="onTabClick('all')">Tất
+                          cả</span>
+                        <span class="tab" [ngClass]="{ 'active': selectedTab === 'unread' }"
+                          (click)="onTabClick('unread')">Chưa đọc</span>
+                      </div>
+                    </div>
+
+                    <div class="notification-list">
+                      <ng-container *ngIf="getCurrentNotifications().length > 0; else noNotifications">
+                        <div class="notification-item" *ngFor="let notify of getCurrentNotificationsLimited()"
+                          (click)="markAsRead(notify)"
+                          [ngClass]="{ 'unread': !notify.is_read, 'read': notify.is_read }">
+                          <div class="content">
+                            <div class="text">
+                              🔔 {{ notify.content }}
+                              <div class="time">{{ notify.create_at | amTimeAgo }}</div>
+                            </div>
+                            <div class="menu-toggle" (click)="toggleMenu(notify, $event)">⋯</div>
+                            <div class="notification-menu" *ngIf="notify.showMenu">
+                              <button class="menu-item" (click)="deleteNotification(notify)">
+                                <i class="fas fa-times-circle"></i> Xóa thông báo này</button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div *ngIf="!showAllNotifications && getCurrentNotifications().length > visibleLimit"
+                          class="see-more" (click)="showAllNotifications = true; $event.stopPropagation()">
+                          <span>Xem thêm thông báo trước đó</span>
+                        </div>
+                      </ng-container>
+                      <ng-template #noNotifications>
+                        <div class="no-notifications">Không có thông báo nào.</div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
               </a>
             </li>
+            <li class="nav-item cart-item">
+              <a class="nav-link" title="Giỏ hàng" [routerLink]="['/cart']" routerLinkActive="active">
+                <div class="icon-wrapper">
+                  <i class="fas fa-shopping-cart icon"></i>
+                  <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+                </div>
+              </a>
+            </li>
+
             <li class="nav-item favorite-item">
-              <a class="nav-link position-relative" title="Yêu thích" [routerLink]="['/favorite']" routerLinkActive="active"
-                title="Yêu thích">
-                <i class="fas fa-heart icon"></i>
-                <span *ngIf="favoriteItemCount > 0" class="favorite-badge">{{ favoriteItemCount }}</span>
+              <a class="nav-link" title="Yêu thích" [routerLink]="['/favorite']" routerLinkActive="active">
+                <div class="icon-wrapper">
+                  <i class="fas fa-heart icon"></i>
+                  <span *ngIf="favoriteItemCount > 0" class="favorite-badge">{{ favoriteItemCount }}</span>
+                </div>
               </a>
             </li>
             <li class="nav-item dropdown">

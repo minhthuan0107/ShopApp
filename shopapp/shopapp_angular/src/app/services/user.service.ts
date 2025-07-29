@@ -25,6 +25,11 @@ export class UserService {
       this.setCurrentUser(user);
     });
   }
+  //Lấy id từ $user
+  getCurrentUserId(): number | null {
+    const user = this.userSubject.value;
+    return user ? user.id : null;
+  }
   //Api để gửi request đăng nhập
   signup(signupDto: SignupDto): Observable<any> {
     return this.http.post(this.apiSignup, signupDto)
@@ -51,7 +56,7 @@ export class UserService {
   setCurrentUser(user: User | null): void {
     this.userSubject.next(user);
   }
-  getCurrentUser(): User | null  {
+  getCurrentUser(): User | null {
     return this.userSubject.getValue();
   }
   clearUser(): void {

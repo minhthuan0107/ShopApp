@@ -1,7 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.Object.ResponseObject;
 import com.project.shopapp.services.customer.token.TokenService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;

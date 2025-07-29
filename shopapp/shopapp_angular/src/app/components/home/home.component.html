@@ -2,7 +2,7 @@
   <!-- Slide banner đầu -->
   <div class="row">
     <div class="col-12">
-      <ngx-slick-carousel class="carousel banner-carousel" #slickModal="slick-carousel" [config]="slideConfig">
+      <ngx-slick-carousel class="carousel banner-carousel" #slickBanner1="slick-carousel" [config]="slideConfig">
         <div *ngFor="let item of slides | paginate: { itemsPerPage: 3, currentPage: 0 }" ngxSlickItem>
           <img [src]="item.url" alt="Slide {{ item.id }}" class="img-fluid" />
         </div>
@@ -20,7 +20,7 @@
   <!-- Sản phẩm bán chạy -->
   <div class="top-seller-section mt-5">
     <h1 class="seller-intro-section">SẢN PHẨM BÁN CHẠY NHẤT</h1>
-    <ngx-slick-carousel class="carousel top-seller-carousel mb-5" [config]="topSellerSlideConfig">
+    <ngx-slick-carousel class="carousel top-seller-carousel mb-5" #slickTopSelling="slick-carousel" [config]="topSellerSlideConfig">
       <div ngxSlickItem *ngFor="let item of topSellingProducts" class="carousel-item">
         <div class="product-item" (click)="goToProductDetail(item.id)">
           <img [src]="item.url_image" class="img-fluid rounded product-img mb-2" alt="{{ item.name }}">
@@ -57,7 +57,7 @@
   <!-- Slide banner 2 -->
 <div class="row">
   <div class="col-12">
-    <ngx-slick-carousel class="carousel banner-carousel" #slickModal="slick-carousel" [config]="slideConfig2">
+    <ngx-slick-carousel class="carousel banner-carousel" #slickBanner2="slick-carousel" [config]="slideConfig2">
       <div ngxSlickItem *ngFor="let item of slides2">
         <img [src]="item.url" alt="Slide {{ item.id }}" class="img-fluid" />
       </div>
@@ -67,7 +67,7 @@
   <!-- Sản phẩm nổi bật nhất -->
   <div class="top-seller-section mt-5">
     <h1 class="seller-intro-section">SẢN PHẨM NỔI BẬT NHẤT</h1>
-    <ngx-slick-carousel class="carousel top-seller-carousel mb-5" [config]="topSellerSlideConfig">
+    <ngx-slick-carousel class="carousel top-seller-carousel mb-5" #slickTopRated="slick-carousel" [config]="topSellerSlideConfig">
       <div ngxSlickItem *ngFor="let item of topRatedProducts" class="carousel-item">
         <div class="product-item" (click)="goToProductDetail(item.id)">
           <img [src]="item.url_image" class="img-fluid rounded product-img mb-2" alt="{{ item.name }}">

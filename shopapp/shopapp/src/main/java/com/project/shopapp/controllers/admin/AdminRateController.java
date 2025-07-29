@@ -1,6 +1,6 @@
 package com.project.shopapp.controllers.admin;
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.Object.ResponseObject;
 import com.project.shopapp.responses.admin.rate.RateListResponse;
 import com.project.shopapp.responses.admin.rate.RateResponse;
 import com.project.shopapp.services.admin.rate.RateAdminService;
@@ -12,10 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -48,5 +45,22 @@ public class AdminRateController {
                 .message(localizationUtils.getLocalizedMessage(MessageKeys.RATING_GET_ALL_SUCCESSFULLY))
                 .data(rateListResponse)
                 .build());
+    }
+    @DeleteMapping("delete/{rateId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ResponseObject> deleteRateById(@PathVariable("rateId") Long rateId) {
+        try {
+            rateAdminService.deleteRateById(rateId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .status(HttpStatus.OK)
+                    .message(localizationUtils.getLocalizedMessage(
+                            MessageKeys.RATING_DELETE_SUCCESSFULLY, rateId))
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+        }
     }
 }

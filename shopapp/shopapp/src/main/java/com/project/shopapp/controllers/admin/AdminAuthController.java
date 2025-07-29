@@ -3,7 +3,7 @@ package com.project.shopapp.controllers.admin;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.admin.auth.LoginAdminDto;
 import com.project.shopapp.dtos.admin.auth.SigninAdminDto;
-import com.project.shopapp.responses.user.SigninResponse;
+import com.project.shopapp.responses.customer.user.SigninResponse;
 import com.project.shopapp.services.admin.auth.AuthAdminService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.validation.Valid;

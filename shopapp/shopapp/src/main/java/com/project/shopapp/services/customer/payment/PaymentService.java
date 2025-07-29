@@ -11,7 +11,7 @@ import com.project.shopapp.models.UserCoupon;
 import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.PaymentRepository;
 import com.project.shopapp.repositories.UserCouponRepository;
-import com.project.shopapp.responses.payment.PaymentResponse;
+import com.project.shopapp.responses.customer.payment.PaymentResponse;
 import com.project.shopapp.services.customer.cart.CartService;
 import com.project.shopapp.services.customer.email.OrderMailService;
 import com.project.shopapp.ultis.MessageKeys;

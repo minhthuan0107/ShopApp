@@ -1,11 +1,10 @@
 package com.project.shopapp.controllers.admin;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.customer.user.UpdateProfileDto;
-import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.Object.ResponseObject;
 import com.project.shopapp.responses.admin.user.UserListResponse;
-import com.project.shopapp.responses.user.UserResponse;
+import com.project.shopapp.responses.customer.user.UserResponse;
 import com.project.shopapp.services.admin.user.AdminUserService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;

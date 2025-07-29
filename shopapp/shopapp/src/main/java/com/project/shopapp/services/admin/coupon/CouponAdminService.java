@@ -2,28 +2,29 @@ package com.project.shopapp.services.admin.coupon;
 
 import com.project.shopapp.commons.CouponStatus;
 import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.dtos.admin.coupon.NotificationMessage;
+import com.project.shopapp.dtos.admin.coupon.SendCouponDto;
 import com.project.shopapp.dtos.customer.coupon.CouponDto;
 import com.project.shopapp.exception.DataNotFoundException;
-import com.project.shopapp.models.Comment;
 import com.project.shopapp.models.Coupon;
+import com.project.shopapp.models.Notification;
 import com.project.shopapp.models.User;
 import com.project.shopapp.repositories.CouponRepository;
+import com.project.shopapp.repositories.NotificationRepository;
 import com.project.shopapp.repositories.UserCouponRepository;
 import com.project.shopapp.repositories.UserRepository;
 import com.project.shopapp.responses.admin.coupon.CouponResponse;
-import com.project.shopapp.responses.comment.CommentReplyResponse;
-import com.project.shopapp.responses.comment.CommentResponse;
+import com.project.shopapp.responses.customer.notification.NotificationResponse;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CouponAdminService implements ICouponAdminService {
@@ -35,6 +36,10 @@ public class CouponAdminService implements ICouponAdminService {
     private UserRepository userRepository;
     @Autowired
     private UserCouponRepository userCouponRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     @Transactional
@@ -99,5 +104,23 @@ public class CouponAdminService implements ICouponAdminService {
         coupon.setActive(newStatus);
         couponRepository.save(coupon);
         return CouponResponse.fromCoupon(coupon);
+    }
+
+    @Override
+    public void sendCouponToUsers(SendCouponDto sendCouponDto) {
+        List<User> users = userRepository.findAllById(sendCouponDto.getUserIds());
+        for (User user : users){
+            String content = "Bạn có mã giảm giá mới: " + sendCouponDto.getCouponCode();
+            Notification notification = new Notification();
+            notification.setUser(user);
+            notification.setTitle("Mã giảm giá mới!");
+            notification.setContent(content);
+            notification.setType("COUPON");
+            notification.setIsRead(false);
+            notificationRepository.save(notification);
+            // Gửi qua RabbitMQ
+            NotificationResponse response = NotificationResponse.fromNotification(notification);
+            rabbitTemplate.convertAndSend("coupon.exchange", "coupon.notify",response);
+        }
     }
 }

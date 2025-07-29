@@ -1,20 +1,15 @@
 package com.project.shopapp.services.customer.product;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.dtos.customer.product.ProductDto;
 import com.project.shopapp.exception.DataNotFoundException;
-import com.project.shopapp.models.Brand;
-import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
-import com.project.shopapp.repositories.BrandRepository;
 import com.project.shopapp.repositories.CategoryRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.repositories.RateRepository;
 import com.project.shopapp.repositories.projection.PriceRangeProjection;
-import com.project.shopapp.responses.product.PriceRangeResponse;
-import com.project.shopapp.responses.product.ProductResponse;
+import com.project.shopapp.responses.customer.product.PriceRangeResponse;
+import com.project.shopapp.responses.customer.product.ProductResponse;
 import com.project.shopapp.ultis.MessageKeys;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

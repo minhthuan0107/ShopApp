@@ -6,4 +6,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface IRateAdminService {
     Page<RateResponse> getAllRates(PageRequest pageRequest, String keyword);
+
+    void deleteRateById(Long rateId) throws Exception;
 }

@@ -1,9 +1,9 @@
 package com.project.shopapp.controllers.admin;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.Object.ResponseObject;
 import com.project.shopapp.responses.admin.comment.CommentListResponse;
-import com.project.shopapp.responses.comment.CommentResponse;
+import com.project.shopapp.responses.customer.comment.CommentResponse;
 import com.project.shopapp.services.admin.comment.CommentAdminService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.springframework.beans.factory.annotation.Autowired;

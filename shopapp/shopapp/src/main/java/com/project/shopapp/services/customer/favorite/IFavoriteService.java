@@ -1,7 +1,7 @@
 package com.project.shopapp.services.customer.favorite;
 
 import com.project.shopapp.dtos.customer.favorite.FavoriteActionResult;
-import com.project.shopapp.responses.favorite.FavoriteResponse;
+import com.project.shopapp.responses.customer.favorite.FavoriteResponse;
 
 import java.util.List;
 

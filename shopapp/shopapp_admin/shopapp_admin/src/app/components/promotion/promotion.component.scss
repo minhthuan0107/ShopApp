@@ -80,9 +80,29 @@
   border-radius: 8px;
 }
 
-.no-records-message {
-  text-align: center;
-  margin: 20px 0;
-  font-size: 16px;
-  color: #888;
+
+::ng-deep .mat-select-placeholder {
+  color: black !important;
+  opacity: 1 !important; /* đảm bảo nó không bị mờ */
+}
+
+.basic-select {
+  width: 140px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.2s ease-in-out;
+  outline: none;
+}
+
+.basic-select:focus {
+  border-color: #3f51b5; /* Màu xanh Material */
+  box-shadow: 0 0 4px rgba(63, 81, 181, 0.4);
+}
+
+.basic-select option {
+  padding: 8px;
 }

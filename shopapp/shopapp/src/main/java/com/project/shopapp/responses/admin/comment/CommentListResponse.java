@@ -1,6 +1,6 @@
 package com.project.shopapp.responses.admin.comment;
 
-import com.project.shopapp.responses.comment.CommentResponse;
+import com.project.shopapp.responses.customer.comment.CommentResponse;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Product } from './../../models/product.model';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Router, RouterModule } from '@angular/router';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { SlickCarouselComponent, SlickCarouselModule } from 'ngx-slick-carousel';
 import { UserService } from '../../services/user.service';
 import { CartService } from '../../services/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { filter } from 'rxjs';
+import { filter, Subject } from 'rxjs';
 import { CartDetailDto } from '../../dtos/cartdetail.dto';
 import { FavoriteService } from '../../services/favorite.service';
 import { FavoriteResponse } from '../../responses/favorite.response';
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   userId: number | null = null;
   products: Product[] = [];
   topSellingProducts: Product[] = [];
-  topRatedProducts:Product[] =[];
+  topRatedProducts: Product[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 12;
   pages: number[] = [];
@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit {
   totalItems: number = 1;
   visiblePages: number[] = [];
   favoriteProductIds: Set<number> = new Set();
+  private destroy$ = new Subject<void>();
+  @ViewChildren(SlickCarouselComponent) slickCarousels!: QueryList<SlickCarouselComponent>;
   slides = [
     { id: 1, url: 'assets/banner/banner-tet-6.jpg' },
     { id: 2, url: 'assets/banner/banner-tet-3.jpg' },
@@ -63,13 +65,13 @@ export class HomeComponent implements OnInit {
     arrows: true          // Hiển thị nút điều hướng (next/prev)
   };
   topSellerSlideConfig = {
-  slidesToShow: 6,
-  slidesToScroll: 1,
-  dots: false,
-  infinite: true, // Bật true để nó cuộn vòng lặp
-  arrows: true,
-  autoplay: true,       // Tự động lướt
-  autoplaySpeed: 2000,// Thời gian giữa các lần lướt (2 giây)
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    dots: false,
+    infinite: true, // Bật true để nó cuộn vòng lặp
+    arrows: true,
+    autoplay: true,       // Tự động lướt
+    autoplaySpeed: 2000,// Thời gian giữa các lần lướt (2 giây)
   };
 
   constructor(private productService: ProductService,
@@ -91,6 +93,19 @@ export class HomeComponent implements OnInit {
     this.getTopSellingProducts();
     this.getTopMostHighlyRatedProducts();
   }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.slickCarousels) {
+      this.slickCarousels.forEach((carousel) => {
+        try {
+          carousel.unslick();
+        } catch (err) {
+          console.warn('Slick đã bị hủy hoặc không tồn tại:', err);
+        }
+      });
+    }
+  }
   getProducts(page: number, limit: number) {
     this.productService.getProducts(page, limit).subscribe({
       next: (response: any) => {
@@ -107,18 +122,18 @@ export class HomeComponent implements OnInit {
     });
   }
   //Hàm lấy sản phẩm bán chạy nhất
-  getTopSellingProducts(){
+  getTopSellingProducts() {
     this.productService.getTop14BestSellingProducts().subscribe({
-     next: (response: any) => {
-       this.topSellingProducts = response.data;
+      next: (response: any) => {
+        this.topSellingProducts = response.data;
       }
     });
   }
   //Hàm lấy sản phẩm nổi bật nhất
-  getTopMostHighlyRatedProducts(){
+  getTopMostHighlyRatedProducts() {
     this.productService.getTop14MostHighlyRatedProducts().subscribe({
-     next: (response: any) => {
-       this.topRatedProducts = response.data;
+      next: (response: any) => {
+        this.topRatedProducts = response.data;
       }
     });
   }
@@ -135,6 +150,12 @@ export class HomeComponent implements OnInit {
     return this.currentPage === this.totalPages;
   }
   goToProductDetail(productId: number): void {
+    //Hủy slick carousel trc khi chuyển component
+    this.slickCarousels?.forEach((carousel) => {
+      try {
+        carousel.unslick();
+      } catch { }
+    });
     this.router.navigate(['/detail-product', productId]);
   }
 
@@ -252,4 +273,5 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
 }

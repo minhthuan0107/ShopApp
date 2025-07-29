@@ -3,7 +3,6 @@
         <h1 class="h3 mb-0 text-gray-800 title-shift-up">⭐ Danh sách đánh giá sản phẩm</h1>
     </div>
 
-    <!-- Tìm kiếm -->
      <!-- Tìm kiếm -->
   <div class="search-wrapper mb-3">
     <mat-form-field appearance="outline" class="w-100">
@@ -76,7 +75,7 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Hành động</th>
             <td mat-cell *matCellDef="let row">
-                <button mat-icon-button matTooltip="Xóa đánh giá">
+                <button mat-icon-button matTooltip="Xóa đánh giá" (click)="deleteRate(row.rate_id)">
                     <mat-icon color="warn">delete</mat-icon>
                 </button>
             </td>
