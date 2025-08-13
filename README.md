@@ -67,14 +67,6 @@ ShopApp là một hệ thống thương mại điện tử **full-stack** đư�
 
 ## 📊 Kiến trúc hệ thống
 
-```mermaid
-graph TD
-    A[Angular (Frontend)] -->|HTTP/HTTPS| B[Spring Boot REST API]
-    B --> C[MySQL Database]
-    B --> D[RabbitMQ (Docker)]
-    B --> E[WebSocket Server]
-    B --> F[VNPAY Payment Gateway]
-
 🚀 Cách chạy dự án
 1. Yêu cầu
 Java 11+
