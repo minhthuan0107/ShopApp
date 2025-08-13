@@ -98,13 +98,10 @@ mysql -u root -p < database.sql
 mvn clean install
 mvn spring-boot:run
 3. Frontend
-bash
-Sao chép
-Chỉnh sửa
-cd ShopApp/frontend
 npm install
 ng serve
-Truy cập: http://localhost:4200
+Truy cập user: http://localhost:4200
+Truy cập admin: http://localhost:4300
 📬 Liên hệ
 Tác giả: Lê Thuận
 Email: thuanminhle0107@gmail.com
