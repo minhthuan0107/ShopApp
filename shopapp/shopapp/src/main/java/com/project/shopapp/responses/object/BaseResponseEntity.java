@@ -1,4 +1,4 @@
-package com.project.shopapp.responses.Object;
+package com.project.shopapp.responses.object;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

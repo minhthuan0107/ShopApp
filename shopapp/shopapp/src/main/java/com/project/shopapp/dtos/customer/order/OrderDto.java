@@ -24,6 +24,9 @@ public class OrderDto {
     private String phoneNumber;
     @NotBlank(message = "Địa chỉ là bắt buộc")
     private String address;
+    @NotBlank(message = "Vui lòng nhập địa chỉ chi tiết (số nhà, thôn, xóm,...)")
+    @JsonProperty("address_detail")
+    private String addressDetail;
     private String note;
     @JsonProperty("order_details")
     private List<OrderDetailDto> orderDetails;
@@ -33,4 +36,12 @@ public class OrderDto {
     private boolean isBuyNow;
     @JsonProperty("coupon_code")
     private String couponCode;
+    @JsonProperty("province")
+    private String province;
+    @JsonProperty("district")
+    private String district;
+    @JsonProperty("ward")
+    private String ward;
+    @JsonProperty("shipping_method")
+    private String shippingMethod;
 }

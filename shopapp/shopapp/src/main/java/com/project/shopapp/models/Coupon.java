@@ -32,4 +32,8 @@ public class Coupon extends BaseEntity {
     private int quantity;
     @Column(name = "is_active")
     private boolean isActive;
+    @Column(name = "is_sent")
+    private boolean isSent;
+    @Column(name = "is_public", nullable = false)
+    private boolean isPublic;
 }

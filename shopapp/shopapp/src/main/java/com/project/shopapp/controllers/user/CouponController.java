@@ -2,7 +2,7 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.admin.coupon.CouponResponse;
 import com.project.shopapp.services.admin.coupon.CouponAdminService;
 import com.project.shopapp.ultis.MessageKeys;

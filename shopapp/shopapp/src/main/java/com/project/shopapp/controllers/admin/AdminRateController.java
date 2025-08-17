@@ -1,6 +1,6 @@
 package com.project.shopapp.controllers.admin;
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.admin.rate.RateListResponse;
 import com.project.shopapp.responses.admin.rate.RateResponse;
 import com.project.shopapp.services.admin.rate.RateAdminService;

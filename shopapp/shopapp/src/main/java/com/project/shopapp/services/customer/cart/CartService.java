@@ -60,22 +60,18 @@ public class CartService implements ICartService {
                         localizationUtils.getLocalizedMessage(
                                 MessageKeys.PRODUCT_NOT_FOUND, cartDetailDto.getProductId())
                 ));
-        //Kiểm tra như số lượng sản phẩm hết thì đưa ra thông báo sản phẩm đã hết
-        if (product.getQuantity() < 1) {
-            throw new DataNotFoundException(
-                    localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_OUT_OF_STOCK));
-        }
         //Kiểm tra cartdetail có trong csdl hay chưa , nếu chưa có thì tạo mới, nếu có rồi thì set totalprice và quantity
         CartDetail cartDetail = cartDetailRepository.findByCartIdAndProductId(
                 cart.getId(), product.getId()).orElseGet(() -> createNewCartDetail(cart, product));
+        int newQuantity = cartDetail.getQuantity() + 1;
         // Kiểm tra stock cho cả item mới (0+1) và item cũ (current+1)
-        if (cartDetail.getQuantity() + 1 > product.getQuantity()) {
+        if (newQuantity > product.getQuantity()) {
             throw new DataNotFoundException(
                     localizationUtils.getLocalizedMessage(MessageKeys.PRODUCT_OUT_OF_STOCK));
         }
         // Tăng quantity lên 1 (từ 0→1 hoặc current→current+1)
-        cartDetail.setQuantity(cartDetail.getQuantity() + 1);
-        cartDetail.setTotalPrice(cartDetail.getTotalPrice().add(product.getPrice()));
+        cartDetail.setQuantity(newQuantity);
+        cartDetail.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(newQuantity)));
         cartDetailRepository.save(cartDetail);
         // Chuyển dữ liệu sang CartDetailResponse
         List<CartDetailResponse> cartDetailResponses = cartDetailRepository.findByCartId(cart.getId())

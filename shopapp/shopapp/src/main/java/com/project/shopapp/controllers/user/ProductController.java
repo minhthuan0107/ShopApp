@@ -1,7 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.product.PriceRangeResponse;
 import com.project.shopapp.responses.customer.product.ProductListResponse;
 import com.project.shopapp.responses.customer.product.ProductResponse;

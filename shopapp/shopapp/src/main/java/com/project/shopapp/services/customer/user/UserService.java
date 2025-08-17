@@ -116,6 +116,10 @@ public class UserService implements IUserService {
             throw new DataNotFoundException(
                     localizationUtils.getLocalizedMessage(MessageKeys.USER_ACCOUNT_LOCKED));
         }
+        if (existingUser.getRole().isAdmin()) {
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.ACCESS_DENIED));
+        }
         // Tạo authenticationToken với tên đăng nhập và mật khẩu
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phoneNumber, password);
         // Gọi authenticate để thực hiện xác thực

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.shopapp.models.BaseEntity;
 import com.project.shopapp.models.Coupon;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,6 +28,8 @@ public class CouponResponse extends BaseEntity {
     private LocalDate expiryDate;
     @JsonProperty(value = "is_active")
     private boolean isActive;
+    @JsonProperty(value = "is_sent")
+    private boolean isSent;
 
     public static CouponResponse fromCoupon(Coupon coupon) {
         CouponResponse couponResponse = CouponResponse.builder()
@@ -38,6 +41,7 @@ public class CouponResponse extends BaseEntity {
                 .quantity(coupon.getQuantity())
                 .expiryDate(coupon.getExpiryDate())
                 .isActive(coupon.isActive())
+                .isSent(coupon.isSent())
                 .build();
         couponResponse.setCreateAt(coupon.getCreateAt());
         couponResponse.setUpdateAt(coupon.getUpdateAt());

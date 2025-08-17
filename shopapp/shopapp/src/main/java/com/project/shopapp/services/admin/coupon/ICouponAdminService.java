@@ -15,5 +15,6 @@ public interface ICouponAdminService {
 
     CouponResponse toggleCouponStatus(Long couponId) throws Exception;
 
-    void sendCouponToUsers(SendCouponDto sendCouponDto);
+    void sendCouponToUsers(SendCouponDto sendCouponDto) throws Exception;
+    void sendCouponToAllUsers(String couponCode) throws Exception ;
 }

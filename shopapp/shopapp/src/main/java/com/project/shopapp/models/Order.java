@@ -38,13 +38,9 @@ public class Order {
     private BigDecimal totalPrice;
     @Column(name = "is_buy_now")
     private boolean isBuyNow;
-    @Column(name = "shipping_method",length = 100)
-    private String shippingMethod;
-    @Column(name = "shipping_date")
-    private LocalDate shippingDate;
-    @Column(name = "tracking_number",length = 100)
-    private String trackingNumber;
     @Column(name = "active")
     private boolean active;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ShippingInfo shippingInfo;
 
 }

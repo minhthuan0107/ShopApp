@@ -3,7 +3,7 @@
 <mat-dialog-content>
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Tìm kiếm người dùng</mat-label>
-    <input matInput [(ngModel)]="keyword" (keyup.enter)="getAllUsers()" placeholder="Nhập tên hoặc email...">
+    <input matInput [(ngModel)]="keyword" (keyup.enter)="onSearch()" placeholder="Nhập tên hoặc email...">
   </mat-form-field>
 
   <table mat-table [dataSource]="users" class="mat-elevation-z8">

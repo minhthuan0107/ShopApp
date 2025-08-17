@@ -7,4 +7,5 @@ export interface CouponAdminResponse {
     min_order_value: number
     expiry_date: Date;
     is_active: boolean;
+    is_sent:boolean;
    }

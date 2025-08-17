@@ -3,7 +3,7 @@ package com.project.shopapp.controllers.admin;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.product.ProductDto;
 import com.project.shopapp.models.Product;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.admin.product.CreateProductResponse;
 import com.project.shopapp.responses.customer.product.ProductListResponse;
 import com.project.shopapp.responses.customer.product.ProductResponse;

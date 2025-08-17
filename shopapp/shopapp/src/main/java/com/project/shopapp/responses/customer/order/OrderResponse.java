@@ -32,12 +32,6 @@ public class OrderResponse  {
     private String status;
     @JsonProperty("total_price")
     private Float totalPrice;
-    @JsonProperty("shipping_method")
-    private String shippingMethod;
-    @JsonProperty("shipping_date")
-    private LocalDate shippingDate;
-    @JsonProperty("tracking_number")
-    private String trackingNumber;
     private boolean active;
     @JsonProperty("order_details")
     private List<OrderDetailResponse> orderDetailResponses;

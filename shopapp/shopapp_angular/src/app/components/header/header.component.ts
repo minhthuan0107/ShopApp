@@ -87,6 +87,7 @@ export class HeaderComponent implements OnInit {
     // Lắng nghe thông báo mới
     this.websocketCouponService.getNotifications().subscribe((notification) => {
       this.notifications.unshift(notification); // thêm thông báo mới vào đầu danh sách
+      this.unreadNotifications.unshift(notification);   // Cập nhật tab "Chưa đọc"
     });
   }
   // Lấy danh mục từ API

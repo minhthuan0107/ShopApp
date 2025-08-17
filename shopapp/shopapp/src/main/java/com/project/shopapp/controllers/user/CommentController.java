@@ -4,7 +4,7 @@ import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.customer.comment.CommentDto;
 import com.project.shopapp.dtos.customer.comment.ReplyCommentDto;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.comment.CommentReplyResponse;
 import com.project.shopapp.responses.customer.comment.CommentResponse;
 import com.project.shopapp.services.customer.comment.CommentServie;

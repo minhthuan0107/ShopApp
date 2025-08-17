@@ -68,7 +68,6 @@
 
 ::ng-deep td.mat-column-actions {
   white-space: nowrap;
-  transform: translateX(-10px);
 }
 
 ::ng-deep .custom-modal-md .modal-dialog {
@@ -105,4 +104,8 @@
 
 .basic-select option {
   padding: 8px;
+}
+.text-success{
+  color: green;
+  font-weight: bold;
 }

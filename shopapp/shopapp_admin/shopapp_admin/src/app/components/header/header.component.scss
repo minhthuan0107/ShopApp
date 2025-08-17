@@ -117,3 +117,15 @@
     }
   }
 }
+.user-menu .btn-user {
+  background: none;
+  border: none;
+  padding: 5px 10px;
+}
+.user-menu .dropdown-menu {
+  border-radius: 10px;
+  min-width: 200px;
+}
+.user-menu .dropdown-item:hover {
+  background-color: #f8f9fa;
+}

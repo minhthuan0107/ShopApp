@@ -3,7 +3,7 @@ package com.project.shopapp.controllers.user;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.customer.cartdetail.CartDetailDto;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.cart.CartResponse;
 import com.project.shopapp.services.customer.cart.CartService;
 import com.project.shopapp.ultis.MessageKeys;

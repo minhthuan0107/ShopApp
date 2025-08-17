@@ -19,22 +19,22 @@ export class TokenAdminService {
     private http: HttpClient
   ) { }
   //Api tạo mới Access Token dựa trên Refresh Token
-  generateNewAccessToken(refreshToken: string):Observable<ApiResponse<any>>{
-      const params = new HttpParams().set('refreshToken', refreshToken);
-      return this.http.post<ApiResponse<any>>(`${this.apigGenerateAccessToken}`, null, { params })
-    }
+  generateNewAccessToken(refreshToken: string): Observable<ApiResponse<any>> {
+    const params = new HttpParams().set('refreshToken', refreshToken);
+    return this.http.post<ApiResponse<any>>(`${this.apigGenerateAccessToken}`, null, { params })
+  }
   //Api thu thồi refresh token
-    revokeRefreshToken(refreshToken: string):Observable<ApiResponse<any>>{
-      const params = new HttpParams().set('refreshToken', refreshToken);
-      return this.http.patch<ApiResponse<any>>(`${this.apiRevokeRefreshToken}`, null, { params })
-    }
+  revokeRefreshToken(refreshToken: string): Observable<ApiResponse<any>> {
+    const params = new HttpParams().set('refreshToken', refreshToken);
+    return this.http.patch<ApiResponse<any>>(`${this.apiRevokeRefreshToken}`, null, { params })
+  }
 
   public getAccessToken(): string | null {
-  return sessionStorage.getItem(this.ACCESS_TOKEN_KEY); // ✔ chỉ lấy từ session
-}
+    return sessionStorage.getItem(this.ACCESS_TOKEN_KEY);
+  }
   public setAccessToken(accessToken: string): void {
-  sessionStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken); // ✔ chỉ lưu vào session
-}
+    sessionStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
+  }
 
   public async removeToken(): Promise<void> {
     // Chờ thu hồi refresh token từ server trước khi xóa local token
@@ -44,7 +44,7 @@ export class TokenAdminService {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
   }
-  
+
   public async handleRevokeRefreshToken(): Promise<void> {
     const refreshToken = this.getRefreshToken();
     // Nếu có refresh token mới gọi API thu hồi
@@ -65,7 +65,6 @@ export class TokenAdminService {
   public setRefreshToken(refreshToken: string): void {
     localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
   }
-
   logout(): void {
     this.removeToken();
   }

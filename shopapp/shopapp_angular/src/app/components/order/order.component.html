@@ -60,11 +60,15 @@
           </select>
         </div>
 
-        <!-- Địa chỉ chi tiết -->
         <div class="mb-2">
           <label for="addressDetail" class="form-label">Địa chỉ chi tiết</label>
           <input type="text" class="form-control" id="addressDetail" formControlName="addressDetail"
             placeholder="Số nhà, tên đường..." />
+          <!-- Thông báo lỗi -->
+          <div *ngIf="orderForm.get('addressDetail')?.touched && orderForm.get('addressDetail')?.invalid"
+            class="text-danger mt-1">
+            Địa chỉ chi tiết không được để trống.
+          </div>
         </div>
 
         <div class="mb-2">
