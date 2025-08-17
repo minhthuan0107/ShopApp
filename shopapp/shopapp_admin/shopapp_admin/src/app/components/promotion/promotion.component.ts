@@ -116,13 +116,28 @@ export class PromotionComponent {
       }
     });
   }
+  //Hàm gửi mã cho tất cả người dùng
   sendToAllUsers(coupon: Coupon) {
-    this.promotionService.sendCouponToAllUsers(coupon.code).subscribe({
-      next: () => this.toastr.success('Đã gửi mã đến tất cả người dùng'),
-      error: () => this.toastr.error('Gửi thất bại'),
+    Swal.fire({
+      title: 'Xác nhận',
+      text: `Bạn có chắc muốn gửi mã "${coupon.code}" đến tất cả người dùng?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Gửi',
+      cancelButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.promotionService.sendCouponToAllUsers(coupon.code).subscribe({
+          next: () => {
+            coupon.is_sent = true;
+            this.toastr.success('Đã gửi mã đến tất cả người dùng');
+          },
+          error: (err) => this.toastr.error('Lỗi', err.error.message || 'Gửi mã giảm giá thất bại'),
+        });
+      }
     });
   }
-
+  //Mở dialog chọn người dùng để gửi mã
   openUserSelectDialog(coupon: Coupon) {
     const dialogRef = this.dialog.open(UserSelectDialogComponent, {
       width: '600px',
@@ -131,12 +146,16 @@ export class PromotionComponent {
     dialogRef.afterClosed().subscribe((selectedUserIds: number[]) => {
       if (selectedUserIds?.length) {
         this.promotionService.sendCouponToSelectedUsers(coupon.code, selectedUserIds).subscribe({
-          next: () => this.toastr.success('Đã gửi mã đến người dùng được chọn'),
+          next: () => {
+            coupon.is_sent = true;
+            this.toastr.success('Đã gửi mã đến người dùng được chọn');
+          },
           error: () => this.toastr.error('Gửi thất bại'),
         });
       }
     });
   }
+  //Hàm chọn giá trị all hay select
   onSendOptionChange(event: Event, coupon: Coupon) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     if (selectedValue === 'all') {

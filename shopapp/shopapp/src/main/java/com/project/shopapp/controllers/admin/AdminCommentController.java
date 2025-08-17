@@ -1,7 +1,7 @@
 package com.project.shopapp.controllers.admin;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.admin.comment.CommentListResponse;
 import com.project.shopapp.responses.customer.comment.CommentResponse;
 import com.project.shopapp.services.admin.comment.CommentAdminService;

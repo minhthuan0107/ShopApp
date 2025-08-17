@@ -69,6 +69,7 @@ export class PaymentCallbackComponent {
   private updatePaymentStatus(statusDto: UpdatePaymentStatusDto): void {
     this.paymentService.updatePayment(statusDto).subscribe({
       next: (response) => {
+        console.log("Phản hồi từ server:", response);
         if (response.data.status === 'SUCCESS') {
           this.showSuccessAlert();
         if (response.data.is_buy_now === false) {
@@ -79,7 +80,7 @@ export class PaymentCallbackComponent {
         }
       },
       error: (error) => {
-        console.error("Lỗi khi cập nhật thanh toán:", error);
+        console.error("Lỗi", error.error?.message||'Lỗi khi cập nhật thanh toán');
         this.showErrorAlert();
       } 
     });

@@ -1,7 +1,7 @@
 package com.project.shopapp.controllers.admin;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.admin.order.OrderListResponse;
 import com.project.shopapp.responses.customer.order.OrderResponse;
 import com.project.shopapp.services.admin.order.OrderAdminService;
@@ -67,4 +67,5 @@ public class AdminOrderController {
                     .build());
         }
     }
+
 }

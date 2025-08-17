@@ -32,18 +32,30 @@
 
     <!-- Tài khoản -->
     <div class="dropdown user-menu ml-3">
-      <button class="btn btn-user" data-toggle="dropdown">
-        <span class="user-name">Admin</span>
+      <button class="btn btn-user d-flex align-items-center" data-bs-toggle="dropdown">
+        <span class="fw-semibold">Admin</span>
+        <i class="fas fa-bars ms-2 small text-white"></i>
       </button>
-      <div class="dropdown-menu dropdown-menu-right">
-        <a class="dropdown-item" href="#">
-          <i class="fas fa-user mr-2"></i> Thông tin cá nhân
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">
-          <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
-        </a>
-      </div>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="#">
+            <i class="fas fa-user-circle me-2 text-primary"></i> Thông tin cá nhân
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="#">
+            <i class="fas fa-cog me-2 text-warning"></i> Cài đặt
+          </a>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center text-danger">
+            <i class="fas fa-sign-out-alt me-2"(click)="logout()"></i> Đăng xuất
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

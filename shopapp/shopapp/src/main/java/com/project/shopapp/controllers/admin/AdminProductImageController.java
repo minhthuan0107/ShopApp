@@ -5,7 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.productimage.ProductImageDto;
 import com.project.shopapp.models.ProductImage;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.product.ProductResponse;
 import com.project.shopapp.services.admin.productimage.ProductImageAdminService;
 import com.project.shopapp.services.customer.product.ProductService;

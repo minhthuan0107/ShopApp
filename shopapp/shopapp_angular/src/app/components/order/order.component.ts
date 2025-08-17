@@ -136,6 +136,7 @@ export class OrderComponent {
       email: this.orderForm.value.email,
       phone_number: this.orderForm.value.phone,
       address: fullAddress,
+      address_detail: this.orderForm.value.addressDetail,
       note: this.orderForm.value.note || '',
       coupon_code: this.couponCode,
       order_details: this.cartDetails.map(item => ({
@@ -146,7 +147,11 @@ export class OrderComponent {
         payment_method: this.paymentMethod,
 
       },
-      is_buy_now: false //Biến theo dõi mua sản phẩm từ giỏ hàng hay là mua thẳng
+      is_buy_now: false, //Biến theo dõi mua sản phẩm từ giỏ hàng hay là mua thẳng
+      province: selectedProvinceName,
+      district: selectedDistrictName,
+      ward: selectedWardName,
+      shipping_method: 'GHTK'
     };
     // Nếu là VNPAY, tạo URL thanh toán trước
     if (this.paymentMethod === 'Vnpay') {
@@ -222,13 +227,11 @@ export class OrderComponent {
               transactionId: vnp_TxnRef
             }).subscribe({
               next: () => {
-                debugger;
                 window.location.href = paymentUrl;
               },
               error: (error: any) => {
                 console.error("Lỗi!", error.error?.message || "Lỗi khi cập nhật transactionId");
               }
-
             });
           },
           error: (error: any) => {
@@ -247,7 +250,6 @@ export class OrderComponent {
   }
 
   applyCoupon() {
-    this.couponCode = this.tempCouponCode; // mới cập nhật biến chính
     this.checkCouponCode();
   }
   //Hàm check mã giám giá
@@ -255,11 +257,13 @@ export class OrderComponent {
     this.couponService.applyCoupon(this.couponCode).subscribe({
       next: (response) => {
         this.errorMessage = null;
+        this.couponCode = this.tempCouponCode;
         this.couponValue = response.data.value;
         this.toastr.success('Áp dụng mã giảm giá thành công', 'Thành công', { timeOut: 1500 });
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Có lỗi xảy ra';
+        this.couponCode = '';
       }
     });
   }
@@ -285,7 +289,6 @@ export class OrderComponent {
     const districtCode = this.orderForm.get('districtCode')?.value;
     const selectedDistrict = this.districts.find(d => d.code === districtCode);
     this.selectedDistrictName = selectedDistrict?.name || '';
-
     this.wards = [];
     this.orderForm.patchValue({
       wardCode: ''

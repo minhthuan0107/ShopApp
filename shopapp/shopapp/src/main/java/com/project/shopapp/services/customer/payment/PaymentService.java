@@ -59,12 +59,12 @@ public class PaymentService implements IPaymentService {
             cartService.clearCart(userId);
         }
         //SEt lại coupon thành đã dc sử dụng đối với thanh toán vnpay
-        UserCoupon existUserCoupon = userCouponRepository.findByOrderId(statusDto.getOrderId())
-                .orElseThrow(() -> new DataNotFoundException(localizationUtils.getLocalizedMessage(
-                        MessageKeys.USERCOUPON_NOT_FOUND, statusDto.getTransactionId())));
-        existUserCoupon.setStatus(CouponStatus.USED);
-        existUserCoupon.setAppliedAt(LocalDate.now());
-        userCouponRepository.save(existUserCoupon);
+        userCouponRepository.findByOrderId(statusDto.getOrderId())
+                .ifPresent(userCoupon -> {
+                    userCoupon.setStatus(CouponStatus.USED);
+                    userCoupon.setAppliedAt(LocalDate.now());
+                    userCouponRepository.save(userCoupon);
+                });
         //Gửi mail thông báo thanh toán thành công
         orderMailService.sendMailOrder(payment.getOrder());
         return PaymentResponse.fromPayment(payment);

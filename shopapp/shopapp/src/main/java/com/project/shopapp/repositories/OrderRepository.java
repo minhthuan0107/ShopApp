@@ -25,7 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "LOWER(o.phoneNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(o.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(o.email) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(o.trackingNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+            "OR LOWER(o.shippingInfo.trackingNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Order> searchOrdersByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     //Xóa order và payment giá trị pending tránh spam order

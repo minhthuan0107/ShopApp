@@ -128,6 +128,7 @@ public class MessageKeys {
 
     public static final String COUPON_CODE_ALREADY_EXISTS = "coupon.code_already_exists";
     public static final String COUPON_CREATED_SUCCESSFULLY = "coupon.created_successfully";
+    public static final String COUPON_ACCESS_DENIED = "coupon.access_denied";
 
     public static final String COUPON_NOT_FOUND = "coupon.not_found";
     public static final String COUPON_GET_ALL_SUCCESSFULLY = "coupon.get_all_successfully";
@@ -135,6 +136,7 @@ public class MessageKeys {
     public static final String COUPON_ALREADY_USED = "coupon.already_used";
     public static final String COUPON_APPLIED_SUCCESSFULLY = "coupon.applied_successfully";
     public static final String COUPON_INVALID = "coupon.invalid";
+    public static final String COUPON_REQUIRED = "coupon.required";
     public static final String COUPON_SENT_SUCCESSFULLY = "coupon.sent_successfully";
 
 

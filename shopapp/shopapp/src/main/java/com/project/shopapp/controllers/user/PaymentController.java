@@ -2,12 +2,13 @@ package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.payment.*;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.payment.PaymentResponse;
 import com.project.shopapp.services.customer.payment.PaymentService;
 import com.project.shopapp.services.customer.payment.VNPayService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class PaymentController {
     }
 
     @PutMapping("/update-status")
-    public ResponseEntity<ResponseObject> updatePaymentStatus(@RequestBody UpdatePaymentStatusDto statusDto,
+    public ResponseEntity<ResponseObject> updatePaymentStatus(@Valid @RequestBody UpdatePaymentStatusDto statusDto,
                                                               BindingResult result) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()

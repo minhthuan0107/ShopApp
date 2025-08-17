@@ -1,7 +1,7 @@
 package com.project.shopapp.controllers.user;
 
 import com.project.shopapp.components.LocalizationUtils;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.productimages.ProductImagesResponse;
 import com.project.shopapp.services.customer.product.ProductService;
 import com.project.shopapp.services.customer.productimage.ProductImageService;

@@ -3,7 +3,7 @@ package com.project.shopapp.controllers.admin;
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.admin.coupon.SendCouponDto;
 import com.project.shopapp.dtos.customer.coupon.CouponDto;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.admin.coupon.CouponListResponse;
 import com.project.shopapp.responses.admin.coupon.CouponResponse;
 import com.project.shopapp.services.admin.coupon.CouponAdminService;
@@ -21,6 +21,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("${api.prefix}/admin/coupons")
 public class AdminCouponController {
@@ -59,11 +60,12 @@ public class AdminCouponController {
                     .build());
         }
     }
+
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResponseObject> getAllCoupons(@RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "10") int size,
-                                                         @RequestParam(required = false, defaultValue = "") String keyword) {
+                                                        @RequestParam(defaultValue = "10") int size,
+                                                        @RequestParam(required = false, defaultValue = "") String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createAt").descending());
         Page<CouponResponse> couponPage = couponService.getAllCoupons(pageRequest, keyword);
         int totalPages = couponPage.getTotalPages();
@@ -82,9 +84,10 @@ public class AdminCouponController {
                 .data(couponListResponse)
                 .build());
     }
+
     @PatchMapping("/toggle/{couponId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ResponseObject> toggleCouponStatus(@PathVariable Long couponId){
+    public ResponseEntity<ResponseObject> toggleCouponStatus(@PathVariable Long couponId) {
         try {
             CouponResponse couponResponse = couponService.toggleCouponStatus(couponId);
             String message = couponResponse.isActive()
@@ -96,17 +99,42 @@ public class AdminCouponController {
                             .data(couponResponse)
                             .message(message)
                             .build());
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
                     .status(HttpStatus.BAD_REQUEST)
                     .message(e.getMessage())
                     .build());
         }
     }
+
+    @PostMapping("/send-to-all/{couponCode}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ResponseObject> sendCouponToAllUsers(@PathVariable String couponCode) {
+        if (couponCode == null || couponCode.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_REQUIRED))
+                    .build());
+        }
+        try {
+            couponService.sendCouponToAllUsers(couponCode);
+            return ResponseEntity.status(HttpStatus.OK).
+                    body(ResponseObject.builder()
+                            .status(HttpStatus.OK)
+                            .message(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_SENT_SUCCESSFULLY))
+                            .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+        }
+    }
+
     @PostMapping("/send-to-users")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ResponseObject>  sendCouponToUsers (@Valid @RequestBody SendCouponDto sendCouponDto,
-                                                              BindingResult result){
+    public ResponseEntity<ResponseObject> sendCouponToUsers(@Valid @RequestBody SendCouponDto sendCouponDto,
+                                                            BindingResult result) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
@@ -117,11 +145,18 @@ public class AdminCouponController {
                     .message(errorMessages.toString())
                     .build());
         }
-        couponService.sendCouponToUsers(sendCouponDto);
-        return ResponseEntity.status(HttpStatus.OK).
-                body(ResponseObject.builder()
-                        .status(HttpStatus.OK)
-                        .message(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_SENT_SUCCESSFULLY))
-                        .build());
+        try {
+            couponService.sendCouponToUsers(sendCouponDto);
+            return ResponseEntity.status(HttpStatus.OK).
+                    body(ResponseObject.builder()
+                            .status(HttpStatus.OK)
+                            .message(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_SENT_SUCCESSFULLY))
+                            .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+        }
     }
 }

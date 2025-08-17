@@ -91,15 +91,19 @@
         </td>
       </ng-container>
       <!-- Gửi mã -->
-      <!-- Gửi mã -->
       <ng-container matColumnDef="send">
         <th mat-header-cell *matHeaderCellDef>Gửi mã</th>
         <td mat-cell *matCellDef="let row">
-          <select (change)="onSendOptionChange($event, row)" class="basic-select">
-            <option value="" disabled selected>Chọn hành động</option>
-            <option value="all">📢 Gửi tất cả</option>
-            <option value="select">👥 Gửi người dùng</option>
-          </select>
+          <ng-container *ngIf="!row.is_sent; else sentLabel">
+            <select (change)="onSendOptionChange($event, row)" class="basic-select">
+              <option value="" disabled selected>Chọn hành động</option>
+              <option value="all">📢 Gửi tất cả</option>
+              <option value="select">👥 Gửi người dùng</option>
+            </select>
+          </ng-container>
+          <ng-template #sentLabel>
+            <span class="text-success">✅ Đã gửi</span>
+          </ng-template>
         </td>
       </ng-container>
 

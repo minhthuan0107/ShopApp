@@ -9,6 +9,7 @@ import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Coupon;
 import com.project.shopapp.models.Notification;
 import com.project.shopapp.models.User;
+import com.project.shopapp.models.UserCoupon;
 import com.project.shopapp.repositories.CouponRepository;
 import com.project.shopapp.repositories.NotificationRepository;
 import com.project.shopapp.repositories.UserCouponRepository;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -69,6 +71,13 @@ public class CouponAdminService implements ICouponAdminService {
         } else {
             couponPage = couponRepository.findByCodeContainingIgnoreCase(keyword, pageRequest);
         }
+        // Kiểm tra hạn và tự động tắt mã
+        couponPage.forEach(coupon -> {
+            if (coupon.getExpiryDate().isBefore(LocalDate.now()) && coupon.isActive()) {
+                coupon.setActive(false);
+                couponRepository.save(coupon);
+            }
+        });
         return couponPage.map(CouponResponse::fromCoupon);
     }
 
@@ -78,15 +87,23 @@ public class CouponAdminService implements ICouponAdminService {
         User existUser = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND)));
-        Coupon coupon = couponRepository.findByCode(code).
-                orElseThrow(() -> new DataNotFoundException(
+
+        Coupon coupon = couponRepository.findByCode(code)
+                .orElseThrow(() -> new DataNotFoundException(
                         localizationUtils.getLocalizedMessage(MessageKeys.COUPON_NOT_FOUND)));
+        // Check hết hạn
         if (coupon.getExpiryDate() != null && coupon.getExpiryDate().isBefore(LocalDate.now())) {
             coupon.setActive(false);
             couponRepository.save(coupon);
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_EXPIRED));
         }
-        // Kiểm tra coupon đã được dùng bởi user này chưa
+        // Nếu là mã riêng => kiểm tra UserCoupon
+        if (!coupon.isPublic()) {
+            userCouponRepository.findByUserIdAndCouponId(userId, coupon.getId())
+                    .orElseThrow(() -> new DataNotFoundException(
+                            localizationUtils.getLocalizedMessage(MessageKeys.COUPON_ACCESS_DENIED)));
+        }
+        // Kiểm tra đã dùng chưa
         boolean alreadyUsed = userCouponRepository.existsByUserIdAndCouponIdAndStatus(
                 userId, coupon.getId(), CouponStatus.USED);
         if (alreadyUsed) {
@@ -96,6 +113,7 @@ public class CouponAdminService implements ICouponAdminService {
     }
 
     @Override
+    @Transactional
     public CouponResponse toggleCouponStatus(Long couponId) throws Exception {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new DataNotFoundException(
@@ -107,10 +125,20 @@ public class CouponAdminService implements ICouponAdminService {
     }
 
     @Override
-    public void sendCouponToUsers(SendCouponDto sendCouponDto) {
-        List<User> users = userRepository.findAllById(sendCouponDto.getUserIds());
+    @Transactional
+    public void sendCouponToAllUsers(String couponCode) throws Exception{
+        Coupon coupon = couponRepository.findByCode(couponCode)
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.COUPON_NOT_FOUND)));
+        coupon.setPublic(true);
+        coupon.setSent(true);
+        couponRepository.save(coupon);
+        List<User> users = userRepository.findAll();
+        // Format ngày hết hạn
+        String expiredDate = coupon.getExpiryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         for (User user : users){
-            String content = "Bạn có mã giảm giá mới: " + sendCouponDto.getCouponCode();
+            String content = "Bạn có mã giảm giá mới: " + coupon.getCode()
+                    + ". Hạn sử dụng đến: " + expiredDate;
             Notification notification = new Notification();
             notification.setUser(user);
             notification.setTitle("Mã giảm giá mới!");
@@ -121,6 +149,40 @@ public class CouponAdminService implements ICouponAdminService {
             // Gửi qua RabbitMQ
             NotificationResponse response = NotificationResponse.fromNotification(notification);
             rabbitTemplate.convertAndSend("coupon.exchange", "coupon.notify",response);
+
+        }
+    }
+
+    @Override
+    @Transactional
+    public void sendCouponToUsers(SendCouponDto sendCouponDto) throws Exception {
+        Coupon coupon = couponRepository.findByCode(sendCouponDto.getCouponCode())
+                .orElseThrow(() -> new DataNotFoundException(
+                        localizationUtils.getLocalizedMessage(MessageKeys.COUPON_NOT_FOUND)));
+        coupon.setSent(true);
+        couponRepository.save(coupon);
+        List<User> users = userRepository.findAllById(sendCouponDto.getUserIds());
+        // Format ngày hết hạn
+        String expiredDate = coupon.getExpiryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        for (User user : users) {
+            //Tạo bản ghi UserCoupon
+            UserCoupon userCoupon = new UserCoupon();
+            userCoupon.setUser(user);
+            userCoupon.setCoupon(coupon);
+            userCoupon.setStatus(CouponStatus.ACTIVE);
+            userCouponRepository.save(userCoupon);
+            //Gửi thông báo
+            String content = "Bạn có mã giảm giá mới: " + coupon.getCode()
+                    + ". Hạn sử dụng đến: " + expiredDate;
+            Notification notification = new Notification();
+            notification.setUser(user);
+            notification.setTitle("Mã giảm giá mới!");
+            notification.setContent(content);
+            notification.setType("COUPON");
+            notification.setIsRead(false);
+            notificationRepository.save(notification);
+            NotificationResponse response = NotificationResponse.fromNotification(notification);
+            rabbitTemplate.convertAndSend("coupon.exchange", "coupon.notify", response);
         }
     }
 }

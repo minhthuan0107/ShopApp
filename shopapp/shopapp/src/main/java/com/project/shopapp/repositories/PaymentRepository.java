@@ -12,6 +12,8 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Optional<Payment> findByTransactionId (String transactionId);
 
     Optional<Payment>  findByOrderId (Long orderId);
+    boolean existsByOrderIdAndStatus(Long orderId, String paymentStatus);
+
     @Query(value = "SELECT order_id from  payments where transaction_id = :transactionId", nativeQuery = true)
     Optional<Long> findOrderIdByTransactionId(@Param("transactionId") String transactionId);
 }

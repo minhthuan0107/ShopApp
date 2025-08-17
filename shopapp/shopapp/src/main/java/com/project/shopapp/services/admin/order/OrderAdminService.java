@@ -12,6 +12,7 @@ import com.project.shopapp.repositories.PaymentRepository;
 import com.project.shopapp.responses.customer.order.OrderResponse;
 import com.project.shopapp.responses.customer.orderdetail.OrderDetailResponse;
 import com.project.shopapp.responses.customer.payment.PaymentResponse;
+import com.project.shopapp.services.admin.shipping.GHTKService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,8 @@ public class OrderAdminService implements IOrderAdminService {
     private ModelMapper modelMapper;
     @Autowired
     private LocalizationUtils localizationUtils;
+    @Autowired
+    private GHTKService ghtkService;
 
     @Override
     public Page<OrderResponse> getAllOrders(PageRequest pageRequest, String keyword) {
@@ -75,6 +78,11 @@ public class OrderAdminService implements IOrderAdminService {
                     MessageKeys.ORDER_CANNOT_BE_UPDATED));
         }
         String nextStatus = getNextAllowedStatus(currentStatus);
+        /*
+        if(nextStatus.equals("SHIPPING")){
+            ghtkService.createOrderGHTK(existingOrder);
+        }
+         */
         existingOrder.setOrderStatus(nextStatus);
         orderRepository.save(existingOrder);
     }
@@ -91,4 +99,6 @@ public class OrderAdminService implements IOrderAdminService {
                 return null;
         }
     }
+
+
 }

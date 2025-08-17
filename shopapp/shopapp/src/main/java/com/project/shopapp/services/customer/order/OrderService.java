@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class OrderService implements IOrderService {
     private final UserCouponRepository userCouponRepository;
     private final CouponRepository couponRepository;
     private final CouponAdminService couponService;
+    private final ShippingInfoRepository shippingInfoRepository;
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
 
@@ -65,13 +67,18 @@ public class OrderService implements IOrderService {
         BigDecimal totalPrice = calculateTotalPrice(orderDetails);
         order.setTotalPrice(totalPrice);
         orderRepository.save(order);
+
         //Kiểm tra nếu người dùng nhập mã giảm giá thì
         applyCouponIfPresent(user, orderDto, order);
-
         orderDetailRepository.saveAll(orderDetails);
+
         // Tạo Payment nếu có thông tin thanh toán
         Payment payment = createPayment(order, orderDto.getPayment());
         paymentRepository.save(payment);
+
+        //Tạo thông tin vận chuyển đơn hàng
+        ShippingInfo shippingInfo = createShippingInfo(order, orderDto);
+        shippingInfoRepository.save(shippingInfo);
 
         // Chuyển đổi danh sách OrderDetail => OrderDetailResponse
         List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
@@ -92,32 +99,38 @@ public class OrderService implements IOrderService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
     private void applyCouponIfPresent(User user, OrderDto orderDto, Order order) {
+        // Chỉ thực hiện khi người dùng thực sự nhập mã hợp lệ (không rỗng, không khoảng trắng)
         if (StringUtils.hasText(orderDto.getCouponCode())) {
             try {
+                // Kiểm tra mã hợp lệ & quyền sử dụng
                 couponService.checkCoupon(user.getId(), orderDto.getCouponCode());
-                Coupon coupon = couponRepository.findByCode(orderDto.getCouponCode()).get();
-
-                UserCoupon userCoupon = new UserCoupon();
-                userCoupon.setUser(user);
-                userCoupon.setCoupon(coupon);
-                userCoupon.setOrder(order);
-
-                if ("Cod".equals(orderDto.getPayment().getPaymentMethod())) {
-                    userCoupon.setStatus(CouponStatus.USED);
+                Coupon coupon = couponRepository.findByCode(orderDto.getCouponCode())
+                        .orElseThrow(() -> new DataNotFoundException(
+                                localizationUtils.getLocalizedMessage(MessageKeys.COUPON_NOT_FOUND)));
+                // Nếu là PUBLIC => không tạo UserCoupon
+                if (!coupon.isPublic()) {
+                    UserCoupon userCoupon = userCouponRepository
+                            .findByUserIdAndCouponId(user.getId(), coupon.getId())
+                            .orElseThrow(() -> new DataNotFoundException(
+                                    localizationUtils.getLocalizedMessage(MessageKeys.COUPON_ACCESS_DENIED)));;
+                    userCoupon.setOrder(order);
                     userCoupon.setAppliedAt(LocalDate.now());
-                } else {
-                    userCoupon.setStatus(CouponStatus.ACTIVE);
+                    if("Cod".equals(orderDto.getPayment().getPaymentMethod())){
+                        userCoupon.setStatus(CouponStatus.USED);
+                    }
+                    userCouponRepository.save(userCoupon);
                 }
-
-                order.setTotalPrice(order.getTotalPrice().subtract(coupon.getValue()));
+                applyDiscount(order, coupon);
                 orderRepository.save(order);
-                userCouponRepository.save(userCoupon);
-
             } catch (Exception e) {
                 log.warn(localizationUtils.getLocalizedMessage(MessageKeys.COUPON_INVALID));
             }
         }
     }
+    private void applyDiscount(Order order, Coupon coupon) {
+        order.setTotalPrice(order.getTotalPrice().subtract(coupon.getValue()));
+    }
+
     private Payment createPayment(Order order, PaymentDto paymentDto) {
         return Payment.builder()
                 .order(order)
@@ -127,7 +140,19 @@ public class OrderService implements IOrderService {
                 .status("PENDING")
                 .build();
     }
-    private void handleCartAndEmail(OrderDto orderDto, Long userId, Order order) throws Exception {
+    private ShippingInfo createShippingInfo(Order order, OrderDto orderDto) {
+        return ShippingInfo.builder()
+                .order(order)
+                .province(orderDto.getProvince())
+                .district(orderDto.getDistrict())
+                .ward(orderDto.getWard())
+                .address(orderDto.getAddressDetail())
+                .shippingMethod(orderDto.getShippingMethod())
+                .shippingDate(null)
+                .trackingNumber(null)
+                .build();
+    }
+        private void handleCartAndEmail(OrderDto orderDto, Long userId, Order order) throws Exception {
         if (!orderDto.isBuyNow() && "Cod".equals(orderDto.getPayment().getPaymentMethod())) {
             cartService.clearCart(userId);
             orderMailService.sendMailOrder(order);

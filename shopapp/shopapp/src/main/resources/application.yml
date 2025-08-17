@@ -72,7 +72,8 @@ bezkoder:
   refreshTokenSecret: ${REFRESH_TOKEN_SECRET}
   jwtExpirationMs: ${JWT_EXPIRATION_MS:1800000}               # default 30 phút
   refreshTokenExpirationMs: ${REFRESH_TOKEN_EXPIRATION_MS:604800000} # default 7 ngày
-
+ghtk:
+  token: ${GHTK_TOKEN}
 vnpay:
   tmn-code: ${VNPAY_TMN_CODE}
   secret-key: ${VNPAY_SECRET_KEY}

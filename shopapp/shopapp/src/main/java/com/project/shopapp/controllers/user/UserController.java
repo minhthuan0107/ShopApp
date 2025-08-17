@@ -3,7 +3,7 @@ import com.project.shopapp.configurations.UserDetailsImpl;
 import com.project.shopapp.dtos.customer.social.SocialLoginDto;
 import com.project.shopapp.dtos.customer.user.*;
 import com.project.shopapp.models.User;
-import com.project.shopapp.responses.Object.ResponseObject;
+import com.project.shopapp.responses.object.ResponseObject;
 import com.project.shopapp.responses.customer.user.SigninResponse;
 import com.project.shopapp.responses.customer.user.UserResponse;
 import com.project.shopapp.services.customer.auth.AuthService;

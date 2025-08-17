@@ -14,6 +14,7 @@ import { CommentSectionComponent } from './components/comment-section/comment-se
 import { ReviewSectionComponent } from './components/review-section/review-section.component';
 import { BestSellingComponent } from './components/best-selling/best-selling.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
+import { signinPageGuard } from './guards/signin-page.guard';
 
 export const routes: Routes = [
   // 👉 Redirect từ path rỗng sang signin
@@ -28,7 +29,7 @@ export const routes: Routes = [
     path: '',
     component: AuthLayoutComponent,
     children: [
-      { path: 'signin', component: SigninComponent }
+      { path: 'signin', component: SigninComponent,canActivate: [signinPageGuard] }
     ]
   },
 

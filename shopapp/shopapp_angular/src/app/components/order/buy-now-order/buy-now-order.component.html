@@ -33,14 +33,40 @@
               tự.</span>
           </p>
         </div>
+        <!-- Tỉnh / Thành phố -->
         <div class="mb-2">
-          <label for="address" class="form-label">Địa chỉ</label>
-          <input type="text" id="address" class="form-control" formControlName="address" placeholder="Nhập địa chỉ">
-          <p class="text-danger"
-            *ngIf="buyNowOrderForm.get('address')?.invalid && buyNowOrderForm.get('address')?.touched">
-            Địa chỉ không được để trống.
-          </p>
+          <label class="form-label">Tỉnh / Thành phố</label>
+          <select class="form-control" formControlName="provinceCode" (change)="onProvinceChange()">
+            <option value="">-- Chọn tỉnh --</option>
+            <option *ngFor="let province of provinces" [value]="province.code">{{ province.name }}</option>
+          </select>
         </div>
+
+        <!-- Quận / Huyện -->
+        <div class="mb-2" *ngIf="districts.length > 0">
+          <label class="form-label">Quận / Huyện</label>
+          <select class="form-control" formControlName="districtCode" (change)="onDistrictChange()">
+            <option value="">-- Chọn huyện --</option>
+            <option *ngFor="let district of districts" [value]="district.code">{{ district.name }}</option>
+          </select>
+        </div>
+
+        <!-- Phường / Xã -->
+        <div class="mb-2" *ngIf="wards.length > 0">
+          <label class="form-label">Phường / Xã</label>
+          <select class="form-control" formControlName="wardCode" (change)="onWardChange()">
+            <option value="">-- Chọn phường --</option>
+            <option *ngFor="let ward of wards" [value]="ward.code">{{ ward.name }}</option>
+          </select>
+        </div>
+
+        <!-- Địa chỉ chi tiết -->
+        <div class="mb-2">
+          <label for="addressDetail" class="form-label">Địa chỉ chi tiết</label>
+          <input type="text" class="form-control" id="addressDetail" formControlName="addressDetail"
+            placeholder="Số nhà, tên đường..." />
+        </div>
+
         <div class="mb-2">
           <label for="note" class="form-label">Ghi chú</label>
           <textarea id="note" class="form-control note-textarea" formControlName="note"
@@ -81,15 +107,18 @@
         <h4 class="text-end">Tổng thanh toán: <span class="price">{{ (product.price - couponValue) | number }}đ</span>
         </h4>
       </div>
+  
       <div class="coupon-section">
         <h4 class="product-header">Nhập coupon</h4>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Nhập coupon" [(ngModel)]="couponCode" name="couponCode">
-          <button (click)="checkCouponCode()" class="btn btn-gradient"
-            [disabled]="!couponCode || couponCode.trim().length === 0">Áp dụng</button>
+          <input type="text" class="form-control" placeholder="Nhập coupon" [value]="tempCouponCode"
+            (input)="onInputCoupon($event)" name="tempCouponCode" />
+          <button (click)="applyCoupon()" class="btn btn-gradient"
+            [disabled]="!tempCouponCode || tempCouponCode.trim().length === 0">Áp dụng</button>
         </div>
         <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
       </div>
+      
       <div class="payment-method-section">
         <h4 class="product-header">Chọn phương thức thanh toán</h4>
         <select class="form-select payment-method" [(ngModel)]="paymentMethod">

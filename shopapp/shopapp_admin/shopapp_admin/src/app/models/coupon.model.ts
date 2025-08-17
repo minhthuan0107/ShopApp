@@ -7,4 +7,5 @@ export interface Coupon {
     quantity: number;
     expiry_date: Date;
     is_active: boolean;
+    is_sent: boolean;
 }
