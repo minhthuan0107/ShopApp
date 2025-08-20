@@ -93,11 +93,13 @@ public class OrderService implements IOrderService {
         orderResponse.setPaymentResponse(PaymentResponse.fromPayment(payment));
         return orderResponse;
     }
+
     private BigDecimal calculateTotalPrice(List<OrderDetail> orderDetails) {
         return orderDetails.stream()
                 .map(OrderDetail::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
     private void applyCouponIfPresent(User user, OrderDto orderDto, Order order) {
         // Chỉ thực hiện khi người dùng thực sự nhập mã hợp lệ (không rỗng, không khoảng trắng)
         if (StringUtils.hasText(orderDto.getCouponCode())) {
@@ -112,10 +114,11 @@ public class OrderService implements IOrderService {
                     UserCoupon userCoupon = userCouponRepository
                             .findByUserIdAndCouponId(user.getId(), coupon.getId())
                             .orElseThrow(() -> new DataNotFoundException(
-                                    localizationUtils.getLocalizedMessage(MessageKeys.COUPON_ACCESS_DENIED)));;
+                                    localizationUtils.getLocalizedMessage(MessageKeys.COUPON_ACCESS_DENIED)));
+                    ;
                     userCoupon.setOrder(order);
                     userCoupon.setAppliedAt(LocalDate.now());
-                    if("Cod".equals(orderDto.getPayment().getPaymentMethod())){
+                    if ("Cod".equals(orderDto.getPayment().getPaymentMethod())) {
                         userCoupon.setStatus(CouponStatus.USED);
                     }
                     userCouponRepository.save(userCoupon);
@@ -127,6 +130,7 @@ public class OrderService implements IOrderService {
             }
         }
     }
+
     private void applyDiscount(Order order, Coupon coupon) {
         order.setTotalPrice(order.getTotalPrice().subtract(coupon.getValue()));
     }
@@ -140,6 +144,7 @@ public class OrderService implements IOrderService {
                 .status("PENDING")
                 .build();
     }
+
     private ShippingInfo createShippingInfo(Order order, OrderDto orderDto) {
         return ShippingInfo.builder()
                 .order(order)
@@ -152,7 +157,8 @@ public class OrderService implements IOrderService {
                 .trackingNumber(null)
                 .build();
     }
-        private void handleCartAndEmail(OrderDto orderDto, Long userId, Order order) throws Exception {
+
+    private void handleCartAndEmail(OrderDto orderDto, Long userId, Order order) throws Exception {
         if (!orderDto.isBuyNow() && "Cod".equals(orderDto.getPayment().getPaymentMethod())) {
             cartService.clearCart(userId);
             orderMailService.sendMailOrder(order);
@@ -160,6 +166,7 @@ public class OrderService implements IOrderService {
             orderMailService.sendMailOrder(order);
         }
     }
+
     private Order convertToOrder(OrderDto orderDto, User user) {
         modelMapper.typeMap(OrderDto.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));

@@ -4,9 +4,11 @@ package com.project.shopapp.dtos.customer.mail;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
-public class MailDto {
+public class MailDto implements Serializable {
     private String from = "ThuanLeShop <lethuan01072001@gmail.com>";
     private String to;
     private String subject;

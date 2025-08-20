@@ -254,7 +254,7 @@ export class OrderComponent {
   }
   //Hàm check mã giám giá
   checkCouponCode() {
-    this.couponService.applyCoupon(this.couponCode).subscribe({
+    this.couponService.applyCoupon(this.tempCouponCode).subscribe({
       next: (response) => {
         this.errorMessage = null;
         this.couponCode = this.tempCouponCode;

@@ -28,7 +28,6 @@ export class OrderConfirmComponent {
     const orderId = this.route.snapshot.paramMap.get('orderId');
     if (orderId) {
       this.orderId = Number(orderId);
-      console.log('Order ID:', this.orderId);
       this.getOrderById(this.orderId);
     }
   }

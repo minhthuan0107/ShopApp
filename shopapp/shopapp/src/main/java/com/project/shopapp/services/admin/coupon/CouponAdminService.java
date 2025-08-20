@@ -84,9 +84,10 @@ public class CouponAdminService implements ICouponAdminService {
     @Override
     @Transactional
     public CouponResponse checkCoupon(Long userId, String code) throws Exception {
-        User existUser = userRepository.findById(userId)
-                .orElseThrow(() -> new DataNotFoundException(
-                        localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND)));
+        if (!userRepository.existsById(userId)) {
+            throw new DataNotFoundException(
+                    localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND));
+        }
 
         Coupon coupon = couponRepository.findByCode(code)
                 .orElseThrow(() -> new DataNotFoundException(

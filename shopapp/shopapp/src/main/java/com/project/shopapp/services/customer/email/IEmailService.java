@@ -5,7 +5,7 @@ import jakarta.mail.MessagingException;
 import java.io.IOException;
 
 public interface IEmailService {
-    void run();
+
 
     void queue(String to, String subject, String body);
 
