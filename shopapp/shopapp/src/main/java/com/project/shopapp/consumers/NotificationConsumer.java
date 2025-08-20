@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class NotificationConsumer {
     private final SimpMessagingTemplate messagingTemplate;
 
-    @RabbitListener(queues = "coupon.notify.queue")
+    @RabbitListener(queues = "coupon.notify.queue",containerFactory = "couponRabbitListenerContainerFactory")
     public void receiveNotification(NotificationResponse notificationResponse) {
         messagingTemplate.convertAndSend("/topic/notifications/" + notificationResponse.getUserId(), notificationResponse);
     }

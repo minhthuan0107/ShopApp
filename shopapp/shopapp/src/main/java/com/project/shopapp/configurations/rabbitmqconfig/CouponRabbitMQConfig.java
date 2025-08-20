@@ -1,4 +1,4 @@
-package com.project.shopapp.configurations;
+package com.project.shopapp.configurations.rabbitmqconfig;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitMQConfig {
+public class CouponRabbitMQConfig {
 
     public static final String EXCHANGE_NAME = "coupon.exchange";
     public static final String ROUTING_KEY = "coupon.notify";
@@ -39,9 +39,9 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
-    // Cấu hình Converter để deserialize JSON thành object của bạn
-    @Bean
-    public MessageConverter messageConverter() {
+    // Cấu hình Converter để deserialize JSON thành object
+    @Bean(name = "couponMessageConverter")
+    public MessageConverter couponMessageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultClassMapper classMapper = new DefaultClassMapper();
         classMapper.setTrustedPackages("com.project.shopapp.responses.customer.notification",
@@ -49,13 +49,12 @@ public class RabbitMQConfig {
         converter.setClassMapper(classMapper);
         return converter;
     }
-
     // Đăng ký converter này cho RabbitListener
-    @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+    @Bean(name = "couponRabbitListenerContainerFactory")
+    public SimpleRabbitListenerContainerFactory couponRabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setMessageConverter(messageConverter());
+        factory.setMessageConverter(couponMessageConverter());
         return factory;
     }
 }

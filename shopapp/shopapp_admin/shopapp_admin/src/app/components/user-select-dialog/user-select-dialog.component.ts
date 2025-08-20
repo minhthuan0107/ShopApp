@@ -28,7 +28,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule
   ],
   templateUrl: './user-select-dialog.component.html',
-  styleUrls: ['./user-select-dialog.component.scss'] // sửa thành styleUrls
+  styleUrls: ['./user-select-dialog.component.scss']
 })
 export class UserSelectDialogComponent implements OnInit {
   users: User[] = [];
