@@ -48,7 +48,7 @@ ShopApp là một hệ thống thương mại điện tử **full-stack** đư�
   - Hủy đơn hàng
   - Nhận coupon mới
 - Xem & Xóa thông báo.
-- Nhận email khi đặt/hủy đơn.
+- Nhận email khi đặt/hủy đơn.(gửi qua RabbitMQ).
 
 ### 🛠️ Quản trị viên (Admin)
 - Thống kê doanh thu theo tháng, năm.
