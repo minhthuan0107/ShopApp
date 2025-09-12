@@ -14,7 +14,6 @@ import { FavoriteService } from '../../services/favorite.service';
 import { WebsocketCouponService } from '../../services/websocket/websocket-coupon.service';
 import { NotificationService } from '../../services/notification.service';
 import { NotificationResponse } from '../../responses/notification.response';
-import moment from 'moment';
 import 'moment/locale/vi';
 import { MomentModule } from 'ngx-moment';
 import { ToastrService } from 'ngx-toastr';

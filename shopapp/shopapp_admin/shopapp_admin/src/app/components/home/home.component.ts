@@ -16,13 +16,13 @@ import { FormsModule } from '@angular/forms';
 export class HomeComponent implements OnInit {
   totalRevenueCurrentYear? : number;
   totalRevenueCurrentMonth? : number;
+  countCustomers? : number;
   countPendingOrders? : number;
   availableOrderYears: number[] = [];
   revenueByYearMap: { [year: number]: number } = {};
   monthlyRevenue: number[] = [];
   chart!: Chart;
   currentYear: number = new Date().getFullYear();
-  totalCustomers = 560;
 
     constructor(private statisticsService: StatisticsService,
     private router: Router,
@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
     this.countPendingOrdersWithValidPayment();
     this.getAvailableOrderYears();
     this.renderChart();
+    this.countRegisteredCustomers();
   }
 
  renderChart(): void {
@@ -94,6 +95,14 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  // Hàm đếm số lượng khách hàng đã đăng ký
+countRegisteredCustomers() {
+  this.statisticsService.countRegisteredCustomers().subscribe({
+    next: (response: any) => {
+      this.countCustomers = response.data;
+    }
+  });
+}
   //Lấy danh sách năm có đơn hàng và render biểu đồ năm hiện tại
   getAvailableOrderYears(): void {
   this.statisticsService.getAvailableOrderYears().subscribe({

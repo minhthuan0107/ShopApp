@@ -9,6 +9,7 @@ import com.project.shopapp.dtos.customer.payment.PaymentDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.*;
 import com.project.shopapp.repositories.*;
+import com.project.shopapp.responses.customer.notification.NotificationResponse;
 import com.project.shopapp.responses.customer.order.OrderResponse;
 import com.project.shopapp.responses.customer.orderdetail.OrderDetailResponse;
 import com.project.shopapp.responses.customer.payment.PaymentResponse;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -48,6 +50,8 @@ public class OrderService implements IOrderService {
     private final CouponRepository couponRepository;
     private final CouponAdminService couponService;
     private final ShippingInfoRepository shippingInfoRepository;
+    private final NotificationRepository notificationRepository;
+    private final RabbitTemplate rabbitTemplate;
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
 
@@ -86,7 +90,11 @@ public class OrderService implements IOrderService {
                 .collect(Collectors.toList());
         //Check gửi mail cho đơn hàng mua trực tiếp
         handleCartAndEmail(orderDto, userId, order);
-
+        // Push thông báo lên amdin
+        List<User> admins = userRepository.findByRole_Name("ADMIN");
+        for(User admin : admins){
+            pushOrderNotification(admin, order.getFullName());
+        }
         // Chuyển đổi Order sang OrderResponse để trả về
         OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
         orderResponse.setOrderDetailResponses(orderDetailResponses);
@@ -166,7 +174,18 @@ public class OrderService implements IOrderService {
             orderMailService.sendMailOrder(order);
         }
     }
-
+    private void pushOrderNotification(User admin, String fullName) {
+        String content = "Người dùng " + fullName + " đã đặt hàng thành công!";
+        Notification notification = new Notification();
+        notification.setUser(admin);
+        notification.setTitle("Thông báo đơn hàng mới!");
+        notification.setContent(content);
+        notification.setType("ORDER");
+        notification.setIsRead(false);
+        notificationRepository.save(notification);
+        NotificationResponse response = NotificationResponse.fromNotification(notification);
+        rabbitTemplate.convertAndSend("order.exchange", "order.exchange", response);
+    }
     private Order convertToOrder(OrderDto orderDto, User user) {
         modelMapper.typeMap(OrderDto.class, Order.class)
                 .addMappings(mapper -> mapper.skip(Order::setId));
