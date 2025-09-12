@@ -2,13 +2,14 @@ package com.project.shopapp.services.admin.auth.brand;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.brand.BrandDto;
+import com.project.shopapp.dtos.customer.category.CategoryDto;
 import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.models.Brand;
+import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.repositories.BrandRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.services.admin.brand.BrandAdminService;
-import com.project.shopapp.services.customer.brand.BrandService;
 import com.project.shopapp.ultis.MessageKeys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ public class BrandAdminServiceTest {
         assertEquals("Brand Nike already exists", ex.getMessage());
         verify(brandRepository, never()).save(any());
     }
-    //Case 2 : Tạo mới brand
+    //Case 2 : Brand bị xóa mềm → khôi phục
     @Test
     void createBrand_ShouldRestoreBrand_WhenBrandDeleted() throws Exception {
         // given
@@ -83,7 +84,35 @@ public class BrandAdminServiceTest {
         assertFalse(result.isDeleted()); // Đã khôi phục
         verify(brandRepository, times(1)).save(deletedBrand);
     }
-    //Test Api xóa brand dựa trên id
+    //Case 3: Tạo mới Category
+    @Test
+    void createBrand_ShouldCreateNewBrand_WhenNotExists() throws Exception {
+        // given
+        BrandDto dto = new BrandDto("Adidas");
+
+        when(brandRepository.findByNameIgnoreCaseAndIsDeletedFalse("Adidas"))
+                .thenReturn(Optional.empty());
+        when(brandRepository.findByNameIgnoreCaseAndIsDeletedTrue("Adidas"))
+                .thenReturn(Optional.empty()); // Không có bị xóa mềm
+
+        when(brandRepository.save(any(Brand.class)))
+                .thenAnswer(i -> {
+                    Brand saved = i.getArgument(0);
+                    saved.setId(10L); // giả lập DB gán id
+                    return saved;
+                });
+
+        // when
+       Brand result = brandAdminService.createBrand(dto);
+
+        // then
+        assertNotNull(result);
+        assertEquals("Adidas", result.getName());
+        assertEquals(10L, result.getId()); // đã được "lưu"
+        assertFalse(result.isDeleted());
+        verify(brandRepository, times(1)).save(any(Brand.class));
+    }
+    //Test xóa brand dựa trên id
     //Case 1: Brand không tồn tại
     @Test
     void deleteBrandById_ShouldThrowException_WhenBrandNotFound(){
