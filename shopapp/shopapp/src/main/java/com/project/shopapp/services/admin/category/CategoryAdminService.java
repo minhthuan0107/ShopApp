@@ -61,9 +61,11 @@ public class CategoryAdminService  implements ICategoryAdminService{
         // Lấy toàn bộ sản phẩm thuộc danh mục chưa bị xóa mềm
         List<Product> products = productRepository.findByCategoryAndIsDeletedFalse(existingCategory);
         // Xóa mềm toàn bộ sản phẩm thuộc danh mục này
-        for (Product product : products) {
-            product.setDeleted(true);
+        if(!products.isEmpty()) {
+            for (Product product : products) {
+                product.setDeleted(true);
+            }
+            productRepository.saveAll(products);
         }
-        productRepository.saveAll(products);
     }
 }
