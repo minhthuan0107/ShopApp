@@ -63,4 +63,9 @@ public class StatisticsService implements IStatisticsService {
     public Long countPendingOrdersWithValidPayment() {
         return orderRepository.countPendingOrdersWithValidPayment();
     }
+
+    @Override
+    public Long countRegisteredCustomers() {
+        return orderRepository.countRegisteredCustomers();
+    }
 }

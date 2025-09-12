@@ -134,7 +134,7 @@ public class CouponAdminService implements ICouponAdminService {
         coupon.setPublic(true);
         coupon.setSent(true);
         couponRepository.save(coupon);
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllExceptAdmin();
         // Format ngày hết hạn
         String expiredDate = coupon.getExpiryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         for (User user : users){

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client, IMessage } from '@stomp/stompjs';
 import { BehaviorSubject, filter, Observable } from 'rxjs';
-import { NotificationMessage } from '../../models/notification-message';
 import SockJS from 'sockjs-client';
 import { UserService } from '../user.service';
 import { NotificationResponse } from '../../responses/notification.response';
@@ -56,5 +55,4 @@ export class WebsocketCouponService {
       filter((notification): notification is NotificationResponse => notification !== null)
     );
   }
-
 }

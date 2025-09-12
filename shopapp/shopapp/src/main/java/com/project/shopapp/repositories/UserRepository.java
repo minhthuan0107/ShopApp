@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,10 +17,14 @@ public interface UserRepository extends JpaRepository<User,Long> {
     boolean existsByPhoneNumber(String phoneNumber);
     Optional<User>  findByPhoneNumber (String phoneNumber);
 
+    List<User> findByRole_Name(String name);
+
     Optional<User>  findByGoogleAccountId (String googleAccountId);
 
     @Query("SELECT u FROM User u WHERE u.role.name <> 'ADMIN'")
     Page<User> findAllExcludeAdmin(Pageable pageable);
+    @Query("SELECT u FROM User u WHERE u.role.name <> 'ADMIN'")
+    List<User> findAllExceptAdmin();
     @Query("SELECT u FROM User u WHERE (LOWER(u.fullname) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(u.phoneNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
             "AND u.role.name <> 'ADMIN'")

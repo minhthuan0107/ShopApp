@@ -106,6 +106,8 @@ public class MessageKeys {
     public static final String BRAND_CREATED_SUCCESSFULLY = "brand.create_successfully";
     public static final String BRAND_FETCHED_BY_CATEGORY_SUCCESSFULLY = "brand.fetched_by_category_successfully";
     public static final String BRAND_NOT_FOUND = "brand.not_found";
+
+    public static final String BRAND_ALREADY_EXISTS = "brand.already_exists";
     public static final String BRAND_GET_LIST_BRANDS_SUCCESSFULLY = "brand.get-list-brands-successfully";
     public static final String BRAND_DELETE_SUCCESSFULLY = "brand.delete_successfully";
     public static final String VALUE_MIN_MAX_SUCCESSFULLY = "value.min.max.successfully";
@@ -157,6 +159,7 @@ public class MessageKeys {
     public static final String STATISTICS_AVAILABLE_ORDER_YEARS_SUCCESS = "statistics.available_order_years_successfully";
 
     public static final String STATISTICS_PENDING_ORDERS_COUNT_SUCCESS = "statistics.pending_orders_count_successfully";
+    public static final String STATISTICS_CUSTOMER_COUNT_SUCCESS = "statistics.customer_count_successfully";
 
     public static final String NOTIFICATION_FETCHED_SUCCESSFULLY = "notification.fetched_successfully";
     public static final String UNREAD_NOTIFICATION_FETCHED_SUCCESSFULLY = "notification.unread_fetched_successfully";

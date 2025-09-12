@@ -1,3 +1,4 @@
+(window as any).global = window;
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
@@ -11,6 +12,9 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { tokenInterceptor } from './app/interceptors/token.interceptor';
 import { headerInterceptor } from './app/interceptors/header.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MomentModule } from 'ngx-moment';
+import moment from 'moment';
+moment.locale('vi');
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(ToastrModule.forRoot()),
@@ -18,6 +22,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(ReactiveFormsModule),
     provideAnimations(),
     provideRouter(routes),
+    importProvidersFrom(MomentModule),
     provideHttpClient(withInterceptors([tokenInterceptor,headerInterceptor])),
     [provideRouter(routes)], provideAnimationsAsync() // Cung cấp router với các route đã định nghĩa     // Cấu hình Toastr tại đây
   ],

@@ -16,4 +16,6 @@ public interface IStatisticsService {
     List<Integer> getAvailableOrderYears ();
 
     Long countPendingOrdersWithValidPayment();
+
+    Long countRegisteredCustomers();
 }

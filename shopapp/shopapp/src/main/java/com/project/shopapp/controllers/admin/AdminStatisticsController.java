@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.admin-prefix}/statistics")
-public class StatisticsController {
+public class AdminStatisticsController {
     @Autowired
     private StatisticsService statisticsService;
     @Autowired
@@ -90,6 +90,19 @@ public class StatisticsController {
                         .data(countOrder)
                         .message(localizationUtils.getLocalizedMessage(
                                 MessageKeys.STATISTICS_PENDING_ORDERS_COUNT_SUCCESS))
+                        .build());
+    }
+
+    @GetMapping("/count/customers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ResponseObject> countRegisteredCustomers() {
+        Long countCustomer = statisticsService.countRegisteredCustomers();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseObject.builder()
+                        .status(HttpStatus.OK)
+                        .data(countCustomer)
+                        .message(localizationUtils.getLocalizedMessage(
+                                MessageKeys.STATISTICS_CUSTOMER_COUNT_SUCCESS))
                         .build());
     }
     

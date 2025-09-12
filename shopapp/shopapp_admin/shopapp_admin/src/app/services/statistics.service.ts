@@ -13,6 +13,7 @@ export class StatisticsService {
   private apiRevenueMonthByYear = `${environment.apiBaseAdminUrl}/statistics`;
   private apiAvailableYear = `${environment.apiBaseAdminUrl}/statistics/available/year`;
   private apiCountOrders = `${environment.apiBaseAdminUrl}/statistics/count/orders`;
+  private apiCountCustomers = `${environment.apiBaseAdminUrl}/statistics/count/customers`;
 
 
   constructor(private http: HttpClient) { }
@@ -39,5 +40,8 @@ export class StatisticsService {
   countPendingOrdersWithValidPayment(): Observable<ApiResponse<any>> {
     return this.http.get<ApiResponse<any>>(this.apiCountOrders);
   }
-
+  //Api đếm số lượng khách hàng đăng kí
+  countRegisteredCustomers(): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(this.apiCountCustomers);
+  }
 }

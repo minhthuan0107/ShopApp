@@ -6,20 +6,22 @@ import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.payment.UpdatePaymentStatusDto;
 import com.project.shopapp.dtos.customer.payment.UpdateTransactionDto;
 import com.project.shopapp.exception.DataNotFoundException;
+import com.project.shopapp.models.Notification;
 import com.project.shopapp.models.Payment;
-import com.project.shopapp.models.UserCoupon;
-import com.project.shopapp.repositories.OrderRepository;
-import com.project.shopapp.repositories.PaymentRepository;
-import com.project.shopapp.repositories.UserCouponRepository;
+import com.project.shopapp.models.User;
+import com.project.shopapp.repositories.*;
+import com.project.shopapp.responses.customer.notification.NotificationResponse;
 import com.project.shopapp.responses.customer.payment.PaymentResponse;
 import com.project.shopapp.services.customer.cart.CartService;
 import com.project.shopapp.services.customer.email.OrderMailService;
 import com.project.shopapp.ultis.MessageKeys;
 import jakarta.transaction.Transactional;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PaymentService implements IPaymentService {
@@ -32,9 +34,13 @@ public class PaymentService implements IPaymentService {
     @Autowired
     private OrderMailService orderMailService;
     @Autowired
-    private OrderRepository orderRepository;
+    private UserRepository userRepository;
     @Autowired
     private UserCouponRepository userCouponRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public Long getOrderIdByTransactionId(String transactionId) throws Exception {
@@ -67,7 +73,24 @@ public class PaymentService implements IPaymentService {
                 });
         //Gửi mail thông báo thanh toán thành công
         orderMailService.sendMailOrder(payment.getOrder());
+        // Push thông báo lên amdin
+        List<User> admins = userRepository.findByRole_Name("ADMIN");
+        for(User admin : admins){
+            pushOrderNotification(admin, payment.getOrder().getFullName());
+        }
         return PaymentResponse.fromPayment(payment);
+    }
+    private void pushOrderNotification(User admin, String fullName) {
+        String content = "Người dùng " + fullName + " đã đặt hàng thành công!";
+        Notification notification = new Notification();
+        notification.setUser(admin);
+        notification.setTitle("Thông báo đơn hàng mới!");
+        notification.setContent(content);
+        notification.setType("ORDER");
+        notification.setIsRead(false);
+        notificationRepository.save(notification);
+        NotificationResponse response = NotificationResponse.fromNotification(notification);
+        rabbitTemplate.convertAndSend("order.exchange", "order.exchange", response);
     }
 
     @Override

@@ -88,6 +88,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             nativeQuery = true)
     Long countPendingOrdersWithValidPayment();
 
+    @Query(value = "SELECT COUNT(*) from users",nativeQuery = true)
+    Long countRegisteredCustomers();
+
 
 
 
