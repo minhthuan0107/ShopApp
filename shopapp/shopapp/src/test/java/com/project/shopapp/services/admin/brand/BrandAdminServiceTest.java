@@ -1,4 +1,4 @@
-package com.project.shopapp.services.admin.auth.brand;
+package com.project.shopapp.services.admin.brand;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.brand.BrandDto;
@@ -84,7 +84,7 @@ public class BrandAdminServiceTest {
         assertFalse(result.isDeleted()); // Đã khôi phục
         verify(brandRepository, times(1)).save(deletedBrand);
     }
-    //Case 3: Tạo mới Category
+    //Case 3: Tạo mới Category thành công
     @Test
     void createBrand_ShouldCreateNewBrand_WhenNotExists() throws Exception {
         // given

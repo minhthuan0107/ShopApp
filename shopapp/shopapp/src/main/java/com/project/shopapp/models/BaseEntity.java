@@ -11,18 +11,18 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 public class BaseEntity {
-    @Column(name = "create_at")
-    private LocalDateTime createAt;
-    @Column(name = "update_at")
-    private LocalDateTime updateAt;
-    @PrePersist
-    protected void onCreate(){
-        createAt = LocalDateTime.now();
-        updateAt = LocalDateTime.now();
-    }
-    @PreUpdate
-    protected void onUpdate(){
-        updateAt = LocalDateTime.now();
-    }
+        @Column(name = "create_at")
+        private LocalDateTime createAt;
+        @Column(name = "update_at")
+        private LocalDateTime updateAt;
+        @PrePersist
+        protected void onCreate(){
+            createAt = LocalDateTime.now();
+            updateAt = LocalDateTime.now();
+        }
+        @PreUpdate
+        protected void onUpdate(){
+            updateAt = LocalDateTime.now();
+        }
 
 }
