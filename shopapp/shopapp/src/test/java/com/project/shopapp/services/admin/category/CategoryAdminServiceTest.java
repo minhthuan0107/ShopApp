@@ -1,4 +1,4 @@
-package com.project.shopapp.services.admin.auth.category;
+package com.project.shopapp.services.admin.category;
 
 import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.dtos.customer.category.CategoryDto;

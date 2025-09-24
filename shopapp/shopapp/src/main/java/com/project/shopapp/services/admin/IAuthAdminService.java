@@ -1,4 +1,4 @@
-package com.project.shopapp.services.admin.auth;
+package com.project.shopapp.services.admin;
 
 import com.project.shopapp.dtos.admin.auth.SigninAdminDto;
 
